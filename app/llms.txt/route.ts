@@ -37,6 +37,10 @@ export function GET() {
     { title: "FAQ", path: "/faq", desc: "Common questions on booking, training, verification, replacement, language matching." },
     { title: "Contact", path: "/contact", desc: "Phone, WhatsApp, email and Indiranagar office address." },
     { title: "Book a caregiver", path: "/book", desc: "6-step booking flow that takes under 3 minutes." },
+    { title: "Care tools", path: "/tools", desc: "Free interactive tools — care quiz, cost calculator, caregiver self-check." },
+    { title: "Care quiz", path: "/care-quiz", desc: "2-minute quiz that recommends the right caregiver service and a Bangalore monthly cost estimate." },
+    { title: "Cost calculator", path: "/cost-calculator", desc: "Interactive monthly cost estimator with sliders for hours, days, locality and care complexity." },
+    { title: "Caregiver self-check", path: "/caregiver-checkup", desc: "60-second wellbeing check-in for the family member doing the daily caregiving." },
   ]) {
     lines.push(`- [${item.title}](${absoluteUrl(item.path)}): ${item.desc}`);
   }

@@ -18,6 +18,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/contact",
     "/book",
     "/journal",
+    "/tools",
+    "/care-quiz",
+    "/cost-calculator",
+    "/caregiver-checkup",
   ].map((path) => ({
     url: `${base}${path}`,
     lastModified: lastMod,

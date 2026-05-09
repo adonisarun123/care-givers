@@ -59,6 +59,10 @@ export function Footer() {
           <FooterLink href="/about">About us</FooterLink>
           <FooterLink href="/pricing">Pricing</FooterLink>
           <FooterLink href="/journal">The Care Journal</FooterLink>
+          <FooterLink href="/tools">Care tools</FooterLink>
+          <FooterLink href="/care-quiz">Care quiz</FooterLink>
+          <FooterLink href="/cost-calculator">Cost calculator</FooterLink>
+          <FooterLink href="/caregiver-checkup">Caregiver self-check</FooterLink>
           <FooterLink href="/faq">FAQ</FooterLink>
           <FooterLink href="/contact">Contact</FooterLink>
           <FooterLink href="/book">Book a caregiver</FooterLink>

@@ -64,7 +64,7 @@ export function Hero() {
             </ul>
           </div>
 
-          {/* Right — image collage */}
+          {/* Right — illustrated visual */}
           <HeroVisual />
         </div>
       </div>
@@ -72,46 +72,29 @@ export function Hero() {
   );
 }
 
-/* ─── Hero visual: layered image collage with always-on-brand SVG fallback ─── */
-
+/**
+ * Hero visual: a hand-crafted illustration of an Indian caregiver scene.
+ *
+ * Why illustration over stock photo:
+ *  - Always loads (no third-party CDN dependency)
+ *  - Always on-brand (uses our exact palette)
+ *  - Always Indianised — sari, bindi, kurta, tulsi, diya are explicit cues
+ *  - Distinctive — premium wellness brands (Calm, Maven Clinic, Headspace)
+ *    use illustration to differentiate from generic stock-photo competitors
+ *
+ * Replace with real photography of a Bangalore family + caregiver when ready
+ * by swapping the <CaregiverScene /> for an <img src="/your-hero.jpg" />.
+ */
 function HeroVisual() {
-  // Primary: warm, human caregiver-with-elder photo.
-  // Secondary: caring hands / detail shot.
-  // Both are loaded from Unsplash's CDN — chosen for relevance to the brief
-  // (Indian families, elder care, calm home setting). If either ever fails,
-  // the SvgFallback layer below stays visible and keeps the section beautiful.
-  const primary =
-    "https://images.unsplash.com/photo-1518152006812-edab29b069ac?auto=format&fit=crop&w=1100&q=80";
-  const secondary =
-    "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=600&q=80";
-
   return (
     <div className="relative animate-fade-up [animation-delay:120ms]">
       {/* Decorative rings behind */}
       <div aria-hidden className="absolute -top-3 -right-2 h-12 w-12 rounded-full bg-peach-100 -z-10" />
       <div aria-hidden className="absolute -bottom-4 -left-3 h-16 w-16 rounded-full bg-sage-100 -z-10" />
 
-      {/* Primary image card */}
-      <div className="relative aspect-[4/5] sm:aspect-[5/6] rounded-[2.25rem] overflow-hidden shadow-soft ring-1 ring-ink-100/60 bg-sage-100">
-        {/* Always-on-brand SVG scene — visible even if the photo doesn't load */}
-        <SvgFallback className="absolute inset-0 w-full h-full" />
-
-        {/* Photo layered on top */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={primary}
-          alt="A caregiver gently helps an elderly woman at home in Bangalore"
-          loading="eager"
-          decoding="async"
-          className="relative h-full w-full object-cover"
-          onError={(e) => {
-            // If the photo ever fails, hide it so the SVG fallback shows through.
-            (e.currentTarget as HTMLImageElement).style.display = "none";
-          }}
-        />
-
-        {/* Soft bottom gradient for legibility of the rating chip area */}
-        <div className="absolute inset-0 bg-gradient-to-t from-ink-900/15 via-transparent to-transparent" />
+      {/* Primary illustration card */}
+      <div className="relative aspect-[4/5] sm:aspect-[5/6] rounded-[2.25rem] overflow-hidden shadow-soft ring-1 ring-ink-100/60 bg-cream-50">
+        <CaregiverScene className="absolute inset-0 w-full h-full" />
       </div>
 
       {/* Floating "verified" card — top-left */}
@@ -135,122 +118,302 @@ function HeroVisual() {
         </div>
         <div className="mt-0.5 text-[11.5px] text-ink-500">from 1,200+ Bangalore families</div>
       </div>
-
-      {/* Secondary inset photo — caring hands detail */}
-      <div className="hidden md:block absolute -right-6 lg:-right-10 -bottom-10 w-[44%] aspect-square rounded-[1.5rem] overflow-hidden shadow-soft ring-4 ring-cream-50 bg-cream-100 rotate-[-3deg]">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={secondary}
-          alt="Caregiver holding an elderly person's hand in a moment of warmth"
-          loading="lazy"
-          decoding="async"
-          className="h-full w-full object-cover"
-          onError={(e) => {
-            (e.currentTarget as HTMLImageElement).parentElement!.style.display = "none";
-          }}
-        />
-      </div>
     </div>
   );
 }
 
-/* ─── On-brand SVG fallback scene: caregiver with elder, in our palette ───
- * This is rendered behind the primary photo. Even if the photo URL ever
- * 404s or is blocked, the section still looks deliberate and warm.
+/**
+ * On-brand SVG illustration: a Bangalore home morning with an elderly woman
+ * in a sari, a caregiver standing beside her with a hand on her shoulder,
+ * tulsi plant, brass diya and soft window light.
  */
-function SvgFallback({ className }: { className?: string }) {
+function CaregiverScene({ className }: { className?: string }) {
   return (
     <svg
       viewBox="0 0 400 500"
       preserveAspectRatio="xMidYMid slice"
       className={className}
-      aria-hidden="true"
       role="img"
+      aria-label="An Indian caregiver standing beside an elderly woman in a sari at home in Bangalore"
     >
       <defs>
-        <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#E2EDE5" />
-          <stop offset="50%" stopColor="#F2F7F4" />
-          <stop offset="100%" stopColor="#F8E6D8" />
+        {/* Sky / wall gradient */}
+        <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#F8E6D8" />
+          <stop offset="55%" stopColor="#F2F7F4" />
+          <stop offset="100%" stopColor="#E2EDE5" />
         </linearGradient>
-        <linearGradient id="sun" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#F1CBAE" />
-          <stop offset="100%" stopColor="#F8E6D8" />
-        </linearGradient>
-        <radialGradient id="warmth" cx="0.7" cy="0.2" r="0.7">
-          <stop offset="0%" stopColor="rgba(241, 203, 174, 0.6)" />
-          <stop offset="100%" stopColor="rgba(241, 203, 174, 0)" />
+
+        {/* Warm sunrise glow from window */}
+        <radialGradient id="warmth" cx="0.78" cy="0.15" r="0.55">
+          <stop offset="0%" stopColor="#F8E6D8" stopOpacity="0.95" />
+          <stop offset="60%" stopColor="#F8E6D8" stopOpacity="0.45" />
+          <stop offset="100%" stopColor="#F8E6D8" stopOpacity="0" />
         </radialGradient>
+
+        {/* Sari fabric gradient */}
+        <linearGradient id="sari" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#FBF8F3" />
+          <stop offset="100%" stopColor="#F1CBAE" />
+        </linearGradient>
+
+        {/* Caregiver kurta gradient */}
+        <linearGradient id="kurta" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#9CC1A6" />
+          <stop offset="100%" stopColor="#5C9469" />
+        </linearGradient>
+
+        {/* Diya flame */}
+        <radialGradient id="flame" cx="0.5" cy="1" r="1">
+          <stop offset="0%" stopColor="#FFD89B" />
+          <stop offset="60%" stopColor="#F1A85C" />
+          <stop offset="100%" stopColor="#C4564B" stopOpacity="0" />
+        </radialGradient>
+
+        {/* Floor */}
+        <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#EFE6D2" />
+          <stop offset="100%" stopColor="#E5D8BD" />
+        </linearGradient>
+
+        <linearGradient id="dupatta" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#3D8892" />
+          <stop offset="100%" stopColor="#285962" />
+        </linearGradient>
       </defs>
 
-      {/* Background wash */}
-      <rect width="400" height="500" fill="url(#bgGrad)" />
+      {/* Background wall */}
+      <rect width="400" height="500" fill="url(#bg)" />
       <rect width="400" height="500" fill="url(#warmth)" />
 
-      {/* Rising sun / window light */}
-      <circle cx="310" cy="120" r="60" fill="url(#sun)" opacity="0.85" />
+      {/* Window — soft morning light source */}
+      <g transform="translate(248 28)" opacity="0.9">
+        <rect x="0" y="0" width="125" height="148" rx="10" fill="#FBF8F3" opacity="0.9" />
+        <rect x="0" y="0" width="125" height="148" rx="10" fill="none" stroke="#EFE6D2" strokeWidth="2" />
+        <line x1="62.5" y1="6" x2="62.5" y2="142" stroke="#EFE6D2" strokeWidth="2" />
+        <line x1="6" y1="74" x2="119" y2="74" stroke="#EFE6D2" strokeWidth="2" />
+        {/* sun in window */}
+        <circle cx="92" cy="48" r="14" fill="#F1CBAE" opacity="0.85" />
+      </g>
 
-      {/* Soft horizon hills */}
-      <path d="M0 360 Q 100 320, 200 350 T 400 340 L 400 500 L 0 500 Z" fill="#C5DBCB" />
-      <path d="M0 400 Q 120 360, 240 390 T 400 380 L 400 500 L 0 500 Z" fill="#9CC1A6" opacity="0.85" />
+      {/* Decorative wall plant — palm-like leaves on right side */}
+      <g transform="translate(355 60)" opacity="0.85">
+        <path d="M 0 100 Q -8 60 0 0" stroke="#467853" strokeWidth="2.5" fill="none" />
+        <path d="M 0 80 Q 18 70 35 50" stroke="#7BAE85" strokeWidth="2.5" fill="none" />
+        <ellipse cx="-12" cy="20" rx="14" ry="6" transform="rotate(-40 -12 20)" fill="#7BAE85" />
+        <ellipse cx="-8" cy="40" rx="14" ry="6" transform="rotate(-25 -8 40)" fill="#9CC1A6" />
+        <ellipse cx="-2" cy="60" rx="14" ry="6" transform="rotate(-10 -2 60)" fill="#7BAE85" />
+        <ellipse cx="14" cy="55" rx="14" ry="6" transform="rotate(20 14 55)" fill="#9CC1A6" />
+      </g>
 
-      {/* Caregiver figure (back) — taller, sage tones */}
-      <g transform="translate(120 180)">
-        <ellipse cx="50" cy="200" rx="60" ry="14" fill="#3A6244" opacity="0.18" />
-        {/* body */}
+      {/* Floor band */}
+      <rect x="0" y="380" width="400" height="120" fill="url(#floor)" />
+      {/* Floor line */}
+      <line x1="0" y1="380" x2="400" y2="380" stroke="#D7C9A8" strokeWidth="1" />
+
+      {/* Wooden chair (rattan back) behind elder */}
+      <g>
+        <ellipse cx="170" cy="395" rx="78" ry="9" fill="#1F3D44" opacity="0.18" />
+        {/* Chair back uprights */}
+        <rect x="118" y="200" width="6" height="180" rx="3" fill="#A37C56" />
+        <rect x="216" y="200" width="6" height="180" rx="3" fill="#A37C56" />
+        {/* Chair back top curve */}
+        <path d="M 118 210 Q 170 188 222 210" stroke="#A37C56" strokeWidth="6" fill="none" strokeLinecap="round" />
+        {/* Cane weave hint */}
+        <path d="M 124 220 Q 170 230 216 220 M 124 240 Q 170 250 216 240 M 124 260 Q 170 270 216 260" stroke="#C9A57A" strokeWidth="1.6" fill="none" opacity="0.7" />
+        {/* Seat */}
+        <rect x="112" y="350" width="116" height="14" rx="3" fill="#A37C56" />
+      </g>
+
+      {/* ─── Elderly woman seated (front) ─── */}
+      <g>
+        {/* Sari pallu draped over chair top */}
         <path
-          d="M30 100 Q 30 70, 60 70 Q 90 70, 90 100 L 90 200 L 30 200 Z"
+          d="M 130 215 Q 170 250 210 215 L 215 360 L 125 360 Z"
+          fill="url(#sari)"
+        />
+        {/* Sari decorative border (bottom) */}
+        <path
+          d="M 125 360 L 215 360 L 215 366 L 125 366 Z"
+          fill="#7BAE85"
+        />
+        <path
+          d="M 125 366 L 215 366 L 215 369 L 125 369 Z"
+          fill="#C9A55F"
+        />
+
+        {/* Visible blouse / chest area */}
+        <path
+          d="M 145 250 Q 170 260 195 250 L 198 285 Q 170 295 142 285 Z"
           fill="#467853"
         />
-        {/* sleeve / arm cradling */}
-        <path d="M30 110 Q 10 140, 30 165" stroke="#3A6244" strokeWidth="14" strokeLinecap="round" fill="none" />
-        {/* head */}
-        <circle cx="60" cy="56" r="20" fill="#E8C9A6" />
-        {/* hair bun */}
-        <circle cx="60" cy="38" r="9" fill="#3A2A20" />
-        <circle cx="74" cy="50" r="4" fill="#3A2A20" />
-      </g>
 
-      {/* Elder figure (front, smaller, seated) — warm cream tones */}
-      <g transform="translate(180 230)">
-        <ellipse cx="40" cy="160" rx="55" ry="12" fill="#1F3D44" opacity="0.18" />
-        {/* shawl/body */}
+        {/* Folded hands in lap */}
+        <ellipse cx="158" cy="345" rx="12" ry="7" fill="#E8C9A6" />
+        <ellipse cx="182" cy="345" rx="12" ry="7" fill="#E8C9A6" />
+        {/* Bangle hint */}
+        <path d="M 148 345 q 0 -3 4 -4" stroke="#C9A55F" strokeWidth="1.6" fill="none" />
+        <path d="M 192 345 q 0 -3 -4 -4" stroke="#C9A55F" strokeWidth="1.6" fill="none" />
+
+        {/* Neck */}
+        <path d="M 162 222 L 178 222 L 180 248 L 160 248 Z" fill="#E8C9A6" />
+
+        {/* Head */}
+        <ellipse cx="170" cy="206" rx="22" ry="25" fill="#E8C9A6" />
+
+        {/* Silver hair — pulled back with center part */}
         <path
-          d="M5 90 Q 5 70, 40 70 Q 75 70, 75 90 L 78 160 L 2 160 Z"
-          fill="#F1CBAE"
+          d="M 148 198 Q 148 178 170 174 Q 192 178 192 198 Q 188 188 170 188 Q 152 188 148 198 Z"
+          fill="#D7D7D3"
         />
-        {/* shawl drape line */}
-        <path d="M5 100 Q 40 115, 75 100" stroke="#E8B796" strokeWidth="2" fill="none" opacity="0.6" />
-        {/* head */}
-        <circle cx="40" cy="55" r="18" fill="#EBC9A8" />
-        {/* hair: silver bun */}
-        <path d="M22 50 Q 40 30, 58 50 Q 50 38, 40 38 Q 30 38, 22 50 Z" fill="#D7D7D3" />
-        {/* gentle smile */}
-        <path d="M34 60 Q 40 64, 46 60" stroke="#7B5A40" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-        {/* eyes (closed, peaceful) */}
-        <path d="M30 53 q 3 -2 6 0" stroke="#7B5A40" strokeWidth="1.4" fill="none" strokeLinecap="round" />
-        <path d="M44 53 q 3 -2 6 0" stroke="#7B5A40" strokeWidth="1.4" fill="none" strokeLinecap="round" />
+        {/* Center part with sindoor */}
+        <line x1="170" y1="174" x2="170" y2="188" stroke="#C4564B" strokeWidth="1.4" />
+        {/* Hair side curves */}
+        <path d="M 148 198 Q 144 210 150 220" stroke="#BDBDB7" strokeWidth="2" fill="none" strokeLinecap="round" />
+        <path d="M 192 198 Q 196 210 190 220" stroke="#BDBDB7" strokeWidth="2" fill="none" strokeLinecap="round" />
+        {/* Bun visible behind */}
+        <ellipse cx="170" cy="195" rx="12" ry="7" fill="#C5C5BE" />
+
+        {/* Bindi */}
+        <circle cx="170" cy="194" r="2.4" fill="#C4564B" />
+
+        {/* Eyes — closed, peaceful */}
+        <path d="M 158 207 q 4 -3 8 0" stroke="#5A4632" strokeWidth="1.4" fill="none" strokeLinecap="round" />
+        <path d="M 174 207 q 4 -3 8 0" stroke="#5A4632" strokeWidth="1.4" fill="none" strokeLinecap="round" />
+
+        {/* Gentle smile */}
+        <path d="M 162 220 Q 170 225 178 220" stroke="#7B5A40" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+
+        {/* Earring hint */}
+        <circle cx="148" cy="214" r="1.4" fill="#C9A55F" />
+        <circle cx="192" cy="214" r="1.4" fill="#C9A55F" />
       </g>
 
-      {/* Caregiver hand on elder's shoulder (small overlap, signals care) */}
-      <g transform="translate(200 245)" opacity="0.9">
-        <ellipse cx="0" cy="0" rx="14" ry="9" fill="#E8C9A6" />
+      {/* ─── Caregiver standing behind/right ─── */}
+      <g>
+        {/* Body shadow */}
+        <ellipse cx="262" cy="395" rx="48" ry="6" fill="#1F3D44" opacity="0.14" />
+
+        {/* Kurta (long tunic) */}
+        <path
+          d="M 230 220 Q 230 205 262 200 Q 294 205 294 220 L 300 380 L 224 380 Z"
+          fill="url(#kurta)"
+        />
+        {/* Kurta side seam */}
+        <line x1="262" y1="225" x2="262" y2="378" stroke="#3A6244" strokeWidth="1" opacity="0.4" />
+
+        {/* Dupatta diagonal across torso */}
+        <path
+          d="M 232 215 Q 252 240 285 248 L 290 258 Q 256 252 232 230 Z"
+          fill="url(#dupatta)"
+          opacity="0.92"
+        />
+
+        {/* Arm reaching toward elder's shoulder (caregiver's left arm forward) */}
+        <path
+          d="M 232 240 Q 215 252 208 268 Q 207 274 213 278"
+          stroke="#5C9469"
+          strokeWidth="22"
+          strokeLinecap="round"
+          fill="none"
+        />
+        {/* Hand on elder's shoulder */}
+        <ellipse cx="208" cy="278" rx="12" ry="8" fill="#D4A57B" />
+
+        {/* Caregiver's other arm down at side */}
+        <path
+          d="M 290 230 Q 304 270 296 320"
+          stroke="#5C9469"
+          strokeWidth="22"
+          strokeLinecap="round"
+          fill="none"
+        />
+        <ellipse cx="295" cy="320" rx="9" ry="6" fill="#D4A57B" />
+
+        {/* Neck */}
+        <path d="M 254 188 L 270 188 L 272 210 L 252 210 Z" fill="#D4A57B" />
+
+        {/* Head */}
+        <ellipse cx="262" cy="172" rx="20" ry="23" fill="#D4A57B" />
+
+        {/* Hair — dark, pulled back, low ponytail */}
+        <path
+          d="M 242 168 Q 240 144 262 138 Q 286 142 284 168 Q 286 180 262 178 Q 244 178 242 168 Z"
+          fill="#2C2C26"
+        />
+        {/* Side hair flowing */}
+        <path d="M 244 174 Q 238 190 244 200" stroke="#2C2C26" strokeWidth="3" fill="none" strokeLinecap="round" />
+        <path d="M 280 174 Q 286 190 280 200" stroke="#2C2C26" strokeWidth="3" fill="none" strokeLinecap="round" />
+        {/* Low ponytail */}
+        <path d="M 282 188 Q 296 198 290 218" stroke="#2C2C26" strokeWidth="6" fill="none" strokeLinecap="round" />
+
+        {/* Earring */}
+        <circle cx="242" cy="180" r="1.4" fill="#C9A55F" />
+        <circle cx="282" cy="180" r="1.4" fill="#C9A55F" />
+
+        {/* Eyes — open, gentle */}
+        <ellipse cx="254" cy="172" rx="1.6" ry="2.2" fill="#2C2C26" />
+        <ellipse cx="270" cy="172" rx="1.6" ry="2.2" fill="#2C2C26" />
+
+        {/* Soft smile */}
+        <path d="M 256 184 Q 262 187 268 184" stroke="#5A4632" strokeWidth="1.4" fill="none" strokeLinecap="round" />
+
+        {/* Subtle bindi */}
+        <circle cx="262" cy="156" r="1.8" fill="#C4564B" opacity="0.85" />
       </g>
 
-      {/* Decorative botanic sprig — bottom-left */}
-      <g transform="translate(40 420)" opacity="0.85">
-        <path d="M0 60 Q 10 30, 30 0" stroke="#467853" strokeWidth="2" fill="none" />
-        <ellipse cx="6" cy="48" rx="9" ry="4" transform="rotate(-30 6 48)" fill="#7BAE85" />
-        <ellipse cx="14" cy="34" rx="9" ry="4" transform="rotate(-30 14 34)" fill="#9CC1A6" />
-        <ellipse cx="22" cy="20" rx="9" ry="4" transform="rotate(-30 22 20)" fill="#7BAE85" />
+      {/* ─── Foreground props: small wooden table with brass diya ─── */}
+      <g transform="translate(58 360)">
+        {/* Table top */}
+        <rect x="-2" y="0" width="76" height="6" rx="2" fill="#8E6A47" />
+        {/* Table legs */}
+        <rect x="3" y="6" width="4" height="20" fill="#7A5A3C" />
+        <rect x="65" y="6" width="4" height="20" fill="#7A5A3C" />
+
+        {/* Diya base */}
+        <ellipse cx="36" cy="-2" rx="14" ry="4" fill="#C9A55F" />
+        <path d="M 22 -2 Q 22 -10 36 -12 Q 50 -10 50 -2 Z" fill="#A8843B" />
+        {/* Wick & flame */}
+        <line x1="36" y1="-12" x2="36" y2="-18" stroke="#5A3C20" strokeWidth="1" />
+        <ellipse cx="36" cy="-22" rx="6" ry="10" fill="url(#flame)" />
+        <ellipse cx="36" cy="-22" rx="2" ry="6" fill="#FFE7B0" opacity="0.9" />
       </g>
 
-      {/* Tiny heart in upper-left corner — calming accent */}
-      <path
-        d="M50 80 c -8 -8, 4 -22, 12 -10 c 8 -12, 20 2, 12 10 c -2 2, -10 8, -12 10 c -2 -2, -10 -8, -12 -10 z"
-        fill="#3D8892"
-        opacity="0.7"
-      />
+      {/* ─── Tulsi plant in a small pot, foreground-right ─── */}
+      <g transform="translate(310 350)">
+        {/* Pot */}
+        <path d="M -16 0 L 16 0 L 12 24 L -12 24 Z" fill="#B0794E" />
+        <ellipse cx="0" cy="0" rx="16" ry="3" fill="#8E5C36" />
+        <line x1="-16" y1="6" x2="16" y2="6" stroke="#8E5C36" strokeWidth="0.8" opacity="0.6" />
+
+        {/* Tulsi stems & leaves */}
+        <path d="M 0 0 Q 0 -22 -8 -36" stroke="#467853" strokeWidth="1.6" fill="none" />
+        <path d="M 0 0 Q 4 -18 6 -32" stroke="#467853" strokeWidth="1.6" fill="none" />
+        <path d="M 0 0 Q -4 -18 -2 -28" stroke="#467853" strokeWidth="1.6" fill="none" />
+        {/* Leaves */}
+        <ellipse cx="-9" cy="-30" rx="5" ry="3" transform="rotate(-30 -9 -30)" fill="#7BAE85" />
+        <ellipse cx="-3" cy="-22" rx="5" ry="3" transform="rotate(-15 -3 -22)" fill="#9CC1A6" />
+        <ellipse cx="6" cy="-26" rx="5" ry="3" transform="rotate(20 6 -26)" fill="#7BAE85" />
+        <ellipse cx="2" cy="-16" rx="4" ry="2.5" transform="rotate(8 2 -16)" fill="#9CC1A6" />
+        <ellipse cx="-12" cy="-22" rx="4" ry="2.5" transform="rotate(-50 -12 -22)" fill="#9CC1A6" />
+      </g>
+
+      {/* ─── Subtle rangoli dots, bottom-left ─── */}
+      <g transform="translate(28 460)" opacity="0.75">
+        <circle cx="0" cy="0" r="1.6" fill="#C4564B" />
+        <circle cx="8" cy="-4" r="1.6" fill="#C9A55F" />
+        <circle cx="16" cy="0" r="1.6" fill="#C4564B" />
+        <circle cx="8" cy="4" r="1.6" fill="#C9A55F" />
+        <circle cx="8" cy="0" r="2" fill="#7BAE85" />
+      </g>
+
+      {/* ─── Small heart accent — care motif ─── */}
+      <g transform="translate(40 60)" opacity="0.65">
+        <path
+          d="M 0 4 c -6 -6, 4 -16, 8 -8 c 4 -8, 14 2, 8 8 c -2 2, -7 6, -8 8 c -1 -2, -6 -6, -8 -8 z"
+          fill="#3D8892"
+        />
+      </g>
     </svg>
   );
 }

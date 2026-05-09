@@ -74,7 +74,7 @@ export const primaryNav: NavLink[] = [
   { label: "Services", href: "/services" },
   { label: "Locations", href: "/locations" },
   { label: "Pricing", href: "/pricing" },
+  { label: "Tools", href: "/tools" },
   { label: "Journal", href: "/journal" },
   { label: "About", href: "/about" },
-  { label: "FAQ", href: "/faq" },
 ];
