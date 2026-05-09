@@ -12,8 +12,9 @@ export function generateStaticParams() {
   return localities.map((l) => ({ slug: l.slug }));
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
-  const l = getLocalityBySlug(params.slug);
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const l = getLocalityBySlug(slug);
   if (!l) return {};
   return buildMetadata({
     title: `Home Caregivers in ${l.name}, Bangalore`,
@@ -22,8 +23,9 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   });
 }
 
-export default function LocalityPage({ params }: { params: { slug: string } }) {
-  const l = getLocalityBySlug(params.slug);
+export default async function LocalityPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const l = getLocalityBySlug(slug);
   if (!l) notFound();
 
   return (

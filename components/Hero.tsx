@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { ArrowRightIcon, CheckIcon, PlayIcon, ShieldCheckIcon, StarIcon } from "@/components/icons";
 import { site } from "@/lib/site";

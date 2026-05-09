@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import React from "react";
 import { getServiceBySlug, services } from "@/lib/services";
 import { CaregiverProfiles } from "@/components/CaregiverProfiles";
 import { Testimonials } from "@/components/Testimonials";
@@ -23,8 +24,9 @@ export function generateStaticParams() {
   return services.map((s) => ({ slug: s.slug }));
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
-  const s = getServiceBySlug(params.slug);
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const s = getServiceBySlug(slug);
   if (!s) return {};
   return buildMetadata({
     title: s.seoTitle,
@@ -33,8 +35,9 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   });
 }
 
-export default function ServicePage({ params }: { params: { slug: string } }) {
-  const s = getServiceBySlug(params.slug);
+export default async function ServicePage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const s = getServiceBySlug(slug);
   if (!s) notFound();
 
   const others = services.filter((x) => x.slug !== s.slug).slice(0, 3);
@@ -443,7 +446,7 @@ function Fact({
   label,
   value,
 }: {
-  icon: (p: { size?: number }) => JSX.Element;
+  icon: React.ComponentType<{ size?: number }>;
   label: string;
   value: string;
 }) {
