@@ -1,0 +1,97 @@
+import Link from "next/link";
+import { site } from "@/lib/site";
+import { services } from "@/lib/services";
+import { localities } from "@/lib/locations";
+import { PhoneIcon, WhatsAppIcon } from "@/components/icons";
+
+export function Footer() {
+  return (
+    <footer className="relative mt-24 border-t border-ink-100 bg-white">
+      <div className="container py-16 grid gap-12 lg:grid-cols-[1.2fr_1fr_1fr_1fr]">
+        <div>
+          <div className="flex items-center gap-2.5">
+            <span className="grid h-9 w-9 place-items-center rounded-2xl bg-teal-600 text-white shadow-glow">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden>
+                <path
+                  d="M12 4c-1.6 0-3 1.4-3 3 0 1 .4 1.7.9 2.3-1.4.4-2.4 1.6-2.4 3.1V18h9V12.4c0-1.5-1-2.7-2.4-3.1.5-.6.9-1.3.9-2.3 0-1.6-1.4-3-3-3Z"
+                  stroke="white" strokeWidth="1.6"
+                />
+                <path d="M9 21h6" stroke="white" strokeWidth="1.6" strokeLinecap="round" />
+              </svg>
+            </span>
+            <span className="font-display text-xl">{site.name}</span>
+          </div>
+          <p className="mt-4 text-[15px] text-ink-600 max-w-sm">
+            Compassionate, verified caregivers and patient attendants for Bangalore families.
+            Calm care, transparent pricing, replacement guaranteed.
+          </p>
+
+          <div className="mt-6 flex flex-wrap gap-2">
+            <a href={site.whatsappHref} className="btn-sm btn-secondary gap-1.5">
+              <WhatsAppIcon size={16} /> WhatsApp us
+            </a>
+            <a href={site.phoneHref} className="btn-sm btn-secondary gap-1.5">
+              <PhoneIcon size={16} /> {site.phone}
+            </a>
+          </div>
+
+          <p className="mt-6 text-xs text-ink-500">{site.hours}</p>
+        </div>
+
+        <FooterColumn title="Services">
+          {services.slice(0, 8).map((s) => (
+            <FooterLink key={s.slug} href={`/services/${s.slug}`}>
+              {s.name}
+            </FooterLink>
+          ))}
+        </FooterColumn>
+
+        <FooterColumn title="Locations">
+          {localities.map((l) => (
+            <FooterLink key={l.slug} href={`/locations/${l.slug}`}>
+              {l.name}
+            </FooterLink>
+          ))}
+        </FooterColumn>
+
+        <FooterColumn title="Company">
+          <FooterLink href="/about">About us</FooterLink>
+          <FooterLink href="/pricing">Pricing</FooterLink>
+          <FooterLink href="/faq">FAQ</FooterLink>
+          <FooterLink href="/contact">Contact</FooterLink>
+          <FooterLink href="/book">Book a caregiver</FooterLink>
+        </FooterColumn>
+      </div>
+
+      <div className="border-t border-ink-100/80">
+        <div className="container py-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-ink-500">
+          <p>
+            © {new Date().getFullYear()} {site.name} · Made with care in Bangalore
+          </p>
+          <p>
+            <span className="text-ink-400">Verified caregivers · Background checked · 24×7 support</span>
+          </p>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+function FooterColumn({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <h4 className="text-xs font-semibold uppercase tracking-[0.18em] text-teal-700">{title}</h4>
+      <ul className="mt-4 space-y-2.5 text-[14.5px] text-ink-700">{children}</ul>
+    </div>
+  );
+}
+
+function FooterLink({ href, children }: { href: string; children: React.ReactNode }) {
+  return (
+    <li>
+      <Link href={href} className="link-quiet">
+        {children}
+      </Link>
+    </li>
+  );
+}
