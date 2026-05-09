@@ -2,6 +2,7 @@ import Link from "next/link";
 import { site } from "@/lib/site";
 import { services } from "@/lib/services";
 import { localities } from "@/lib/locations";
+import { getRecentPosts } from "@/lib/posts";
 import { PhoneIcon, WhatsAppIcon } from "@/components/icons";
 
 export function Footer() {
@@ -57,10 +58,43 @@ export function Footer() {
         <FooterColumn title="Company">
           <FooterLink href="/about">About us</FooterLink>
           <FooterLink href="/pricing">Pricing</FooterLink>
+          <FooterLink href="/journal">The Care Journal</FooterLink>
           <FooterLink href="/faq">FAQ</FooterLink>
           <FooterLink href="/contact">Contact</FooterLink>
           <FooterLink href="/book">Book a caregiver</FooterLink>
         </FooterColumn>
+      </div>
+
+      {/* Journal preview row — drives internal linking + search exposure */}
+      <div className="border-t border-ink-100/80 bg-cream-50/60">
+        <div className="container py-10">
+          <div className="flex items-end justify-between gap-4 mb-5">
+            <h4 className="text-xs font-semibold uppercase tracking-[0.18em] text-teal-700">
+              From The Care Journal
+            </h4>
+            <Link href="/journal" className="link-quiet text-sm text-ink-600">
+              All posts →
+            </Link>
+          </div>
+          <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {getRecentPosts(3).map((p) => (
+              <li key={p.slug}>
+                <Link
+                  href={`/journal/${p.slug}`}
+                  className="group block rounded-2xl bg-white ring-1 ring-ink-100 p-4 hover:shadow-soft transition"
+                >
+                  <div className="text-[11px] uppercase tracking-[0.14em] text-teal-700 font-semibold">
+                    {p.category}
+                  </div>
+                  <div className="mt-1.5 font-display text-[15px] leading-tight text-ink-900 group-hover:text-teal-800 transition">
+                    {p.title}
+                  </div>
+                  <div className="mt-1 text-[12px] text-ink-500">{p.readMinutes} min read</div>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
 
       <div className="border-t border-ink-100/80">

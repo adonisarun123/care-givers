@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
 import { FaqSection } from "@/components/FaqSection";
 import { FinalCta } from "@/components/FinalCta";
+import { BreadcrumbJsonLd, FaqJsonLd, SpeakableJsonLd } from "@/components/JsonLd";
+import { buildMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "Frequently asked questions",
+export const metadata: Metadata = buildMetadata({
+  title: "Frequently Asked Questions — Care Givers Bangalore",
   description:
     "Answers to common questions about Care Givers — verification, pricing, replacement, language matching and Bangalore coverage.",
-};
+  path: "/faq",
+});
 
 const groups = [
   {
@@ -63,8 +66,20 @@ const groups = [
 ];
 
 export default function FaqPage() {
+  const allFaqs = groups.flatMap((g) => g.items);
   return (
     <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", href: "/" },
+          { name: "FAQ", href: "/faq" },
+        ]}
+      />
+      <FaqJsonLd faqs={allFaqs} />
+      <SpeakableJsonLd
+        url="/faq"
+        cssSelectors={["[data-faq-q]", "[data-faq-a]"]}
+      />
       <section className="pt-16 sm:pt-24 pb-10">
         <div className="container max-w-3xl text-center">
           <span className="chip">Honest answers</span>
@@ -94,14 +109,14 @@ export default function FaqPage() {
                     className="group py-5 [&_summary::-webkit-details-marker]:hidden"
                   >
                     <summary className="flex cursor-pointer items-start justify-between gap-6">
-                      <span className="font-display text-lg text-ink-900">{it.q}</span>
+                      <span data-faq-q className="font-display text-lg text-ink-900">{it.q}</span>
                       <span className="mt-1 grid h-7 w-7 place-items-center rounded-full bg-ink-100 text-ink-700 transition group-open:rotate-45 group-open:bg-teal-700 group-open:text-white">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                           <path d="M12 5v14" /><path d="M5 12h14" />
                         </svg>
                       </span>
                     </summary>
-                    <p className="mt-3 text-[15px] text-ink-600 leading-relaxed">{it.a}</p>
+                    <p data-faq-a className="mt-3 text-[15px] text-ink-600 leading-relaxed">{it.a}</p>
                   </details>
                 ))}
               </div>

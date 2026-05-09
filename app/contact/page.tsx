@@ -1,16 +1,25 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { site } from "@/lib/site";
+import { site, buildMetadata } from "@/lib/site";
 import { PhoneIcon, WhatsAppIcon, ArrowRightIcon, PinIcon } from "@/components/icons";
+import { BreadcrumbJsonLd } from "@/components/JsonLd";
 
-export const metadata: Metadata = {
-  title: "Contact Care Givers",
+export const metadata: Metadata = buildMetadata({
+  title: "Contact Care Givers — Bangalore Home Caregiving",
   description:
     "Reach Care Givers Bangalore — WhatsApp, phone, or visit our Indiranagar office. Care support 24×7.",
-};
+  path: "/contact",
+});
 
 export default function ContactPage() {
   return (
+    <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", href: "/" },
+          { name: "Contact", href: "/contact" },
+        ]}
+      />
     <section className="py-16 sm:py-24">
       <div className="container max-w-5xl">
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
@@ -90,5 +99,6 @@ export default function ContactPage() {
         </div>
       </div>
     </section>
+    </>
   );
 }

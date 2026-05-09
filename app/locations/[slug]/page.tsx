@@ -5,6 +5,8 @@ import { getLocalityBySlug, localities } from "@/lib/locations";
 import { services } from "@/lib/services";
 import { CheckIcon, PinIcon, ShieldCheckIcon } from "@/components/icons";
 import { FinalCta } from "@/components/FinalCta";
+import { BreadcrumbJsonLd, LocalityJsonLd } from "@/components/JsonLd";
+import { buildMetadata } from "@/lib/site";
 
 export function generateStaticParams() {
   return localities.map((l) => ({ slug: l.slug }));
@@ -13,10 +15,11 @@ export function generateStaticParams() {
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
   const l = getLocalityBySlug(params.slug);
   if (!l) return {};
-  return {
+  return buildMetadata({
     title: `Home Caregivers in ${l.name}, Bangalore`,
-    description: `Verified caregivers and patient attendants for ${l.name}, Bangalore. Elder care, post-surgery, dementia, live-in, night shifts. ${l.travelTime}.`,
-  };
+    description: `Verified caregivers and patient attendants for ${l.name}, Bangalore. Elder care, post-surgery, dementia, live-in and night shifts. ${l.travelTime}.`,
+    path: `/locations/${l.slug}`,
+  });
 }
 
 export default function LocalityPage({ params }: { params: { slug: string } }) {
@@ -25,6 +28,14 @@ export default function LocalityPage({ params }: { params: { slug: string } }) {
 
   return (
     <>
+      <LocalityJsonLd slug={l.slug} />
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", href: "/" },
+          { name: "Locations", href: "/locations" },
+          { name: l.name, href: `/locations/${l.slug}` },
+        ]}
+      />
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 -z-10 bg-gradient-to-b from-sage-50 via-cream-50 to-cream-50" />
         <div className="container pt-12 sm:pt-20 pb-10">

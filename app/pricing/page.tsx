@@ -4,16 +4,25 @@ import { services } from "@/lib/services";
 import { ArrowRightIcon, CheckIcon } from "@/components/icons";
 import { FinalCta } from "@/components/FinalCta";
 import { FaqSection } from "@/components/FaqSection";
+import { BreadcrumbJsonLd } from "@/components/JsonLd";
+import { buildMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "Caregiver Pricing in Bangalore",
+export const metadata: Metadata = buildMetadata({
+  title: "Caregiver Pricing in Bangalore — Transparent 2026 Rates",
   description:
     "Transparent pricing for home caregivers, patient attendants, live-in and night care across Bangalore. No hidden fees, no callbacks.",
-};
+  path: "/pricing",
+});
 
 export default function PricingPage() {
   return (
     <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", href: "/" },
+          { name: "Pricing", href: "/pricing" },
+        ]}
+      />
       <section className="pt-16 sm:pt-24 pb-10">
         <div className="container max-w-3xl text-center">
           <span className="chip">No callbacks. No surprises.</span>

@@ -3,18 +3,27 @@ import Link from "next/link";
 import { localities } from "@/lib/locations";
 import { PinIcon } from "@/components/icons";
 import { FinalCta } from "@/components/FinalCta";
+import { BreadcrumbJsonLd } from "@/components/JsonLd";
+import { buildMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "Caregiver coverage areas in Bangalore",
+export const metadata: Metadata = buildMetadata({
+  title: "Caregiver Coverage Areas in Bangalore",
   description:
     "Care Givers serves Indiranagar, Whitefield, HSR, Koramangala, Jayanagar, Electronic City, Hebbal, Malleshwaram and more across Bangalore.",
-};
+  path: "/locations",
+});
 
 export default function LocationsIndex() {
   const zones = Array.from(new Set(localities.map((l) => l.zone)));
 
   return (
     <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", href: "/" },
+          { name: "Locations", href: "/locations" },
+        ]}
+      />
       <section className="pt-16 sm:pt-24 pb-8">
         <div className="container max-w-3xl text-center">
           <span className="chip">Service areas across Bangalore</span>

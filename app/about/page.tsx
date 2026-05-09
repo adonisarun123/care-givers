@@ -4,12 +4,15 @@ import { Stats } from "@/components/Stats";
 import { WhyUs } from "@/components/WhyUs";
 import { FinalCta } from "@/components/FinalCta";
 import { ShieldCheckIcon, HeartHandIcon, SparklesIcon } from "@/components/icons";
+import { BreadcrumbJsonLd } from "@/components/JsonLd";
+import { buildMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "About Care Givers",
+export const metadata: Metadata = buildMetadata({
+  title: "About Care Givers — Bangalore Home Caregiving",
   description:
     "Care Givers is a Bangalore-based home caregiving service built on training, empathy and verification — so families never feel alone.",
-};
+  path: "/about",
+});
 
 const values = [
   {
@@ -35,6 +38,12 @@ const values = [
 export default function AboutPage() {
   return (
     <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", href: "/" },
+          { name: "About", href: "/about" },
+        ]}
+      />
       <section className="pt-16 sm:pt-24 pb-10">
         <div className="container max-w-3xl text-center">
           <span className="chip">Our story</span>

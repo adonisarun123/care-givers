@@ -10,10 +10,13 @@ import { Testimonials } from "@/components/Testimonials";
 import { LocationsPreview } from "@/components/LocationsPreview";
 import { FaqSection } from "@/components/FaqSection";
 import { FinalCta } from "@/components/FinalCta";
+import { JournalPreview } from "@/components/JournalPreview";
+import { HomeJsonLd } from "@/components/JsonLd";
 
 export default function HomePage() {
   return (
     <>
+      <HomeJsonLd />
       <Hero />
       <TrustStrip />
       <ServicesGrid />
@@ -24,6 +27,7 @@ export default function HomePage() {
       <WhyUs />
       <Testimonials />
       <LocationsPreview />
+      <JournalPreview />
       <FaqSection />
       <FinalCta />
     </>

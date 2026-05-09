@@ -1,16 +1,25 @@
 import type { Metadata } from "next";
 import { ServicesGrid } from "@/components/ServicesGrid";
 import { FinalCta } from "@/components/FinalCta";
+import { BreadcrumbJsonLd } from "@/components/JsonLd";
+import { buildMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildMetadata({
   title: "Home Care Services in Bangalore",
   description:
     "Explore all home caregiving services in Bangalore — elder care, patient care, live-in, post-surgery, dementia, bedridden, night and female caregivers.",
-};
+  path: "/services",
+});
 
 export default function ServicesIndex() {
   return (
     <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", href: "/" },
+          { name: "Services", href: "/services" },
+        ]}
+      />
       <section className="relative pt-16 pb-6 sm:pt-24">
         <div className="container max-w-3xl text-center">
           <span className="chip">Home care services · Bangalore</span>
