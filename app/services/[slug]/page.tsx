@@ -19,6 +19,14 @@ import {
 } from "@/components/icons";
 import { buildMetadata, site } from "@/lib/site";
 import { BreadcrumbJsonLd, ServiceJsonLd } from "@/components/JsonLd";
+import {
+  RelatedJournal,
+  RelatedTools,
+} from "@/components/RelatedContent";
+import {
+  getRelatedPostsForService,
+  getToolsForService,
+} from "@/lib/related";
 
 export function generateStaticParams() {
   return services.map((s) => ({ slug: s.slug }));
@@ -41,6 +49,8 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
   if (!s) notFound();
 
   const others = services.filter((x) => x.slug !== s.slug).slice(0, 3);
+  const relatedPosts = getRelatedPostsForService(s.slug);
+  const relatedTools = getToolsForService(s.slug);
 
   return (
     <>
@@ -368,6 +378,22 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
       </section>
 
       <CaregiverProfiles />
+
+      {/* ───── Related tools ───── */}
+      <RelatedTools
+        tools={relatedTools}
+        heading="Tools to help you decide on this care"
+        eyebrow="Use these before you book"
+      />
+
+      {/* ───── Related journal posts ───── */}
+      <RelatedJournal
+        posts={relatedPosts}
+        heading={`Reading that goes with ${s.name}`}
+        eyebrow="From The Care Journal"
+        blurb="The articles families read most often when they're considering this service."
+      />
+
       <Testimonials />
 
       {/* ───── FAQ ───── */}

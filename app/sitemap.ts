@@ -3,6 +3,7 @@ import { site } from "@/lib/site";
 import { services } from "@/lib/services";
 import { localities } from "@/lib/locations";
 import { posts } from "@/lib/posts";
+import { jobs } from "@/lib/jobs";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = site.url.replace(/\/$/, "");
@@ -22,6 +23,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/care-quiz",
     "/cost-calculator",
     "/caregiver-checkup",
+    "/careers",
   ].map((path) => ({
     url: `${base}${path}`,
     lastModified: lastMod,
@@ -50,5 +52,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.75,
   }));
 
-  return [...staticUrls, ...serviceUrls, ...localityUrls, ...postUrls];
+  const jobUrls: MetadataRoute.Sitemap = jobs.map((j) => ({
+    url: `${base}/careers/${j.slug}`,
+    lastModified: new Date(j.postedAt).toISOString(),
+    changeFrequency: "weekly",
+    priority: 0.8,
+  }));
+
+  return [...staticUrls, ...serviceUrls, ...localityUrls, ...postUrls, ...jobUrls];
 }

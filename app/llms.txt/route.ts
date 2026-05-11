@@ -10,6 +10,7 @@ import { absoluteUrl, site } from "@/lib/site";
 import { services } from "@/lib/services";
 import { localities } from "@/lib/locations";
 import { posts, journal } from "@/lib/posts";
+import { jobs } from "@/lib/jobs";
 
 export const dynamic = "force-static";
 
@@ -41,6 +42,7 @@ export function GET() {
     { title: "Care quiz", path: "/care-quiz", desc: "2-minute quiz that recommends the right caregiver service and a Bangalore monthly cost estimate." },
     { title: "Cost calculator", path: "/cost-calculator", desc: "Interactive monthly cost estimator with sliders for hours, days, locality and care complexity." },
     { title: "Caregiver self-check", path: "/caregiver-checkup", desc: "60-second wellbeing check-in for the family member doing the daily caregiving." },
+    { title: "Careers — we're hiring", path: "/careers", desc: "Open roles at Care Givers — caregivers, home nurses, supervisors, operations and corporate positions in Bangalore." },
   ]) {
     lines.push(`- [${item.title}](${absoluteUrl(item.path)}): ${item.desc}`);
   }
@@ -74,6 +76,16 @@ export function GET() {
   for (const p of posts) {
     lines.push(
       `- [${p.title}](${absoluteUrl(`/journal/${p.slug}`)}): ${p.dek} (${p.readMinutes} min read, category: ${p.category})`,
+    );
+  }
+  lines.push("");
+
+  /* Job openings — high-intent for jobseekers and Google Jobs */
+  lines.push("## Open job roles in Bangalore");
+  lines.push("");
+  for (const j of jobs) {
+    lines.push(
+      `- [${j.title}](${absoluteUrl(`/careers/${j.slug}`)}): ${j.shortDek} ${j.openings} positions open. ${j.experienceLevel} · ${j.employmentType}. Compensation: ₹${j.compensation.base.replace(/\s/g, "")} / ${j.compensation.period}.`,
     );
   }
   lines.push("");

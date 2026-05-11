@@ -7,6 +7,8 @@ import { CheckIcon, PinIcon, ShieldCheckIcon } from "@/components/icons";
 import { FinalCta } from "@/components/FinalCta";
 import { BreadcrumbJsonLd, LocalityJsonLd } from "@/components/JsonLd";
 import { buildMetadata } from "@/lib/site";
+import { RelatedJournal } from "@/components/RelatedContent";
+import { getRelatedPostsForLocality } from "@/lib/related";
 
 export function generateStaticParams() {
   return localities.map((l) => ({ slug: l.slug }));
@@ -27,6 +29,8 @@ export default async function LocalityPage({ params }: { params: Promise<{ slug:
   const { slug } = await params;
   const l = getLocalityBySlug(slug);
   if (!l) notFound();
+
+  const relatedPosts = getRelatedPostsForLocality(l.slug);
 
   return (
     <>
@@ -127,6 +131,14 @@ export default async function LocalityPage({ params }: { params: Promise<{ slug:
           </ul>
         </div>
       </section>
+
+      {/* Related reading from the Journal */}
+      <RelatedJournal
+        posts={relatedPosts}
+        heading={`Reading for families in ${l.name}`}
+        eyebrow="From The Care Journal"
+        blurb="The articles families in this neighbourhood read most often."
+      />
 
       {/* Other localities */}
       <section className="py-14 sm:py-20">
