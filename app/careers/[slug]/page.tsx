@@ -22,8 +22,9 @@ export function generateStaticParams() {
   return jobs.map((j) => ({ slug: j.slug }));
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
-  const j = getJobBySlug(params.slug);
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const j = getJobBySlug(slug);
   if (!j) return {};
   return buildMetadata({
     title: j.seoTitle,
@@ -32,8 +33,9 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   });
 }
 
-export default function JobPage({ params }: { params: { slug: string } }) {
-  const j = getJobBySlug(params.slug);
+export default async function JobPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const j = getJobBySlug(slug);
   if (!j) notFound();
 
   const others = jobs.filter((x) => x.slug !== j.slug).slice(0, 3);
