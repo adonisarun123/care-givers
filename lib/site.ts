@@ -93,9 +93,9 @@ export type TeamMember = {
 
 export const leadership: TeamMember[] = [
   {
-    name: "Priya Iyer",
+    name: "Priyanka Iyer",
     role: "Founder & CEO",
-    bio: "Started Care Givers in 2021 after struggling to find help for her own father in Bangalore. Previously led product at a Bangalore healthtech, and before that worked at the Karnataka Health Promotion Trust.",
+    bio: "Started Care Givers in 2021 after struggling to find a trained caregiver for her paralysed mother-in-law in Bangalore. Spent six weeks calling agencies; the trained, bedridden-specialist help she needed was nowhere to be found. Previously led product at a Bangalore healthtech, and before that worked at the Karnataka Health Promotion Trust.",
     quote:
       "Caregiving is most of what families don't talk about. We're trying to make it the thing they do.",
     initials: "PI",

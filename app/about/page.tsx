@@ -68,31 +68,47 @@ export default function AboutPage() {
             <span className="h-px w-6 bg-teal-500" /> How this began
           </span>
           <h2 className="mt-3 font-display text-3xl sm:text-4xl tracking-tight text-ink-900">
-            One daughter, one stroke, six months of struggle.
+            One paralysed mother-in-law. Six weeks of phone calls.
           </h2>
 
           <div className="mt-7 space-y-5 text-[17.5px] leading-[1.78] text-ink-800">
             <p>
-              This started in 2021 with a daughter trying to find help for her father
-              after a stroke. The agencies she called either didn't pick up, or
-              pressured her to sign a year-long contract before she'd even met the
-              caregiver. The one she did hire arrived two days late, untrained, and
-              lasted three weeks. Her father got worse. She quit her job to look after
-              him herself.
+              This started in 2021. Priyanka's mother-in-law had been paralysed by a
+              sudden stroke — bedridden, unable to move her left side, dependent on
+              others for every basic act of the day. The family was scrambling. They
+              needed a trained caregiver who actually knew how to look after a
+              bedridden patient: someone who could reposition Amma every two hours
+              through the night to prevent bedsores, manage a catheter, help with
+              feeding, watch for the small changes that would matter.
+            </p>
+            <p>
+              Priyanka spent six weeks calling agencies. The ones who picked up either
+              had no trained bedridden-care specialists available, or pressured her to
+              sign year-long contracts before she'd even met the caregiver. The first
+              attendant they did hire arrived two days late, had never been trained on
+              pressure-area care, and quit after three weeks. Amma developed her first
+              bedsore in that window. Priyanka quit her job to look after Amma
+              herself.
             </p>
             <p>
               Six months in — and exhausted — she realised something obvious. The
-              problem wasn't a shortage of caregivers in Bangalore. There were
-              thousands. The problem was that nobody had built the layer between
-              caregivers and families that actually made the match work: the vetting,
-              the training, the supervision, the safety net for both sides.
+              problem wasn't a shortage of caregivers in Bangalore; there were
+              thousands. The problem was the missing layer between caregivers and
+              families: rigorous training, careful matching, ongoing supervision.
+              Nobody was investing in the trained-care side of the equation.
+              Bedridden patients deserved specialists. Dementia patients deserved
+              specialists. Post-surgery families deserved someone who'd been through
+              80 hours of supervised hospital exposure before stepping into their home.
             </p>
             <p>
-              So she did. Care Givers started as a network of 12 verified caregivers
-              operating out of a one-room office in Indiranagar. Today we serve more
-              than 1,200 Bangalore families with the same operating philosophy: train
-              deeply, match carefully, supervise continuously, charge fairly, never
-              pressure. The daughter still runs the company.
+              So she built it. Care Givers started as a network of 12 verified,
+              trained caregivers operating out of a one-room office in Indiranagar.
+              Every one of them completed a structured 60-hour training programme
+              before their first placement — and a 120-hour specialist track for
+              dementia and bedridden care. Today we serve more than 1,200 Bangalore
+              families with the same operating philosophy: train deeply, match
+              carefully, supervise continuously, charge fairly, never pressure.
+              Priyanka still runs the company.
             </p>
           </div>
         </div>
@@ -112,23 +128,30 @@ export default function AboutPage() {
             <div className="mt-7 space-y-5 text-[17px] leading-[1.78] text-ink-800">
               <p>
                 I know because I was tired too, when I started looking for help with my
-                father. The kind of tired where you stop saying it aloud because nobody
-                in your house has the energy to absorb it back.
+                mother-in-law. Amma had been paralysed by a stroke — bedridden,
+                completely dependent — and the search for a <em>trained</em> caregiver
+                who actually knew how to look after her took six weeks of phone calls,
+                hospital referrals and dead ends. Six weeks our family couldn't
+                really afford. The kind of tired where you stop saying it aloud
+                because nobody in your house has the energy to absorb it back.
               </p>
               <p>
                 If you've spent any time looking at home care in Bangalore, you've
                 probably been let down at least once. By an agency that promised and
-                then disappeared. By a caregiver who arrived late, unprepared, or
-                worse. By the quiet despair of realising that the people available are
-                not the people you imagined would look after the person you love.
+                then disappeared. By a caregiver who arrived late, untrained for the
+                specific situation, or worse. By the quiet despair of realising that
+                the people available are not the people you imagined would look after
+                the person you love.
               </p>
               <p>
-                We built Care Givers as the opposite of that experience. Slow when
-                slow matters — when we're vetting a caregiver, when we're matching
-                them to a family, when we're sitting with a family who is afraid.
-                Fast when fast matters — when an attendant is needed for tomorrow's
-                hospital discharge, when a night caregiver is needed by 8 PM, when
-                you need to replace someone who isn't the right fit.
+                We built Care Givers as the opposite of that experience. We invest in
+                training before placement — 60 to 120 hours, depending on what the
+                case demands. Bedridden care is not the same as dementia care, which
+                is not the same as post-surgery recovery, and we won't pretend
+                otherwise. We screen for temperament as carefully as we screen for
+                skills. We match by language, gender, household culture, and the
+                patient's specific situation. We are slow where slow matters and fast
+                where fast matters.
               </p>
               <p>
                 I think a lot about the people we send into homes. They are doing the
@@ -140,8 +163,10 @@ export default function AboutPage() {
               </p>
               <p>
                 Whatever brought you to this page — a parent who's slipped, a partner
-                in recovery, a long quiet decline you've been holding alone — I'm
-                glad you're here. You don't have to do this alone any longer.
+                in recovery, a long quiet decline you've been holding alone, a
+                mother-in-law you're trying to look after with whatever energy you
+                have left — I'm glad you're here. You don't have to do this alone
+                any longer.
               </p>
             </div>
 
@@ -149,7 +174,7 @@ export default function AboutPage() {
               <div className="flex items-center gap-4">
                 <Avatar initials="PI" />
                 <div>
-                  <div className="font-display text-xl text-ink-900">Priya Iyer</div>
+                  <div className="font-display text-xl text-ink-900">Priyanka Iyer</div>
                   <div className="text-[13px] text-ink-500">
                     Founder & CEO, Care Givers
                   </div>
