@@ -83,6 +83,32 @@ export default function LocationsIndex() {
         </div>
       </section>
 
+      {/* Cross-link to The Care Journal */}
+      <section className="py-10">
+        <div className="container max-w-4xl">
+          <Link
+            href="/journal"
+            className="group flex flex-col sm:flex-row items-start sm:items-center gap-5 rounded-[28px] bg-gradient-to-br from-cream-100 via-cream-50 to-sage-50 ring-1 ring-cream-200 p-6 sm:p-8 hover:shadow-soft transition"
+          >
+            <div className="flex-1">
+              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-teal-700">
+                Bangalore-specific reading
+              </div>
+              <div className="mt-1 font-display text-xl sm:text-2xl text-ink-900">
+                The Care Journal — honest writing for Bangalore families.
+              </div>
+              <div className="mt-2 text-[13.5px] text-ink-600">
+                Pricing, post-discharge checklists, the NRI guide, and more —
+                written for the neighbourhood you live in.
+              </div>
+            </div>
+            <span className="btn-md btn-secondary self-start sm:self-auto">
+              Read the journal
+            </span>
+          </Link>
+        </div>
+      </section>
+
       <FinalCta />
     </>
   );

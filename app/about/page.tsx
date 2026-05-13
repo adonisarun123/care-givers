@@ -645,6 +645,52 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* ───── Cross-link: Careers + Tools ───── */}
+      <section className="py-14 sm:py-20">
+        <div className="container max-w-5xl">
+          <div className="grid gap-5 md:grid-cols-2">
+            <Link
+              href="/careers"
+              className="group rounded-[28px] bg-gradient-to-br from-sage-100 via-cream-50 to-teal-50 ring-1 ring-sage-200 p-7 sm:p-9 hover:shadow-soft transition"
+            >
+              <span className="text-xs font-semibold uppercase tracking-[0.18em] text-teal-700">
+                We're hiring
+              </span>
+              <h3 className="mt-3 font-display text-2xl sm:text-3xl text-ink-900">
+                Build this work with us.
+              </h3>
+              <p className="mt-3 text-[15px] text-ink-700">
+                Caregivers, supervisors, operations, content. 44 open positions
+                across Bangalore. We pay above market, train deeply, and promote
+                from within.
+              </p>
+              <span className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-teal-700">
+                See all open roles <ArrowRightIcon size={14} />
+              </span>
+            </Link>
+
+            <Link
+              href="/tools"
+              className="group rounded-[28px] bg-gradient-to-br from-teal-50 via-cream-50 to-peach-50 ring-1 ring-teal-200 p-7 sm:p-9 hover:shadow-soft transition"
+            >
+              <span className="text-xs font-semibold uppercase tracking-[0.18em] text-teal-700">
+                Free care tools
+              </span>
+              <h3 className="mt-3 font-display text-2xl sm:text-3xl text-ink-900">
+                Try our care quiz, calculator, or self-check.
+              </h3>
+              <p className="mt-3 text-[15px] text-ink-700">
+                Three small interactive tools — built for families navigating
+                care decisions. Private, calm, no email required.
+              </p>
+              <span className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-teal-700">
+                Explore the tools <ArrowRightIcon size={14} />
+              </span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* ───── Contact / final ───── */}
       <section className="py-14 sm:py-20">
         <div className="container max-w-3xl">

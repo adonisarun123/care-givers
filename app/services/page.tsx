@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { ServicesGrid } from "@/components/ServicesGrid";
 import { FinalCta } from "@/components/FinalCta";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { buildMetadata } from "@/lib/site";
+import { ArrowRightIcon, SparklesIcon } from "@/components/icons";
 
 export const metadata: Metadata = buildMetadata({
   title: "Home Care Services in Bangalore",
@@ -33,6 +35,33 @@ export default function ServicesIndex() {
         </div>
       </section>
       <ServicesGrid heading={false} />
+
+      {/* Cross-link to the care quiz for indecisive readers */}
+      <section className="py-10">
+        <div className="container max-w-3xl">
+          <Link
+            href="/care-quiz"
+            className="group flex items-center gap-5 rounded-[28px] bg-gradient-to-br from-sage-50 via-cream-50 to-teal-50 ring-1 ring-sage-200 p-6 sm:p-8 hover:shadow-soft transition"
+          >
+            <span className="shrink-0 grid h-14 w-14 place-items-center rounded-2xl bg-white text-teal-700 shadow-soft">
+              <SparklesIcon size={24} />
+            </span>
+            <div className="flex-1">
+              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-teal-700">
+                Not sure which service fits?
+              </div>
+              <div className="mt-1 font-display text-xl sm:text-2xl text-ink-900">
+                Take the 2-minute care quiz.
+              </div>
+              <div className="mt-1 text-[13.5px] text-ink-600">
+                Six questions. A clear recommendation. No email required.
+              </div>
+            </div>
+            <ArrowRightIcon size={18} />
+          </Link>
+        </div>
+      </section>
+
       <FinalCta />
     </>
   );

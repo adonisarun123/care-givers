@@ -114,6 +114,51 @@ export default function PricingPage() {
         </div>
       </section>
 
+      {/* Cross-link to the cost calculator + care quiz */}
+      <section className="py-12 sm:py-16 bg-white">
+        <div className="container max-w-5xl">
+          <div className="grid gap-5 md:grid-cols-2">
+            <Link
+              href="/cost-calculator"
+              className="group rounded-[28px] bg-gradient-to-br from-teal-50 via-cream-50 to-sage-50 ring-1 ring-teal-200 p-7 sm:p-9 hover:shadow-soft transition"
+            >
+              <span className="text-xs font-semibold uppercase tracking-[0.18em] text-teal-700">
+                Try the calculator
+              </span>
+              <h3 className="mt-3 font-display text-2xl sm:text-3xl text-ink-900">
+                See your exact monthly cost.
+              </h3>
+              <p className="mt-3 text-[15px] text-ink-700">
+                Adjust hours, days, locality and care complexity. The monthly total
+                updates live with a full breakdown.
+              </p>
+              <span className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-teal-700">
+                Open the calculator <ArrowRightIcon size={14} />
+              </span>
+            </Link>
+
+            <Link
+              href="/care-quiz"
+              className="group rounded-[28px] bg-gradient-to-br from-sage-50 via-cream-50 to-peach-50 ring-1 ring-sage-200 p-7 sm:p-9 hover:shadow-soft transition"
+            >
+              <span className="text-xs font-semibold uppercase tracking-[0.18em] text-teal-700">
+                Not sure what to book?
+              </span>
+              <h3 className="mt-3 font-display text-2xl sm:text-3xl text-ink-900">
+                Take the 2-minute care quiz.
+              </h3>
+              <p className="mt-3 text-[15px] text-ink-700">
+                Six questions. We recommend the right service for your situation
+                with a price range you can plan around.
+              </p>
+              <span className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-teal-700">
+                Start the quiz <ArrowRightIcon size={14} />
+              </span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       <FaqSection />
       <FinalCta />
     </>

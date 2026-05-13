@@ -3,6 +3,9 @@ import { FaqSection } from "@/components/FaqSection";
 import { FinalCta } from "@/components/FinalCta";
 import { BreadcrumbJsonLd, FaqJsonLd, SpeakableJsonLd } from "@/components/JsonLd";
 import { buildMetadata } from "@/lib/site";
+import { RelatedJournal, RelatedTools } from "@/components/RelatedContent";
+import { getRecentPosts } from "@/lib/posts";
+import { TOOLS } from "@/lib/related";
 
 export const metadata: Metadata = buildMetadata({
   title: "Frequently Asked Questions — Care Givers Bangalore",
@@ -124,6 +127,20 @@ export default function FaqPage() {
           ))}
         </div>
       </section>
+
+      {/* More reading & tools */}
+      <RelatedJournal
+        posts={getRecentPosts(3)}
+        heading="More reading on home caregiving"
+        eyebrow="From The Care Journal"
+        blurb="Longer-form pieces that go deeper than these FAQs."
+      />
+
+      <RelatedTools
+        tools={[TOOLS["care-quiz"], TOOLS["cost-calculator"]]}
+        heading="Tools that answer the rest of your questions"
+        eyebrow="Try these"
+      />
 
       <FinalCta />
     </>
