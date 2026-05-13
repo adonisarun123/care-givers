@@ -4,6 +4,7 @@ import { services } from "@/lib/services";
 import { localities } from "@/lib/locations";
 import { getRecentPosts } from "@/lib/posts";
 import { PhoneIcon, WhatsAppIcon } from "@/components/icons";
+import { LogoMark } from "@/components/Logo";
 
 export function Footer() {
   return (
@@ -11,15 +12,7 @@ export function Footer() {
       <div className="container py-16 grid gap-12 lg:grid-cols-[1.2fr_1fr_1fr_1fr]">
         <div>
           <div className="flex items-center gap-2.5">
-            <span className="grid h-9 w-9 place-items-center rounded-2xl bg-teal-600 text-white shadow-glow">
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden>
-                <path
-                  d="M12 4c-1.6 0-3 1.4-3 3 0 1 .4 1.7.9 2.3-1.4.4-2.4 1.6-2.4 3.1V18h9V12.4c0-1.5-1-2.7-2.4-3.1.5-.6.9-1.3.9-2.3 0-1.6-1.4-3-3-3Z"
-                  stroke="white" strokeWidth="1.6"
-                />
-                <path d="M9 21h6" stroke="white" strokeWidth="1.6" strokeLinecap="round" />
-              </svg>
-            </span>
+            <LogoMark size={36} pulse={false} />
             <span className="font-display text-xl">{site.name}</span>
           </div>
           <p className="mt-4 text-[15px] text-ink-600 max-w-sm">

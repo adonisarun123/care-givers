@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { primaryNav, site } from "@/lib/site";
 import { CloseIcon, MenuIcon, PhoneIcon, WhatsAppIcon } from "@/components/icons";
+import { LogoWordmark } from "@/components/Logo";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -34,22 +35,7 @@ export function Navbar() {
     >
       <div className="container flex h-16 sm:h-[72px] items-center justify-between gap-6">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2.5 group" aria-label={site.name}>
-          <span className="relative grid h-9 w-9 place-items-center rounded-2xl bg-teal-600 text-white shadow-glow transition group-hover:scale-105">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden>
-              <path
-                d="M12 4c-1.6 0-3 1.4-3 3 0 1 .4 1.7.9 2.3-1.4.4-2.4 1.6-2.4 3.1V18h9V12.4c0-1.5-1-2.7-2.4-3.1.5-.6.9-1.3.9-2.3 0-1.6-1.4-3-3-3Z"
-                stroke="white" strokeWidth="1.6"
-              />
-              <path d="M9 21h6" stroke="white" strokeWidth="1.6" strokeLinecap="round" />
-            </svg>
-            <span className="absolute -right-0.5 -bottom-0.5 h-2 w-2 rounded-full bg-sage-300 animate-soft-pulse" />
-          </span>
-          <span className="font-display text-[19px] font-medium tracking-tight text-ink-900">
-            {site.name}
-            <span className="ml-1.5 text-[11px] font-sans uppercase tracking-[0.18em] text-teal-700">Bangalore</span>
-          </span>
-        </Link>
+        <LogoWordmark size={36} showCity={true} />
 
         {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-7 text-[14.5px] text-ink-700">

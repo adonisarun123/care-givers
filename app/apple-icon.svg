@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" width="180" height="180">
+  <!-- Apple touch icon — slightly larger padding so it reads well on home screens -->
+  <rect width="180" height="180" rx="40" fill="#2F6E78"/>
+
+  <!-- Person head -->
+  <circle cx="90" cy="64" r="19" fill="#FBF8F3"/>
+
+  <!-- Shoulders / upper body curve -->
+  <path d="M48 138v-19c0-21 18-32 42-32s42 11 42 32v19"
+        stroke="#FBF8F3" stroke-width="13" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+  <!-- Peach heart over chest -->
+  <path d="M90 130c-9.5-6.8-16.8-12.5-16.8-18.7 0-4.5 3.4-8 7.8-8 3.4 0 6.7 1.7 9 5.1 2.3-3.4 5.6-5.1 9-5.1 4.4 0 7.8 3.5 7.8 8 0 6.2-7.3 11.9-16.8 18.7z"
+        fill="#F1CBAE"/>
+
+  <!-- Tiny sage dot near heart — a subtle "active" pulse like in the navbar -->
+  <circle cx="125" cy="100" r="6" fill="#9CC1A6"/>
+</svg>

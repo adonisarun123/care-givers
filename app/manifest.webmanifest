@@ -1,0 +1,15 @@
+{
+  "name": "Care Givers",
+  "short_name": "Care Givers",
+  "description": "Trusted home caregivers for Bangalore families. Verified, trained, and matched in 6 hours.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FBF8F3",
+  "theme_color": "#2F6E78",
+  "lang": "en-IN",
+  "categories": ["health", "lifestyle", "medical"],
+  "icons": [
+    { "src": "/icon.svg", "type": "image/svg+xml", "sizes": "any", "purpose": "any" },
+    { "src": "/apple-icon.svg", "type": "image/svg+xml", "sizes": "180x180", "purpose": "any maskable" }
+  ]
+}
