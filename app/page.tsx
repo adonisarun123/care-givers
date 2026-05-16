@@ -12,6 +12,7 @@ import { FaqSection } from "@/components/FaqSection";
 import { FinalCta } from "@/components/FinalCta";
 import { JournalPreview } from "@/components/JournalPreview";
 import { ToolsPreview } from "@/components/ToolsPreview";
+import { ShopPreview } from "@/components/ShopPreview";
 import { HomeJsonLd } from "@/components/JsonLd";
 
 export default function HomePage() {
@@ -27,6 +28,7 @@ export default function HomePage() {
       <PricingPreview />
       <WhyUs />
       <Testimonials />
+      <ShopPreview />
       <ToolsPreview />
       <LocationsPreview />
       <JournalPreview />

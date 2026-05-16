@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Post } from "@/lib/posts";
 import type { Service } from "@/lib/services";
+import type { Product } from "@/lib/shop";
 import type { ToolLink } from "@/lib/related";
 import {
   ArrowRightIcon,
@@ -8,6 +9,7 @@ import {
   HeartHandIcon,
   SparklesIcon,
 } from "@/components/icons";
+import { ProductCard } from "@/components/ProductCard";
 
 /* ── Related Journal posts ────────────────────────────── */
 
@@ -176,6 +178,48 @@ export function RelatedTools({
                   </div>
                 </div>
               </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
+/* ── Related products (equipment that supports a service) ────────────────────────────── */
+
+export function RelatedProducts({
+  products,
+  heading = "Equipment families often use for this care",
+  eyebrow = "From the Care Givers shop",
+  blurb,
+}: {
+  products: Product[];
+  heading?: string;
+  eyebrow?: string;
+  blurb?: string;
+}) {
+  if (!products.length) return null;
+  return (
+    <section className="py-14 sm:py-20">
+      <div className="container">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8">
+          <div className="max-w-xl">
+            <span className="section-eyebrow">
+              <span className="h-px w-6 bg-teal-500" /> {eyebrow}
+            </span>
+            <h2 className="mt-3 section-title">{heading}</h2>
+            {blurb && <p className="mt-3 lead">{blurb}</p>}
+          </div>
+          <Link href="/shop" className="link-quiet text-sm text-ink-600">
+            Browse the shop →
+          </Link>
+        </div>
+
+        <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {products.map((p) => (
+            <li key={p.slug}>
+              <ProductCard product={p} />
             </li>
           ))}
         </ul>

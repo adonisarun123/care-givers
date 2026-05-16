@@ -21,12 +21,14 @@ import { buildMetadata, site } from "@/lib/site";
 import { BreadcrumbJsonLd, ServiceJsonLd } from "@/components/JsonLd";
 import {
   RelatedJournal,
+  RelatedProducts,
   RelatedTools,
 } from "@/components/RelatedContent";
 import {
   getRelatedPostsForService,
   getToolsForService,
 } from "@/lib/related";
+import { getProductsForService } from "@/lib/shop";
 
 export function generateStaticParams() {
   return services.map((s) => ({ slug: s.slug }));
@@ -51,6 +53,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
   const others = services.filter((x) => x.slug !== s.slug).slice(0, 3);
   const relatedPosts = getRelatedPostsForService(s.slug);
   const relatedTools = getToolsForService(s.slug);
+  const relatedProducts = getProductsForService(s.slug, 4);
 
   return (
     <>
@@ -378,6 +381,14 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
       </section>
 
       <CaregiverProfiles />
+
+      {/* ───── Equipment that supports this care ───── */}
+      <RelatedProducts
+        products={relatedProducts}
+        heading={`Equipment families use alongside ${s.name}`}
+        eyebrow="From the Care Givers shop"
+        blurb="The hospital beds, mobility aids and monitoring devices our caregivers most often recommend for this kind of care. Buy outright or rent monthly."
+      />
 
       {/* ───── Related tools ───── */}
       <RelatedTools
