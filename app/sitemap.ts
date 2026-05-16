@@ -4,6 +4,7 @@ import { services } from "@/lib/services";
 import { localities } from "@/lib/locations";
 import { posts } from "@/lib/posts";
 import { jobs } from "@/lib/jobs";
+import { products } from "@/lib/shop";
 
 /**
  * Regenerate the sitemap every hour. Without this, Next.js bakes the sitemap
@@ -36,6 +37,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/cost-calculator", priority: 0.85, changeFrequency: "monthly" },
     { path: "/caregiver-checkup", priority: 0.8, changeFrequency: "monthly" },
     { path: "/careers", priority: 0.8, changeFrequency: "daily" }, // job postings change
+    { path: "/shop", priority: 0.9, changeFrequency: "weekly" },
     { path: "/about", priority: 0.7, changeFrequency: "monthly" },
     { path: "/faq", priority: 0.7, changeFrequency: "monthly" },
     { path: "/contact", priority: 0.6, changeFrequency: "monthly" },
@@ -81,11 +83,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
+  /* Shop product pages — buy/rent intent, refresh weekly. */
+  const productUrls: MetadataRoute.Sitemap = products.map((p) => ({
+    url: `${base}/shop/${p.slug}`,
+    lastModified: now,
+    changeFrequency: "weekly",
+    priority: 0.8,
+  }));
+
   return [
     ...staticUrls,
     ...serviceUrls,
     ...localityUrls,
     ...postUrls,
     ...jobUrls,
+    ...productUrls,
   ];
 }

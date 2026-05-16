@@ -11,6 +11,7 @@ import { services } from "@/lib/services";
 import { localities } from "@/lib/locations";
 import { posts, journal } from "@/lib/posts";
 import { jobs } from "@/lib/jobs";
+import { products, categories as shopCategories, formatINR } from "@/lib/shop";
 
 export const dynamic = "force-static";
 
@@ -43,6 +44,7 @@ export function GET() {
     { title: "Cost calculator", path: "/cost-calculator", desc: "Interactive monthly cost estimator with sliders for hours, days, locality and care complexity." },
     { title: "Caregiver self-check", path: "/caregiver-checkup", desc: "60-second wellbeing check-in for the family member doing the daily caregiving." },
     { title: "Careers — we're hiring", path: "/careers", desc: "Open roles at Care Givers — caregivers, home nurses, supervisors, operations and corporate positions in Bangalore." },
+    { title: "Shop — home healthcare equipment", path: "/shop", desc: "Buy or rent hospital beds, wheelchairs, oxygen concentrators, CPAP, BP monitors and more across Bangalore. Free delivery and assembly." },
   ]) {
     lines.push(`- [${item.title}](${absoluteUrl(item.path)}): ${item.desc}`);
   }
@@ -79,6 +81,24 @@ export function GET() {
     );
   }
   lines.push("");
+
+  /* Shop products — searchable equipment catalog */
+  lines.push("## Shop — home healthcare equipment (Bangalore)");
+  lines.push("");
+  for (const c of shopCategories) {
+    lines.push(`### ${c.name}`);
+    lines.push("");
+    for (const p of products.filter((x) => x.category === c.slug)) {
+      const buy = `₹${formatINR(p.pricing.buy)}`;
+      const rent = p.pricing.rentPerMonth
+        ? ` or rent ₹${formatINR(p.pricing.rentPerMonth)}/month`
+        : "";
+      lines.push(
+        `- [${p.name}](${absoluteUrl(`/shop/${p.slug}`)}): ${p.short} Buy ${buy}${rent}.`,
+      );
+    }
+    lines.push("");
+  }
 
   /* Job openings — high-intent for jobseekers and Google Jobs */
   lines.push("## Open job roles in Bangalore");

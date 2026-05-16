@@ -3,13 +3,14 @@ import { site } from "@/lib/site";
 import { services } from "@/lib/services";
 import { localities } from "@/lib/locations";
 import { getRecentPosts } from "@/lib/posts";
+import { categories as shopCategories } from "@/lib/shop";
 import { PhoneIcon, WhatsAppIcon } from "@/components/icons";
 import { LogoMark } from "@/components/Logo";
 
 export function Footer() {
   return (
     <footer className="relative mt-24 border-t border-ink-100 bg-white">
-      <div className="container py-16 grid gap-12 lg:grid-cols-[1.2fr_1fr_1fr_1fr]">
+      <div className="container py-16 grid gap-12 lg:grid-cols-[1.2fr_1fr_1fr_1fr_1fr]">
         <div>
           <div className="flex items-center gap-2.5">
             <LogoMark size={36} pulse={false} />
@@ -48,14 +49,20 @@ export function Footer() {
           ))}
         </FooterColumn>
 
+        <FooterColumn title="Shop">
+          <FooterLink href="/shop">All products</FooterLink>
+          {shopCategories.map((c) => (
+            <FooterLink key={c.slug} href={`/shop#${c.slug}`}>
+              {c.name}
+            </FooterLink>
+          ))}
+        </FooterColumn>
+
         <FooterColumn title="Company">
           <FooterLink href="/about">About us</FooterLink>
           <FooterLink href="/pricing">Pricing</FooterLink>
           <FooterLink href="/journal">The Care Journal</FooterLink>
           <FooterLink href="/tools">Care tools</FooterLink>
-          <FooterLink href="/care-quiz">Care quiz</FooterLink>
-          <FooterLink href="/cost-calculator">Cost calculator</FooterLink>
-          <FooterLink href="/caregiver-checkup">Caregiver self-check</FooterLink>
           <FooterLink href="/careers">Careers · We're hiring</FooterLink>
           <FooterLink href="/faq">FAQ</FooterLink>
           <FooterLink href="/contact">Contact</FooterLink>
