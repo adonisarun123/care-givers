@@ -10,6 +10,12 @@ import {
   NightIcon,
   PatientIcon,
   PostSurgeryIcon,
+  NursingIcon,
+  PhysioIcon,
+  PalliativeIcon,
+  StrokeIcon,
+  ParkinsonsIcon,
+  DisabilityIcon,
 } from "@/components/icons";
 
 const iconMap = {
@@ -21,6 +27,12 @@ const iconMap = {
   bedridden: BedriddenIcon,
   night: NightIcon,
   female: FemaleIcon,
+  nursing: NursingIcon,
+  physio: PhysioIcon,
+  palliative: PalliativeIcon,
+  stroke: StrokeIcon,
+  parkinsons: ParkinsonsIcon,
+  disability: DisabilityIcon,
 } as const;
 
 const tones: Record<string, string> = {
@@ -32,6 +44,12 @@ const tones: Record<string, string> = {
   bedridden: "from-teal-100 to-cream-50 text-teal-800",
   night: "from-ink-100 to-cream-50 text-ink-800",
   female: "from-peach-100 to-sage-50 text-ink-800",
+  nursing: "from-teal-100 to-teal-50 text-teal-800",
+  physio: "from-sage-100 to-sage-50 text-sage-800",
+  palliative: "from-peach-100 to-cream-50 text-ink-800",
+  stroke: "from-teal-100 to-cream-50 text-teal-800",
+  parkinsons: "from-sage-100 to-cream-50 text-sage-800",
+  disability: "from-cream-100 to-cream-50 text-ink-800",
 };
 
 export function ServicesGrid({ heading = true }: { heading?: boolean }) {

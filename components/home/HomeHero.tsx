@@ -27,7 +27,7 @@ export function HomeHero() {
           </h1>
 
           <p className="mt-6 max-w-[34rem] text-[19px] leading-[1.55] text-ink-600">
-            Trained, verified caregivers and patient attendants across Bangalore, for
+            Trained caregivers, registered nurses and physiotherapists across Bangalore, for
             elderly parents, recovery after surgery, dementia and round-the-clock care.
           </p>
 

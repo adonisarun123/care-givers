@@ -8,3 +8,5 @@ build/
 .vercel
 tsconfig.tsbuildinfo
 *.tsbuildinfo
+
+!.env.example

@@ -21,7 +21,7 @@ export function CareFinder() {
           Who needs care?
         </legend>
         <div className="mt-4 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
-          {careOptions.map((o) => {
+          {careOptions.filter((o) => o.inFinder).map((o) => {
             const selected = o.slug === slug;
             return (
               <label

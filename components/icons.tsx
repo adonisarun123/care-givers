@@ -160,3 +160,49 @@ export const FemaleIcon = wrap(
     <path d="M12 12v9M9 18h6" />
   </>
 );
+
+export const NursingIcon = wrap(
+  <>
+    <path d="M9 3h6v4H9z" />
+    <path d="M6 7h12v14H6z" />
+    <path d="M12 11v6M9 14h6" />
+  </>
+);
+
+export const PhysioIcon = wrap(
+  <>
+    <circle cx="13" cy="4.5" r="2" />
+    <path d="M7 21l3-6 3 2v4" />
+    <path d="M10 15l1-5 4 2 3-1" />
+    <path d="M6 11l5-1" />
+  </>
+);
+
+export const PalliativeIcon = wrap(
+  <>
+    <path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10Z" />
+    <path d="M9 12h6" />
+  </>
+);
+
+export const StrokeIcon = wrap(
+  <>
+    <path d="M9 4c-2 0-3.5 1.5-3.5 3.5 0 1 .4 1.6 0 2.5C5 11 4 11.8 4 13.5 4 15.5 5.5 17 7.5 17H10V4Z" />
+    <path d="M14 4l-1.5 5h3L13 15" />
+  </>
+);
+
+export const ParkinsonsIcon = wrap(
+  <>
+    <path d="M8 21V11a4 4 0 0 1 8 0v10" />
+    <path d="M3 8c1-1 2 1 3 0M18 8c1-1 2 1 3 0" />
+  </>
+);
+
+export const DisabilityIcon = wrap(
+  <>
+    <circle cx="11" cy="4.5" r="2" />
+    <path d="M11 8v6h5l2 5" />
+    <path d="M8 11.5A5 5 0 1 0 15 18" />
+  </>
+);

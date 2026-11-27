@@ -59,6 +59,15 @@ function startingPrice(prices: { price: string }[]) {
   return prices[0]?.price ?? "";
 }
 
+function PriceHint({ price }: { price: string }) {
+  if (/assessment/i.test(price)) return <>Price after a free call</>;
+  return (
+    <>
+      from <span className="font-semibold text-ink-900">{price}</span>
+    </>
+  );
+}
+
 export function ServicesIndex() {
   return (
     <section aria-labelledby="services-title" className="py-20 sm:py-28">
@@ -68,41 +77,52 @@ export function ServicesIndex() {
             Care for the situation you’re in
           </h2>
           <p className="mt-5 lead max-w-md">
-            Every service comes with the same verification, training and replacement
-            promise. What changes is the skill set and the hours.
+            Attendants for everyday help, and registered nurses and physiotherapists
+            when the care is medical. Every one of them is verified before they reach you.
           </p>
           <Link href="/services" className="mt-6 inline-block text-[16px] font-semibold text-teal-700 underline decoration-teal-200 underline-offset-4 hover:decoration-teal-700">
             Compare all services
           </Link>
         </div>
 
-        <ul className="border-t border-ink-200">
-          {careOptions.map((o) => {
-            const s = services.find((x) => x.slug === o.slug);
-            if (!s) return null;
-            return (
-              <li key={s.slug} className="border-b border-ink-200">
-                <Link
-                  href={`/services/${s.slug}`}
-                  className="group grid gap-1 py-5 sm:grid-cols-[1fr_auto] sm:items-center sm:gap-8 sm:py-6"
-                >
-                  <span>
-                    <span className="block text-[20px] font-semibold tracking-[-0.01em] text-ink-900 group-hover:text-teal-700">
-                      {s.name}
-                    </span>
-                    <span className="mt-1 block text-[16px] text-ink-600">{o.summary}</span>
-                  </span>
-                  <span className="text-[15px] text-ink-500 sm:text-right">
-                    from{" "}
-                    <span className="font-semibold text-ink-900">
-                      {startingPrice(s.pricing)}
-                    </span>
-                  </span>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
+        <div className="grid gap-12">
+          {(
+            [
+              ["daily", "Daily care and support"],
+              ["medical", "Medical care at home"],
+            ] as const
+          ).map(([group, title]) => (
+            <div key={group}>
+              <h3 className="text-[15px] font-semibold text-teal-700">{title}</h3>
+              <ul className="mt-3 border-t border-ink-200">
+                {careOptions
+                  .filter((o) => o.group === group)
+                  .map((o) => {
+                    const s = services.find((x) => x.slug === o.slug);
+                    if (!s) return null;
+                    return (
+                      <li key={s.slug} className="border-b border-ink-200">
+                        <Link
+                          href={`/services/${s.slug}`}
+                          className="group grid gap-1 py-5 sm:grid-cols-[1fr_auto] sm:items-center sm:gap-8"
+                        >
+                          <span>
+                            <span className="block text-[20px] font-semibold tracking-[-0.01em] text-ink-900 group-hover:text-teal-700">
+                              {s.name}
+                            </span>
+                            <span className="mt-1 block text-[16px] text-ink-600">{o.summary}</span>
+                          </span>
+                          <span className="text-[15px] text-ink-500 sm:text-right">
+                            <PriceHint price={startingPrice(s.pricing)} />
+                          </span>
+                        </Link>
+                      </li>
+                    );
+                  })}
+              </ul>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

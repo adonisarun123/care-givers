@@ -101,10 +101,14 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
 
               {/* Quick facts strip */}
               <ul className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-3">
-                <Fact icon={ClockIcon} label="Starts in" value="6 hrs typical" />
+                <Fact icon={ClockIcon} label="Hours" value={s.duration} />
                 <Fact icon={ShieldCheckIcon} label="Verification" value="Police + Aadhaar" />
                 <Fact icon={SparklesIcon} label="Replacement" value="24-hour, free" />
-                <Fact icon={StarIcon} label="Family rating" value="4.9 / 5" />
+                <Fact
+                  icon={StarIcon}
+                  label="Price"
+                  value={/assessment/i.test(s.pricing[0]?.price ?? "") ? "After a free call" : `From ${s.pricing[0]?.price}`}
+                />
               </ul>
             </div>
 
@@ -319,6 +323,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
       </section>
 
       {/* ───── Family story ───── */}
+      {s.familyStory && (
       <section className="py-14 sm:py-20">
         <div className="container max-w-3xl">
           <figure className="rounded-[32px] bg-white ring-1 ring-ink-100 shadow-soft p-8 sm:p-12">
@@ -342,6 +347,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
           </figure>
         </div>
       </section>
+      )}
 
       {/* ───── Pricing ───── */}
       <section id="pricing" className="py-14 sm:py-20 bg-cream-50">

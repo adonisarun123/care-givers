@@ -16,7 +16,7 @@ export function Footer() {
             textClassName="font-display text-[19px] font-bold tracking-[-0.02em] text-white"
           />
           <p className="mt-5 max-w-sm text-[16px] leading-relaxed text-ink-300">
-            Verified caregivers and patient attendants for families across Bangalore.
+            Verified caregivers, home nurses and physiotherapists for families across Bangalore.
           </p>
           <div className="mt-6 space-y-2 text-[16px]">
             <a href={site.phoneHref} className="flex items-center gap-2.5 text-white hover:text-marigold-300">
