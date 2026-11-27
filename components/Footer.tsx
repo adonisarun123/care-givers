@@ -50,6 +50,7 @@ export function Footer() {
 
         <FooterColumn title="Company">
           <FooterLink href="/about">About us</FooterLink>
+          <FooterLink href="/our-promise">Our care promise</FooterLink>
           <FooterLink href="/pricing">Pricing</FooterLink>
           <FooterLink href="/shop">Care equipment</FooterLink>
           <FooterLink href="/journal">Care guides</FooterLink>

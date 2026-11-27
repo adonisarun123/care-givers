@@ -30,6 +30,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/services", priority: 0.9, changeFrequency: "weekly" },
     { path: "/locations", priority: 0.85, changeFrequency: "weekly" },
     { path: "/pricing", priority: 0.9, changeFrequency: "weekly" },
+    { path: "/our-promise", priority: 0.85, changeFrequency: "monthly" },
     { path: "/book", priority: 0.95, changeFrequency: "weekly" }, // primary conversion page
     { path: "/journal", priority: 0.85, changeFrequency: "daily" }, // posts publish here
     { path: "/tools", priority: 0.85, changeFrequency: "weekly" },

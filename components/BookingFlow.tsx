@@ -179,8 +179,14 @@ export function BookingFlow({ prefill }: { prefill?: BookingPrefill } = {}) {
             >
               {(["daily", "medical"] as const).map((group) => (
                 <fieldset key={group} className="mb-8 last:mb-0">
-                  <legend className="mb-3 text-[15px] font-semibold text-teal-700">
-                    {group === "daily" ? "Daily care and support" : "Medical care at home"}
+                  <legend
+                    className={[
+                      "mb-3 flex items-center gap-2 text-[15px] font-semibold",
+                      group === "medical" ? "text-clinic-700" : "text-teal-700",
+                    ].join(" ")}
+                  >
+                    <span aria-hidden className={["h-2.5 w-2.5 rounded-full", group === "medical" ? "bg-clinic-500" : "bg-teal-500"].join(" ")} />
+                    {group === "daily" ? "Daily care and support" : "Medical care at home, by nurses and physiotherapists"}
                   </legend>
                   <div className="grid gap-2.5 sm:grid-cols-2">
                     {careOptions
@@ -191,6 +197,7 @@ export function BookingFlow({ prefill }: { prefill?: BookingPrefill } = {}) {
                         return (
                           <OptionCard
                             key={s.slug}
+                            tone={group === "medical" ? "clinic" : "teal"}
                             name="service"
                             checked={form.serviceSlug === s.slug}
                             onChange={() => {
@@ -526,7 +533,9 @@ function OptionCard({
   detail,
   aside,
   compact,
+  tone = "teal",
 }: {
+  tone?: "teal" | "clinic";
   name: string;
   checked: boolean;
   onChange: () => void;
@@ -541,7 +550,11 @@ function OptionCard({
         "relative flex cursor-pointer items-start gap-3 rounded-2xl transition-colors",
         compact ? "px-4 py-3" : "p-4",
         "has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-marigold-500",
-        checked ? "bg-teal-50 ring-2 ring-inset ring-teal-700" : "bg-white ring-1 ring-inset ring-ink-200 hover:ring-ink-300",
+        checked
+          ? tone === "clinic"
+            ? "bg-clinic-50 ring-2 ring-inset ring-clinic-700"
+            : "bg-teal-50 ring-2 ring-inset ring-teal-700"
+          : "bg-white ring-1 ring-inset ring-ink-200 hover:ring-ink-300",
       ].join(" ")}
     >
       <input type="radio" name={name} checked={checked} onChange={onChange} className="sr-only" />
@@ -550,7 +563,7 @@ function OptionCard({
           aria-hidden
           className={[
             "mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full",
-            checked ? "bg-teal-700 text-white" : "ring-1 ring-inset ring-ink-300",
+            checked ? (tone === "clinic" ? "bg-clinic-700 text-white" : "bg-teal-700 text-white") : "ring-1 ring-inset ring-ink-300",
           ].join(" ")}
         >
           {checked && <CheckIcon size={13} strokeWidth={3} />}
@@ -715,7 +728,12 @@ function Summary({ form, service, chosenPrice }: { form: Form; service?: Service
           </li>
         ))}
       </ul>
-      <p className="mt-6 px-1 text-[15px] text-ink-600">
+      <p className="mt-4 px-1 text-[15px]">
+        <Link href="/our-promise" target="_blank" className="font-semibold text-teal-700 underline underline-offset-4">
+          Read our care promise
+        </Link>
+      </p>
+      <p className="mt-3 px-1 text-[15px] text-ink-600">
         Prefer to talk?{" "}
         <a href={site.phoneHref} className="font-semibold text-teal-700 underline underline-offset-4">
           {site.phone}

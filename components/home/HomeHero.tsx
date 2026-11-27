@@ -60,6 +60,12 @@ export function HomeHero() {
               </li>
             ))}
           </ul>
+          <Link
+            href="/our-promise"
+            className="mt-4 inline-block text-[16px] font-semibold text-teal-700 underline decoration-teal-200 underline-offset-4 hover:decoration-teal-700"
+          >
+            Read our care promise
+          </Link>
         </div>
 
         <CareFinder />

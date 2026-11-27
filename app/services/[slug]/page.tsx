@@ -3,8 +3,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import React from "react";
 import { getServiceBySlug, services } from "@/lib/services";
-import { CaregiverProfiles } from "@/components/CaregiverProfiles";
+import { CaregiverProfileSection } from "@/components/home/HomeSections";
 import { Testimonials } from "@/components/Testimonials";
+import { PromiseStrip } from "@/components/CarePromise";
+import { careKind } from "@/lib/careKind";
 import { FinalCta } from "@/components/FinalCta";
 import {
   ArrowRightIcon,
@@ -85,13 +87,20 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
 
           <div className="mt-8 grid lg:grid-cols-[1.2fr_1fr] gap-12 items-start">
             <div>
-              <span className="chip">{s.duration}</span>
+              <div className="flex flex-wrap gap-2">
+                {careKind(s.slug) === "medical" && (
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-clinic-700 px-3 py-1 text-[13px] font-semibold text-white">
+                    Medical care
+                  </span>
+                )}
+                <span className="chip">{s.duration}</span>
+              </div>
               <h1 className="mt-5 font-display text-4xl sm:text-5xl md:text-[56px] leading-[1.05] tracking-[-0.02em] text-ink-900">
                 {s.name}
               </h1>
               <p className="mt-5 lead max-w-xl">{s.hero}</p>
               <div className="mt-7 flex flex-wrap gap-3">
-                <Link href="/book" className="btn-lg btn-primary">
+                <Link href={`/book?service=${s.slug}`} className="btn-lg btn-primary">
                   Book this care <ArrowRightIcon size={16} />
                 </Link>
                 <a href={site.whatsappHref} className="btn-lg btn-secondary">
@@ -350,17 +359,31 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
       )}
 
       {/* ───── Pricing ───── */}
+      <PromiseStrip />
+
       <section id="pricing" className="py-14 sm:py-20 bg-cream-50">
         <div className="container max-w-5xl">
           <div className="text-center">
             <span className="section-eyebrow justify-center">
               <span className="h-px w-6 bg-teal-500" /> Transparent pricing
             </span>
-            <h2 className="mt-3 section-title">{s.name} starts at:</h2>
-            <p className="mt-4 lead max-w-2xl mx-auto">
-              Pricing shown is starting from. The exact quote depends on care complexity,
-              shift timing and locality — confirmed in writing before placement.
-            </p>
+            {/assessment/i.test(s.pricing[0]?.price ?? "") ? (
+              <>
+                <h2 className="mt-3 section-title">How {s.name} is priced</h2>
+                <p className="mt-4 lead max-w-2xl mx-auto">
+                  The price depends on the procedures and hours involved. After a short, free call
+                  we send you a written quote, before anything is booked or charged.
+                </p>
+              </>
+            ) : (
+              <>
+                <h2 className="mt-3 section-title">{s.name} starts at</h2>
+                <p className="mt-4 lead max-w-2xl mx-auto">
+                  These are starting prices. Your exact quote depends on care needs, shift timing and
+                  area, and is confirmed in writing before care begins.
+                </p>
+              </>
+            )}
           </div>
 
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -372,21 +395,27 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
                 <div className="text-xs font-semibold text-teal-700">
                   {p.label}
                 </div>
-                <div className="mt-3 font-display text-3xl text-ink-900">{p.price}</div>
-                {p.note && <div className="mt-1 text-xs text-ink-500">{p.note}</div>}
+                {/assessment/i.test(p.price) ? (
+                  <div className="mt-3 text-[18px] font-semibold text-ink-900">Free assessment call</div>
+                ) : (
+                  <div className="mt-3 font-display text-3xl text-ink-900">{p.price}</div>
+                )}
+                {p.note && !/assessment/i.test(p.note) && (
+                  <div className="mt-1 text-xs text-ink-500">{p.note}</div>
+                )}
               </article>
             ))}
           </div>
 
           <div className="mt-10 text-center">
-            <Link href="/book" className="btn-lg btn-primary">
+            <Link href={`/book?service=${s.slug}`} className="btn-lg btn-primary">
               Book this care <ArrowRightIcon size={16} />
             </Link>
           </div>
         </div>
       </section>
 
-      <CaregiverProfiles />
+      <CaregiverProfileSection />
 
       {/* ───── Equipment that supports this care ───── */}
       <RelatedProducts
