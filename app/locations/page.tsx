@@ -41,7 +41,7 @@ export default function LocationsIndex() {
         <div className="container">
           {zones.map((z) => (
             <div key={z} className="mb-12">
-              <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-teal-700">
+              <h2 className="text-xs font-semibold text-teal-700">
                 {z} Bangalore
               </h2>
               <ul className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -91,7 +91,7 @@ export default function LocationsIndex() {
             className="group flex flex-col sm:flex-row items-start sm:items-center gap-5 rounded-[28px] bg-gradient-to-br from-cream-100 via-cream-50 to-sage-50 ring-1 ring-cream-200 p-6 sm:p-8 hover:shadow-soft transition"
           >
             <div className="flex-1">
-              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-teal-700">
+              <div className="text-xs font-semibold text-teal-700">
                 Bangalore-specific reading
               </div>
               <div className="mt-1 font-display text-xl sm:text-2xl text-ink-900">

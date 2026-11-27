@@ -63,7 +63,7 @@ export function LogoMark({
   return (
     <span
       className={[
-        "relative grid place-items-center rounded-2xl bg-teal-600 text-white shadow-glow transition",
+        "relative grid place-items-center rounded-[30%] bg-teal-700 text-white transition",
         className,
       ]
         .filter(Boolean)
@@ -73,7 +73,7 @@ export function LogoMark({
     >
       <LogoGlyph size={inner} />
       {pulse && (
-        <span className="absolute -right-0.5 -bottom-0.5 h-2 w-2 rounded-full bg-sage-300 animate-soft-pulse" />
+        <span className="absolute -right-0.5 -bottom-0.5 h-2 w-2 rounded-full bg-marigold-500 ring-2 ring-cream-50" />
       )}
     </span>
   );
@@ -98,16 +98,16 @@ export function LogoWordmark({
 }) {
   const inner = (
     <>
-      <LogoMark size={size} className="group-hover:scale-105" />
+      <LogoMark size={size} />
       <span
         className={
           textClassName ||
-          "font-display text-[19px] font-medium tracking-tight text-ink-900"
+          "font-display text-[19px] font-bold tracking-[-0.02em] text-ink-900"
         }
       >
         {site.name}
         {showCity && (
-          <span className="ml-1.5 text-[11px] font-sans uppercase tracking-[0.18em] text-teal-700">
+          <span className="ml-1.5 text-[14px] font-normal tracking-normal text-ink-500">
             Bangalore
           </span>
         )}

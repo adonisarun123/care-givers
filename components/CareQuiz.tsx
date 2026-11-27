@@ -180,7 +180,7 @@ export function CareQuiz() {
         </div>
 
         <div className="animate-fade-up" key={step}>
-          <h1 className="font-display text-3xl sm:text-4xl tracking-tight text-ink-900 text-center">
+          <h1 className="font-display text-3xl sm:text-4xl tracking-[-0.025em] text-ink-900 text-center">
             {q.prompt}
           </h1>
           {q.hint && (
@@ -389,10 +389,10 @@ function Result({
     <div className="min-h-[100svh] bg-cream-50">
       <div className="container max-w-4xl py-12 sm:py-20">
         <div className="text-center max-w-2xl mx-auto">
-          <span className="inline-flex items-center gap-2 rounded-full bg-sage-100 text-sage-800 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em]">
+          <span className="inline-flex items-center gap-2 rounded-full bg-sage-100 text-sage-800 px-3 py-1 text-xs font-semibold">
             <SparklesIcon size={14} /> Your care recommendation
           </span>
-          <h1 className="mt-5 font-display text-4xl sm:text-5xl tracking-tight text-ink-900">
+          <h1 className="mt-5 font-display text-4xl sm:text-5xl tracking-[-0.025em] text-ink-900">
             Based on what you told us, this fits.
           </h1>
           <p className="mt-4 text-[16.5px] text-ink-600">
@@ -405,10 +405,10 @@ function Result({
         <div className="mt-10 rounded-[28px] bg-white ring-1 ring-ink-100 shadow-soft p-7 sm:p-10">
           <div className="grid lg:grid-cols-[1.4fr_1fr] gap-8">
             <div>
-              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-teal-700">
+              <div className="text-xs font-semibold text-teal-700">
                 Recommended care
               </div>
-              <h2 className="mt-2 font-display text-3xl sm:text-4xl tracking-tight text-ink-900">
+              <h2 className="mt-2 font-display text-3xl sm:text-4xl tracking-[-0.025em] text-ink-900">
                 {r.service.name}
               </h2>
               <p className="mt-3 text-[15.5px] text-ink-700 leading-relaxed">
@@ -435,29 +435,29 @@ function Result({
             </div>
 
             <aside className="rounded-3xl bg-gradient-to-br from-sage-50 via-cream-50 to-teal-50 ring-1 ring-sage-200 p-6 self-start">
-              <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-teal-700">
+              <div className="text-[13px] font-semibold text-teal-700">
                 Suggested shape
               </div>
               <div className="mt-1.5 font-display text-xl text-ink-900">{shapeLabel}</div>
 
-              <div className="mt-5 text-[11px] font-semibold uppercase tracking-[0.16em] text-teal-700">
+              <div className="mt-5 text-[13px] font-semibold text-teal-700">
                 Estimated monthly
               </div>
               <div className="mt-1.5 font-display text-3xl text-ink-900 tabular-nums">
                 ₹{fmtINR(r.monthlyLow)} – ₹{fmtINR(r.monthlyHigh)}
               </div>
-              <div className="mt-1 text-[11px] text-ink-500">
+              <div className="mt-1 text-[13px] text-ink-500">
                 Final quote depends on locality and complexity.
               </div>
 
-              <div className="mt-5 text-[11px] font-semibold uppercase tracking-[0.16em] text-teal-700">
+              <div className="mt-5 text-[13px] font-semibold text-teal-700">
                 Timing
               </div>
               <div className="mt-1.5 text-[14px] text-ink-700">{r.startBy}</div>
 
               {(r.femalePreferred || r.languages.length > 0) && (
                 <>
-                  <div className="mt-5 text-[11px] font-semibold uppercase tracking-[0.16em] text-teal-700">
+                  <div className="mt-5 text-[13px] font-semibold text-teal-700">
                     Match preferences
                   </div>
                   <div className="mt-1.5 flex flex-wrap gap-1.5">
@@ -491,7 +491,7 @@ function Result({
             onSubmit={submitContact}
             className="mt-8 rounded-3xl bg-white ring-1 ring-ink-100 p-6 sm:p-8"
           >
-            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-teal-700">
+            <div className="flex items-center gap-2 text-xs font-semibold text-teal-700">
               <ShieldCheckIcon size={14} /> Save your plan
             </div>
             <h3 className="mt-2 font-display text-2xl text-ink-900">

@@ -18,7 +18,7 @@ export function TableOfContents({ sections }: { sections: Section[] }) {
       aria-label="Table of contents"
       className="rounded-3xl bg-white ring-1 ring-ink-100 p-5 shadow-soft"
     >
-      <div className="text-xs font-semibold uppercase tracking-[0.16em] text-teal-700">
+      <div className="text-xs font-semibold text-teal-700">
         On this page
       </div>
       <ol className="mt-3 space-y-2 text-[14px]">
@@ -26,7 +26,7 @@ export function TableOfContents({ sections }: { sections: Section[] }) {
           const id = h.id || slugify(h.text);
           return (
             <li key={id} className="flex items-start gap-2.5 leading-snug">
-              <span className="shrink-0 mt-0.5 grid h-5 w-5 place-items-center rounded-full bg-cream-100 text-ink-500 text-[11px] font-medium">
+              <span className="shrink-0 mt-0.5 grid h-5 w-5 place-items-center rounded-full bg-cream-100 text-ink-500 text-[13px] font-medium">
                 {String(i + 1).padStart(2, "0")}
               </span>
               <a

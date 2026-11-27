@@ -109,7 +109,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
             </div>
 
             <aside className="rounded-3xl bg-white ring-1 ring-ink-100 shadow-soft p-6">
-              <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-teal-700">
+              <div className="flex items-center gap-2 text-xs font-semibold text-teal-700">
                 <HeartHandIcon size={14} /> Best for
               </div>
               <ul className="mt-4 space-y-3">
@@ -206,7 +206,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
             </div>
 
             <aside className="rounded-3xl bg-ink-900 text-cream-50 p-7 sm:p-9 shadow-soft">
-              <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-sage-300">
+              <span className="inline-flex items-center gap-2 text-xs font-semibold text-sage-300">
                 <span className="h-px w-6 bg-sage-300" /> What we don’t cover
               </span>
               <h3 className="mt-3 font-display text-2xl text-cream-50">
@@ -254,7 +254,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
                   <span className="block h-1.5 w-1.5 rounded-full bg-white" />
                 </span>
                 <div className="grid sm:grid-cols-[140px_1fr] gap-2 sm:gap-6 items-baseline">
-                  <div className="text-sm font-semibold uppercase tracking-[0.12em] text-teal-700">
+                  <div className="text-sm font-semibold text-teal-700">
                     {it.time}
                   </div>
                   <div>
@@ -287,7 +287,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
                 <Detail label="Focus areas" value={s.caregiverProfile.focus} />
                 <Detail label="Supervision" value={s.caregiverProfile.supervision} />
                 <div>
-                  <dt className="text-xs font-semibold uppercase tracking-[0.16em] text-ink-500">
+                  <dt className="text-xs font-semibold text-ink-500">
                     Verifications
                   </dt>
                   <dd className="mt-2 flex flex-wrap gap-2">
@@ -327,7 +327,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
                 <StarIcon key={i} size={16} className="fill-current" />
               ))}
             </div>
-            <blockquote className="mt-5 font-display text-2xl sm:text-3xl leading-[1.3] tracking-tight text-ink-900">
+            <blockquote className="mt-5 font-display text-2xl sm:text-3xl leading-[1.3] tracking-[-0.025em] text-ink-900">
               “{s.familyStory.quote}”
             </blockquote>
             <figcaption className="mt-7 pt-6 border-t border-ink-100 flex items-center justify-between text-sm">
@@ -335,7 +335,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
                 <div className="font-semibold text-ink-900">{s.familyStory.name}</div>
                 <div className="text-ink-500">{s.familyStory.meta}</div>
               </div>
-              <span className="text-xs uppercase tracking-[0.16em] text-teal-700">
+              <span className="text-xs text-teal-700">
                 A {s.name} family
               </span>
             </figcaption>
@@ -363,7 +363,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
                 key={p.label}
                 className="rounded-3xl bg-white ring-1 ring-ink-100 shadow-soft p-6"
               >
-                <div className="text-xs font-semibold uppercase tracking-[0.16em] text-teal-700">
+                <div className="text-xs font-semibold text-teal-700">
                   {p.label}
                 </div>
                 <div className="mt-3 font-display text-3xl text-ink-900">{p.price}</div>
@@ -456,7 +456,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
                   href={`/services/${o.slug}`}
                   className="group block rounded-2xl bg-white ring-1 ring-ink-100 p-5 hover:shadow-soft transition"
                 >
-                  <div className="text-xs font-semibold uppercase tracking-[0.16em] text-teal-700">
+                  <div className="text-xs font-semibold text-teal-700">
                     {o.duration}
                   </div>
                   <div className="mt-1.5 font-display text-lg text-ink-900">{o.name}</div>
@@ -491,7 +491,7 @@ function Fact({
     <li className="rounded-2xl bg-white ring-1 ring-ink-100 p-3.5">
       <div className="flex items-center gap-2 text-teal-700">
         <Icon size={14} />
-        <span className="text-[11px] font-semibold uppercase tracking-[0.14em]">{label}</span>
+        <span className="text-[13px] font-semibold">{label}</span>
       </div>
       <div className="mt-1 font-display text-[16px] text-ink-900">{value}</div>
     </li>
@@ -501,7 +501,7 @@ function Fact({
 function Detail({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <dt className="text-xs font-semibold uppercase tracking-[0.16em] text-ink-500">{label}</dt>
+      <dt className="text-xs font-semibold text-ink-500">{label}</dt>
       <dd className="mt-1.5 text-[15px] text-ink-800 leading-relaxed">{value}</dd>
     </div>
   );

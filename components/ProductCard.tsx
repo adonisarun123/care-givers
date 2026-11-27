@@ -48,14 +48,14 @@ export function ProductCard({ product }: { product: Product }) {
 
         <div className="mt-auto pt-5 flex items-end justify-between gap-3">
           <div>
-            <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-ink-500">
+            <div className="text-[13px] font-semibold text-ink-500">
               {hasRental ? "Buy or rent from" : "Buy"}
             </div>
             <div className="mt-0.5 font-display text-[19px] text-ink-900 tabular-nums">
               ₹{formatINR(product.pricing.buy)}
             </div>
             {hasRental && (
-              <div className="text-[11.5px] text-teal-700 tabular-nums">
+              <div className="text-[13px] text-teal-700 tabular-nums">
                 or ₹{formatINR(product.pricing.rentPerMonth!)}/mo
               </div>
             )}

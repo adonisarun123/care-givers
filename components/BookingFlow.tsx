@@ -46,9 +46,11 @@ const STEPS = [
   "You",
 ] as const;
 
-export function BookingFlow() {
+export type BookingPrefill = { serviceSlug?: string; duration?: Form["duration"] };
+
+export function BookingFlow({ prefill }: { prefill?: BookingPrefill } = {}) {
   const [step, setStep] = useState(0);
-  const [form, setForm] = useState<Form>(empty);
+  const [form, setForm] = useState<Form>(() => ({ ...empty, ...prefill }));
   const [submitted, setSubmitted] = useState(false);
 
   const update = <K extends keyof Form>(k: K, v: Form[K]) => setForm((f) => ({ ...f, [k]: v }));
@@ -95,7 +97,7 @@ export function BookingFlow() {
       <div className="container py-10 lg:py-16 grid lg:grid-cols-[1.4fr_1fr] gap-10 lg:gap-16">
         {/* LEFT: step */}
         <div>
-          <div className="mb-6 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-teal-700">
+          <div className="mb-6 flex items-center gap-2 text-xs font-semibold text-teal-700">
             {STEPS[step]}
           </div>
 
@@ -120,7 +122,7 @@ export function BookingFlow() {
                       ].join(" ")}
                     >
                       <div className={selected ? "text-sage-200" : "text-teal-700"}>
-                        <span className="text-[11px] font-semibold uppercase tracking-[0.16em]">
+                        <span className="text-[13px] font-semibold">
                           {s.duration}
                         </span>
                       </div>
@@ -353,7 +355,7 @@ export function BookingFlow() {
         {/* RIGHT: summary */}
         <aside className="lg:sticky lg:top-24 self-start">
           <div className="rounded-3xl bg-white ring-1 ring-ink-100 shadow-soft p-6">
-            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-teal-700">
+            <div className="flex items-center gap-2 text-xs font-semibold text-teal-700">
               <ShieldCheckIcon size={14} /> Your booking
             </div>
             <h3 className="mt-2 font-display text-2xl text-ink-900">
@@ -413,7 +415,7 @@ function Step({
 }) {
   return (
     <div className="animate-fade-up">
-      <h1 className="font-display text-3xl sm:text-4xl tracking-tight text-ink-900">{title}</h1>
+      <h1 className="font-display text-3xl sm:text-4xl tracking-[-0.025em] text-ink-900">{title}</h1>
       {subtitle && <p className="mt-3 text-[15.5px] text-ink-600 max-w-xl">{subtitle}</p>}
       <div className="mt-8">{children}</div>
     </div>
@@ -426,7 +428,7 @@ function Field({ children, className }: { children: React.ReactNode; className?:
 
 function FieldLabel({ children }: { children: React.ReactNode }) {
   return (
-    <div className="mb-2 text-[12.5px] font-semibold uppercase tracking-[0.14em] text-ink-500">
+    <div className="mb-2 text-[12.5px] font-semibold text-ink-500">
       {children}
     </div>
   );
@@ -585,7 +587,7 @@ function Confirmation({ form, serviceName }: { form: Form; serviceName: string }
         <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-sage-100 text-sage-700 shadow-soft">
           <CheckIcon size={28} />
         </div>
-        <h1 className="mt-6 font-display text-4xl sm:text-5xl tracking-tight text-ink-900">
+        <h1 className="mt-6 font-display text-4xl sm:text-5xl tracking-[-0.025em] text-ink-900">
           You can exhale now.
         </h1>
         <p className="mt-4 lead">
@@ -617,7 +619,7 @@ function Confirmation({ form, serviceName }: { form: Form; serviceName: string }
 function Stat({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-2xl bg-white ring-1 ring-ink-100 p-5 shadow-soft">
-      <div className="text-xs font-semibold uppercase tracking-[0.16em] text-teal-700">{label}</div>
+      <div className="text-xs font-semibold text-teal-700">{label}</div>
       <div className="mt-1.5 font-display text-xl text-ink-900">{value}</div>
     </div>
   );

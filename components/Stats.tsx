@@ -16,7 +16,7 @@ export function Stats() {
           <div className="relative grid grid-cols-2 lg:grid-cols-4 gap-8">
             {stats.map((s) => (
               <div key={s.label}>
-                <div className="font-display text-4xl sm:text-5xl tracking-tight">
+                <div className="font-display text-4xl sm:text-5xl tracking-[-0.025em]">
                   {s.value}
                 </div>
                 <div className="mt-2 text-[13px] text-teal-100">{s.label}</div>

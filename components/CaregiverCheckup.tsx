@@ -123,13 +123,13 @@ export function CaregiverCheckup() {
 
       <div className="container max-w-3xl py-12 lg:py-16">
         <div className="text-center mb-8">
-          <span className="inline-flex items-center gap-2 rounded-full bg-sage-100 text-sage-800 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em]">
+          <span className="inline-flex items-center gap-2 rounded-full bg-sage-100 text-sage-800 px-3 py-1 text-xs font-semibold">
             <HeartHandIcon size={14} /> A 60-second self-check
           </span>
         </div>
 
         <div key={step} className="animate-fade-up">
-          <h1 className="font-display text-2xl sm:text-3xl tracking-tight text-ink-900 text-center leading-tight">
+          <h1 className="font-display text-2xl sm:text-3xl tracking-[-0.025em] text-ink-900 text-center leading-tight">
             {q.text}
           </h1>
 
@@ -258,11 +258,11 @@ function CheckupResult({ score, restart }: { score: number; restart: () => void 
       <div className="container max-w-3xl py-12 sm:py-20">
         <div className="text-center max-w-xl mx-auto">
           <span
-            className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] ${toneStyles.pill}`}
+            className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold ${toneStyles.pill}`}
           >
             <HeartHandIcon size={14} /> Your check-in
           </span>
-          <h1 className="mt-5 font-display text-4xl sm:text-5xl tracking-tight text-ink-900">
+          <h1 className="mt-5 font-display text-4xl sm:text-5xl tracking-[-0.025em] text-ink-900">
             {b.title}
           </h1>
           <p className="mt-5 text-[16.5px] sm:text-[17.5px] leading-[1.7] text-ink-700">
@@ -274,7 +274,7 @@ function CheckupResult({ score, restart }: { score: number; restart: () => void 
         <div className={`mt-10 rounded-[28px] bg-gradient-to-br ${toneStyles.bg} ring-1 ${toneStyles.ring} p-7 sm:p-9`}>
           <div className="flex items-center justify-between gap-4">
             <div>
-              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-ink-500">
+              <div className="text-xs font-semibold text-ink-500">
                 Your check-in score
               </div>
               <div className="mt-1 font-display text-3xl text-ink-900 tabular-nums">
@@ -282,7 +282,7 @@ function CheckupResult({ score, restart }: { score: number; restart: () => void 
               </div>
             </div>
             <div className="text-right">
-              <div className="text-xs uppercase tracking-[0.16em] text-ink-500">
+              <div className="text-xs text-ink-500">
                 Caregiver load
               </div>
               <div className="mt-1 font-display text-2xl text-ink-900 tabular-nums">
@@ -307,7 +307,7 @@ function CheckupResult({ score, restart }: { score: number; restart: () => void 
 
         {/* Suggestions */}
         <div className="mt-8 rounded-3xl bg-white ring-1 ring-ink-100 shadow-soft p-6 sm:p-8">
-          <div className="text-xs font-semibold uppercase tracking-[0.18em] text-teal-700">
+          <div className="text-xs font-semibold text-teal-700">
             What might help
           </div>
           <ul className="mt-4 space-y-3">

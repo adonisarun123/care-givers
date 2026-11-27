@@ -147,7 +147,7 @@ export default async function ProductPage({
 
             {/* Buying panel */}
             <div>
-              <h1 className="font-display text-4xl sm:text-5xl tracking-tight text-ink-900 leading-[1.05]">
+              <h1 className="font-display text-4xl sm:text-5xl tracking-[-0.025em] text-ink-900 leading-[1.05]">
                 {product.name}
               </h1>
               <p className="mt-4 text-[17px] text-ink-700 leading-relaxed">
@@ -158,7 +158,7 @@ export default async function ProductPage({
               <div className="mt-7 rounded-3xl bg-white ring-1 ring-ink-100 shadow-soft p-6 sm:p-7">
                 <div className="grid sm:grid-cols-2 gap-5">
                   <div>
-                    <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-teal-700">
+                    <div className="text-[13px] font-semibold text-teal-700">
                       Buy outright
                     </div>
                     <div className="mt-2 flex items-baseline gap-2">
@@ -178,7 +178,7 @@ export default async function ProductPage({
 
                   {hasRental && (
                     <div className="sm:border-l sm:border-ink-100 sm:pl-5">
-                      <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-teal-700">
+                      <div className="text-[13px] font-semibold text-teal-700">
                         Rent monthly
                       </div>
                       <div className="mt-2 flex items-baseline gap-2">
@@ -285,7 +285,7 @@ export default async function ProductPage({
               {/* Care services that use this product */}
               {relatedServices.length > 0 && (
                 <div className="mt-8 rounded-3xl bg-gradient-to-br from-sage-50 via-cream-50 to-teal-50 ring-1 ring-sage-200 p-6">
-                  <div className="text-xs font-semibold uppercase tracking-[0.16em] text-teal-700">
+                  <div className="text-xs font-semibold text-teal-700">
                     Often paired with
                   </div>
                   <div className="mt-3 flex flex-wrap gap-2">
@@ -351,7 +351,7 @@ export default async function ProductPage({
         <div className="container max-w-3xl">
           <div className="rounded-[28px] bg-gradient-to-br from-sage-100 via-cream-50 to-teal-50 ring-1 ring-sage-200 p-8 sm:p-12 text-center">
             <span className="chip">Ready to book?</span>
-            <h2 className="mt-4 font-display text-3xl sm:text-4xl tracking-tight text-ink-900">
+            <h2 className="mt-4 font-display text-3xl sm:text-4xl tracking-[-0.025em] text-ink-900">
               {hasRental
                 ? "Buy outright or rent monthly — message us either way."
                 : "Order this product via WhatsApp."}

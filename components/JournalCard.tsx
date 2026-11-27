@@ -43,7 +43,7 @@ export function JournalCard({
                 <ClockIcon size={12} /> {post.readMinutes} min read
               </span>
             </div>
-            <h3 className="mt-3 font-display text-2xl sm:text-3xl lg:text-[34px] leading-[1.15] tracking-tight text-ink-900 group-hover:text-teal-800 transition">
+            <h3 className="mt-3 font-display text-2xl sm:text-3xl lg:text-[34px] leading-[1.15] tracking-[-0.025em] text-ink-900 group-hover:text-teal-800 transition">
               {post.title}
             </h3>
             <p className="mt-4 text-[16px] text-ink-600 leading-relaxed">{post.dek}</p>
@@ -67,7 +67,7 @@ export function JournalCard({
           <img src={post.hero} alt="" className="h-full w-full object-cover" loading="lazy" />
         </div>
         <div>
-          <div className="text-[11px] uppercase tracking-[0.14em] text-teal-700 font-semibold">
+          <div className="text-[13px] text-teal-700 font-semibold">
             {post.category}
           </div>
           <h4 className="mt-1 font-display text-[16px] leading-tight text-ink-900 group-hover:text-teal-800 transition">
@@ -103,7 +103,7 @@ export function JournalCard({
             <ClockIcon size={12} /> {post.readMinutes} min
           </span>
         </div>
-        <h3 className="mt-2 font-display text-[19px] sm:text-[21px] leading-[1.25] tracking-tight text-ink-900 group-hover:text-teal-800 transition">
+        <h3 className="mt-2 font-display text-[19px] sm:text-[21px] leading-[1.25] tracking-[-0.025em] text-ink-900 group-hover:text-teal-800 transition">
           {post.title}
         </h3>
         <p className="mt-2 text-[14.5px] text-ink-600 leading-relaxed line-clamp-3">{post.dek}</p>

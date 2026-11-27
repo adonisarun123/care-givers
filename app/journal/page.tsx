@@ -72,7 +72,7 @@ export default function JournalIndex() {
                     href={`/journal#${slugify(c)}`}
                     className="group block rounded-3xl bg-white ring-1 ring-ink-100 p-6 hover:shadow-soft transition"
                   >
-                    <div className="text-xs font-semibold uppercase tracking-[0.16em] text-teal-700">
+                    <div className="text-xs font-semibold text-teal-700">
                       {count} {count === 1 ? "post" : "posts"}
                     </div>
                     <div className="mt-2 font-display text-[20px] text-ink-900 group-hover:text-teal-800 transition">
@@ -141,7 +141,7 @@ export default function JournalIndex() {
       <section className="py-16">
         <div className="container max-w-3xl">
           <div className="rounded-[28px] bg-ink-900 text-cream-50 p-8 sm:p-12 text-center">
-            <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-sage-300">
+            <span className="inline-flex items-center gap-2 text-xs font-semibold text-sage-300">
               <span className="h-px w-6 bg-sage-300" /> Stay close
             </span>
             <h2 className="mt-3 font-display text-3xl sm:text-4xl text-cream-50">
@@ -166,7 +166,7 @@ export default function JournalIndex() {
                 Subscribe
               </button>
             </form>
-            <p className="mt-3 text-[11.5px] text-cream-100/60">
+            <p className="mt-3 text-[13px] text-cream-100/60">
               Stored privately. Used only to send the journal.
             </p>
           </div>
@@ -181,7 +181,7 @@ export default function JournalIndex() {
               href="/care-quiz"
               className="group rounded-[28px] bg-gradient-to-br from-sage-100 via-cream-50 to-teal-50 ring-1 ring-sage-200 p-7 sm:p-8 hover:shadow-soft transition"
             >
-              <span className="text-xs font-semibold uppercase tracking-[0.18em] text-teal-700">
+              <span className="text-xs font-semibold text-teal-700">
                 Ready to act on what you've read?
               </span>
               <h3 className="mt-3 font-display text-2xl text-ink-900">
@@ -200,7 +200,7 @@ export default function JournalIndex() {
               href="/services"
               className="group rounded-[28px] bg-gradient-to-br from-teal-50 via-cream-50 to-peach-50 ring-1 ring-teal-200 p-7 sm:p-8 hover:shadow-soft transition"
             >
-              <span className="text-xs font-semibold uppercase tracking-[0.18em] text-teal-700">
+              <span className="text-xs font-semibold text-teal-700">
                 Browse our services
               </span>
               <h3 className="mt-3 font-display text-2xl text-ink-900">

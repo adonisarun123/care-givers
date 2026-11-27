@@ -153,7 +153,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
             data-tldr
             className="rounded-3xl bg-gradient-to-br from-sage-50 via-cream-50 to-teal-50 ring-1 ring-sage-200 p-6 sm:p-7"
           >
-            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-teal-700">
+            <div className="flex items-center gap-2 text-xs font-semibold text-teal-700">
               <SparklesIcon size={14} /> The short answer
             </div>
             <p className="mt-3 text-[16.5px] sm:text-[17px] leading-[1.65] text-ink-800 speakable">

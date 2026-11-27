@@ -117,7 +117,7 @@ export function CostCalculator() {
       {/* Header */}
       <div className="text-center max-w-2xl mx-auto">
         <span className="chip">Bangalore caregiver cost calculator</span>
-        <h1 className="mt-5 font-display text-4xl sm:text-5xl tracking-tight text-ink-900">
+        <h1 className="mt-5 font-display text-4xl sm:text-5xl tracking-[-0.025em] text-ink-900">
           Estimate your monthly care cost.
         </h1>
         <p className="mt-4 lead">
@@ -179,7 +179,7 @@ export function CostCalculator() {
                 onChange={(e) => setHoursPerDay(Number(e.target.value))}
                 className="w-full accent-teal-600"
               />
-              <div className="mt-1 flex justify-between text-[11px] text-ink-500">
+              <div className="mt-1 flex justify-between text-[13px] text-ink-500">
                 <span>1 hr</span>
                 <span>11 hrs</span>
               </div>
@@ -197,7 +197,7 @@ export function CostCalculator() {
                 onChange={(e) => setDaysPerMonth(Number(e.target.value))}
                 className="w-full accent-teal-600"
               />
-              <div className="mt-1 flex justify-between text-[11px] text-ink-500">
+              <div className="mt-1 flex justify-between text-[13px] text-ink-500">
                 <span>5 days</span>
                 <span>30 days</span>
               </div>
@@ -225,15 +225,15 @@ export function CostCalculator() {
         {/* Output */}
         <aside className="lg:sticky lg:top-24">
           <div className="rounded-3xl bg-gradient-to-br from-sage-50 via-cream-50 to-teal-50 ring-1 ring-sage-200 p-6 sm:p-8 shadow-soft">
-            <div className="text-xs font-semibold uppercase tracking-[0.18em] text-teal-700">
+            <div className="text-xs font-semibold text-teal-700">
               Estimated monthly cost
             </div>
             {plan === "live-in" ? (
-              <div className="mt-2 font-display text-4xl sm:text-5xl tracking-tight text-ink-900 tabular-nums">
+              <div className="mt-2 font-display text-4xl sm:text-5xl tracking-[-0.025em] text-ink-900 tabular-nums">
                 ₹{fmt(result.monthlyLow)} – ₹{fmt(result.monthlyHigh)}
               </div>
             ) : (
-              <div className="mt-2 font-display text-4xl sm:text-5xl tracking-tight text-ink-900 tabular-nums">
+              <div className="mt-2 font-display text-4xl sm:text-5xl tracking-[-0.025em] text-ink-900 tabular-nums">
                 ₹{fmt(result.monthly)}
               </div>
             )}
@@ -271,7 +271,7 @@ export function CostCalculator() {
               </a>
             </div>
 
-            <div className="mt-5 text-[11.5px] text-ink-500">
+            <div className="mt-5 text-[13px] text-ink-500">
               Final quote depends on caregiver match and any equipment. Always confirmed
               in writing before placement.
             </div>
@@ -321,7 +321,7 @@ export function CostCalculator() {
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="mb-5">
-      <div className="mb-2 text-[12.5px] font-semibold uppercase tracking-[0.14em] text-ink-500">
+      <div className="mb-2 text-[12.5px] font-semibold text-ink-500">
         {label}
       </div>
       {children}

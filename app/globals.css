@@ -2,124 +2,131 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+ * Care Givers — design tokens
+ * paper  #F6F7F4  page background (cool morning light, not cream)
+ * stone  #E9ECE6  quiet bands and dividers
+ * teal   #1D4C54  brand / primary actions
+ * ink    #172422  text
+ * marigold #E2A23B single warm accent — selection, "available" dots, focus
+ */
 :root {
-  --background: 251 248 243;
-  --foreground: 27 27 23;
-  --teal-500: 61 136 146;
-  --sage-500: 92 148 105;
+  --background: 246 247 244;
+  --foreground: 23 36 34;
+  --teal-700: 29 76 84;
+  --marigold: 226 162 59;
 }
 
 html {
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 body {
   background: rgb(var(--background));
   color: rgb(var(--foreground));
+  font-size: 17px;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-feature-settings: "ss01", "cv11";
   text-rendering: optimizeLegibility;
 }
 
-/* Aesthetic selection */
+h1, h2, h3, h4 {
+  text-wrap: balance;
+}
+
+.font-display { letter-spacing: -0.02em; }
+h1.font-display, h2.font-display { font-weight: 600; }
+p { text-wrap: pretty; }
+
 ::selection {
-  background: rgb(var(--teal-500) / 0.18);
+  background: rgb(var(--marigold) / 0.35);
   color: rgb(var(--foreground));
 }
 
-/* Subtle scrollbar */
-::-webkit-scrollbar { width: 10px; height: 10px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb {
-  background: rgb(var(--foreground) / 0.12);
-  border-radius: 999px;
+:focus-visible {
+  outline: 2px solid rgb(var(--marigold));
+  outline-offset: 3px;
+  border-radius: 6px;
 }
-::-webkit-scrollbar-thumb:hover { background: rgb(var(--foreground) / 0.22); }
 
-/* ─── Reusable component classes ─── */
 @layer components {
   .container-tight { @apply container max-w-5xl; }
 
+  /* ── Buttons ─────────────────────────────────────────────── */
   .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-full font-medium transition
-           disabled:opacity-50 disabled:cursor-not-allowed
-           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500/40 focus-visible:ring-offset-2
-           focus-visible:ring-offset-cream-50;
+    @apply inline-flex items-center justify-center gap-2 rounded-full font-semibold
+           transition-colors duration-150
+           disabled:opacity-50 disabled:cursor-not-allowed;
   }
   .btn-primary {
-    @apply btn bg-teal-600 text-white hover:bg-teal-700 active:bg-teal-800
-           shadow-glow hover:shadow-[0_14px_50px_-10px_rgba(47,110,120,0.45)];
+    @apply btn bg-teal-700 text-white hover:bg-teal-800 active:bg-teal-900;
   }
   .btn-sage {
-    @apply btn bg-sage-600 text-white hover:bg-sage-700 shadow-glow;
+    @apply btn bg-teal-700 text-white hover:bg-teal-800;
   }
   .btn-secondary {
-    @apply btn bg-white text-ink-800 border border-ink-100 hover:border-ink-200 hover:bg-cream-50;
+    @apply btn bg-white text-ink-900 ring-1 ring-inset ring-ink-200 hover:ring-ink-300 hover:bg-cream-50;
   }
   .btn-ghost {
-    @apply btn text-ink-700 hover:bg-ink-100/60;
+    @apply btn text-ink-800 hover:bg-ink-100/70;
   }
-  .btn-lg { @apply btn h-12 px-6 text-[15px]; }
-  .btn-md { @apply btn h-11 px-5 text-sm; }
+  .btn-lg { @apply btn h-[52px] px-6 text-[16px]; }
+  .btn-md { @apply btn h-11 px-5 text-[15px]; }
   .btn-sm { @apply btn h-9 px-4 text-sm; }
 
+  /* ── Small labels ────────────────────────────────────────── */
   .chip {
-    @apply inline-flex items-center gap-1.5 rounded-full bg-sage-50 px-3 py-1
-           text-xs font-medium text-sage-800 ring-1 ring-sage-200/70;
+    @apply inline-flex items-center gap-1.5 rounded-full bg-teal-50 px-3 py-1
+           text-[13px] font-medium text-teal-800 ring-1 ring-inset ring-teal-100;
   }
   .chip-cream {
-    @apply inline-flex items-center gap-1.5 rounded-full bg-cream-100 px-3 py-1
-           text-xs font-medium text-ink-700 ring-1 ring-cream-200;
+    @apply inline-flex items-center gap-1.5 rounded-full bg-stone-100 px-3 py-1
+           text-[13px] font-medium text-ink-700;
   }
 
+  /* ── Surfaces ────────────────────────────────────────────── */
   .card {
-    @apply rounded-3xl bg-white shadow-soft ring-1 ring-ink-100/60 p-6;
+    @apply rounded-2xl bg-white ring-1 ring-ink-100 p-6;
   }
   .card-quiet {
-    @apply rounded-3xl bg-cream-50/70 ring-1 ring-cream-200 p-6;
+    @apply rounded-2xl bg-stone-100/70 p-6;
   }
 
+  /* ── Type ────────────────────────────────────────────────── */
   .section-title {
-    @apply font-display text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-ink-900;
+    @apply font-display text-[32px] leading-[1.1] sm:text-[40px] md:text-[48px]
+           font-semibold tracking-[-0.025em] text-ink-900;
   }
+  /* Kept for existing pages: a quiet sentence-case kicker, not an all-caps label */
   .section-eyebrow {
-    @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-teal-700;
+    @apply inline-flex items-center gap-2 text-[15px] font-semibold text-teal-700;
   }
+  .section-eyebrow > .h-px { @apply hidden; }
   .lead {
-    @apply text-ink-600 text-[17px] leading-relaxed;
+    @apply text-ink-600 text-[18px] leading-[1.6];
   }
 
-  /* Fancy underline link */
   .link-quiet {
-    @apply relative text-ink-700 hover:text-ink-900 transition;
+    @apply text-ink-700 underline decoration-ink-200 underline-offset-4
+           hover:text-ink-900 hover:decoration-ink-500 transition-colors;
   }
-  .link-quiet::after {
-    content: "";
-    @apply absolute left-0 -bottom-0.5 h-px w-full origin-left scale-x-0 bg-current transition-transform;
-  }
-  .link-quiet:hover::after { @apply scale-x-100; }
 
-  /* Soft animated gradient ring (used on hero) */
-  .ring-soft {
-    background:
-      radial-gradient(80% 60% at 0% 0%, rgba(124, 174, 133, 0.22), transparent 60%),
-      radial-gradient(60% 60% at 100% 0%, rgba(134, 186, 193, 0.22), transparent 60%),
-      radial-gradient(80% 70% at 50% 100%, rgba(248, 230, 216, 0.6), transparent 60%);
-  }
+  .ring-soft { @apply bg-stone-100; }
 }
 
-/* Hide scrollbar utility */
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { scrollbar-width: none; }
 
-/* Fine grain texture overlay (extremely subtle) */
-.grain::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.04;
-  mix-blend-mode: multiply;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/></svg>");
-}
+/* Retired decorative effect — kept as a no-op so old markup doesn't break */
+.grain::before { content: none; }

@@ -66,7 +66,7 @@ export default function AboutPage() {
           <span className="section-eyebrow">
             <span className="h-px w-6 bg-teal-500" /> How this began
           </span>
-          <h2 className="mt-3 font-display text-3xl sm:text-4xl tracking-tight text-ink-900">
+          <h2 className="mt-3 font-display text-3xl sm:text-4xl tracking-[-0.025em] text-ink-900">
             One paralysed mother-in-law. Six weeks of phone calls.
           </h2>
 
@@ -120,7 +120,7 @@ export default function AboutPage() {
             <span className="section-eyebrow">
               <span className="h-px w-6 bg-teal-500" /> A note from our founder
             </span>
-            <h2 className="mt-3 font-display text-3xl sm:text-4xl tracking-tight text-ink-900">
+            <h2 className="mt-3 font-display text-3xl sm:text-4xl tracking-[-0.025em] text-ink-900">
               If you're reading this, you're probably tired.
             </h2>
 
@@ -255,10 +255,10 @@ export default function AboutPage() {
 
         <div className="container relative">
           <div className="max-w-2xl">
-            <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-sage-300">
+            <span className="inline-flex items-center gap-2 text-xs font-semibold text-sage-300">
               <span className="h-px w-6 bg-sage-300" /> What we will never do
             </span>
-            <h2 className="mt-3 font-display text-3xl sm:text-4xl md:text-5xl tracking-tight">
+            <h2 className="mt-3 font-display text-3xl sm:text-4xl md:text-5xl tracking-[-0.025em]">
               Anti-promises. The hard list.
             </h2>
             <p className="mt-4 text-cream-100/85 max-w-xl">
@@ -533,7 +533,7 @@ export default function AboutPage() {
             <span className="section-eyebrow">
               <span className="h-px w-6 bg-teal-500" /> Looking ahead
             </span>
-            <h2 className="mt-3 font-display text-3xl sm:text-4xl tracking-tight text-ink-900">
+            <h2 className="mt-3 font-display text-3xl sm:text-4xl tracking-[-0.025em] text-ink-900">
               What we're working on next.
             </h2>
 
@@ -593,7 +593,7 @@ export default function AboutPage() {
           <span className="section-eyebrow">
             <span className="h-px w-6 bg-teal-500" /> Verify us
           </span>
-          <h2 className="mt-3 font-display text-3xl sm:text-4xl tracking-tight text-ink-900">
+          <h2 className="mt-3 font-display text-3xl sm:text-4xl tracking-[-0.025em] text-ink-900">
             Don't take our word. Here's how to check.
           </h2>
           <p className="mt-5 text-[16px] text-ink-700 leading-relaxed">
@@ -652,7 +652,7 @@ export default function AboutPage() {
               href="/careers"
               className="group rounded-[28px] bg-gradient-to-br from-sage-100 via-cream-50 to-teal-50 ring-1 ring-sage-200 p-7 sm:p-9 hover:shadow-soft transition"
             >
-              <span className="text-xs font-semibold uppercase tracking-[0.18em] text-teal-700">
+              <span className="text-xs font-semibold text-teal-700">
                 We're hiring
               </span>
               <h3 className="mt-3 font-display text-2xl sm:text-3xl text-ink-900">
@@ -672,7 +672,7 @@ export default function AboutPage() {
               href="/tools"
               className="group rounded-[28px] bg-gradient-to-br from-teal-50 via-cream-50 to-peach-50 ring-1 ring-teal-200 p-7 sm:p-9 hover:shadow-soft transition"
             >
-              <span className="text-xs font-semibold uppercase tracking-[0.18em] text-teal-700">
+              <span className="text-xs font-semibold text-teal-700">
                 Free care tools
               </span>
               <h3 className="mt-3 font-display text-2xl sm:text-3xl text-ink-900">
@@ -694,7 +694,7 @@ export default function AboutPage() {
       <section className="py-14 sm:py-20">
         <div className="container max-w-3xl">
           <div className="rounded-[28px] bg-white ring-1 ring-ink-100 shadow-soft p-8 sm:p-12 text-center">
-            <h2 className="font-display text-3xl sm:text-4xl tracking-tight text-ink-900">
+            <h2 className="font-display text-3xl sm:text-4xl tracking-[-0.025em] text-ink-900">
               If something here resonated, talk to us.
             </h2>
             <p className="mt-4 text-[15.5px] text-ink-700 max-w-xl mx-auto">
@@ -725,7 +725,7 @@ export default function AboutPage() {
 
 function Avatar({ initials }: { initials: string }) {
   return (
-    <span className="grid h-12 w-12 place-items-center rounded-full bg-teal-700 text-white font-display text-[15px] tracking-tight">
+    <span className="grid h-12 w-12 place-items-center rounded-full bg-teal-700 text-white font-display text-[15px] tracking-[-0.025em]">
       {initials}
     </span>
   );
@@ -749,10 +749,10 @@ function FamilyStory({
           <StarIcon key={i} size={13} className="fill-current" />
         ))}
       </div>
-      <div className="mt-3 text-[11.5px] uppercase tracking-[0.16em] text-teal-700 font-semibold">
+      <div className="mt-3 text-[13px] text-teal-700 font-semibold">
         {eyebrow}
       </div>
-      <h3 className="mt-2 font-display text-[22px] leading-[1.2] tracking-tight text-ink-900">
+      <h3 className="mt-2 font-display text-[22px] leading-[1.2] tracking-[-0.025em] text-ink-900">
         {title}
       </h3>
       <p className="mt-4 text-[14.5px] text-ink-700 leading-[1.7]">
