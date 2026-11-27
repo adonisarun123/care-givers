@@ -195,7 +195,7 @@ export default async function ProductPage({
                 </div>
 
                 <div className="mt-6 pt-6 border-t border-ink-100 flex flex-wrap gap-3">
-                  <a href={waHref} className="btn-md btn-primary">
+                  <a href={waHref} className="btn-md btn-whatsapp">
                     <WhatsAppIcon size={16} />
                     {hasRental ? "Request — buy or rent" : "Request via WhatsApp"}
                   </a>
@@ -361,7 +361,7 @@ export default async function ProductPage({
               the exact price and slot back on WhatsApp — no payment until delivery.
             </p>
             <div className="mt-7 flex flex-wrap justify-center gap-3">
-              <a href={waHref} className="btn-lg btn-primary">
+              <a href={waHref} className="btn-lg btn-whatsapp">
                 <WhatsAppIcon size={16} /> WhatsApp now
               </a>
               <a href={site.phoneHref} className="btn-lg btn-secondary">

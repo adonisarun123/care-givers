@@ -53,7 +53,7 @@ export default function ShopIndex() {
             </p>
 
             <div className="mt-8 flex flex-wrap gap-3">
-              <a href={site.whatsappHref} className="btn-lg btn-primary">
+              <a href={site.whatsappHref} className="btn-lg btn-whatsapp">
                 <WhatsAppIcon size={16} /> Ask about a product
               </a>
               <Link href="#categories" className="btn-lg btn-secondary">

@@ -108,7 +108,7 @@ export default function CareersIndex() {
             </p>
 
             <div className="mt-8 flex flex-wrap gap-3">
-              <a href={site.whatsappHref} className="btn-lg btn-primary">
+              <a href={site.whatsappHref} className="btn-lg btn-whatsapp">
                 <WhatsAppIcon size={16} /> Apply via WhatsApp
               </a>
               <a href={`mailto:careers@${(site.email || "").split("@")[1] || "caregivers.example"}`} className="btn-lg btn-secondary">

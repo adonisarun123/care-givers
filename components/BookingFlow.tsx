@@ -792,7 +792,7 @@ function Confirmation({ form, service, delivered }: { form: Form; service?: Serv
       )}
 
       <div className="mt-8 flex flex-wrap gap-3">
-        <a href={wa} target="_blank" rel="noopener noreferrer" className="btn-lg btn-primary">
+        <a href={wa} target="_blank" rel="noopener noreferrer" className="btn-lg btn-whatsapp">
           <WhatsAppIcon size={18} /> {delivered ? "Also message us on WhatsApp" : "Send on WhatsApp"}
         </a>
         <a href={site.phoneHref} className="btn-lg btn-secondary">

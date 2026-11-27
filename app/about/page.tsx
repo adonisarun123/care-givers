@@ -702,7 +702,7 @@ export default function AboutPage() {
               spent the last few years helping families like yours.
             </p>
             <div className="mt-7 flex flex-wrap justify-center gap-3">
-              <a href={site.whatsappHref} className="btn-lg btn-primary">
+              <a href={site.whatsappHref} className="btn-lg btn-whatsapp">
                 <WhatsAppIcon size={16} /> WhatsApp us
               </a>
               <a href={site.phoneHref} className="btn-lg btn-secondary">

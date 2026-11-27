@@ -191,7 +191,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
               <Link href="/book" className="btn-md btn-primary">
                 Book a caregiver <ArrowRightIcon size={14} />
               </Link>
-              <a href={site.whatsappHref} className="btn-md btn-secondary">
+              <a href={site.whatsappHref} className="btn-md btn-whatsapp">
                 <WhatsAppIcon size={14} /> Talk to a care manager
               </a>
             </div>

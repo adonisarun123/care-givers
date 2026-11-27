@@ -2,6 +2,7 @@ import Link from "next/link";
 import { site } from "@/lib/site";
 import { CheckIcon, PhoneIcon, WhatsAppIcon } from "@/components/icons";
 import { CareFinder } from "@/components/home/CareFinder";
+import { CallbackForm } from "@/components/CallbackForm";
 
 const promises = [
   "Aadhaar and police verified",
@@ -35,7 +36,7 @@ export function HomeHero() {
             <Link href="/book" className="btn-lg btn-primary">
               Book a caregiver
             </Link>
-            <a href={site.whatsappHref} className="btn-lg btn-secondary">
+            <a href={site.whatsappHref} className="btn-lg btn-whatsapp">
               <WhatsAppIcon size={18} /> Ask on WhatsApp
             </a>
           </div>
@@ -50,7 +51,12 @@ export function HomeHero() {
             </a>
           </p>
 
-          <ul className="mt-10 grid gap-3 border-t border-ink-100 pt-6 text-[16px] text-ink-700">
+          <div className="mt-8 max-w-xl rounded-2xl bg-white p-4 ring-1 ring-ink-100 sm:p-5">
+            <p className="mb-3 text-[16px] font-semibold text-ink-900">Prefer we call you?</p>
+            <CallbackForm source="callback-hero" />
+          </div>
+
+          <ul className="mt-8 grid gap-3 border-t border-ink-100 pt-6 text-[16px] text-ink-700">
             {promises.map((p) => (
               <li key={p} className="flex items-start gap-3">
                 <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-teal-50 text-teal-700">

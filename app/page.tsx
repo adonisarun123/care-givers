@@ -3,6 +3,8 @@ import { HomeHero } from "@/components/home/HomeHero";
 import {
   CaregiverProfileSection,
   Commitments,
+  ConditionsWeCareFor,
+  NeedCareToday,
   HowBookingWorks,
   NotReadyYet,
   Plans,
@@ -19,6 +21,8 @@ export default function HomePage() {
       <HomeHero />
       <Commitments />
       <ServicesIndex />
+      <NeedCareToday />
+      <ConditionsWeCareFor />
       <HowBookingWorks />
       <CaregiverProfileSection />
       <PromiseSection />
