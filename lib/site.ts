@@ -9,8 +9,8 @@ export const site = {
   city: "Bangalore",
   // Contact details — sourced from ezyhelpers.com per request.
   // VERIFY OWNERSHIP / AUTHORISATION before publishing these on a live site.
-  phone: "+91 80 3141 1776",
-  phoneHref: "tel:+918031411776",
+  phone: "+91 76196 29005",
+  phoneHref: "tel:+917619629005",
   whatsapp: "+91 99725 71005",
   whatsappNumber: "919972571005", // digits only, for wa.me links
   whatsappHref:
