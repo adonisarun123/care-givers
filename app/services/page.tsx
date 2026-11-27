@@ -47,7 +47,7 @@ export default function ServicesIndex() {
               <SparklesIcon size={24} />
             </span>
             <div className="flex-1">
-              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-teal-700">
+              <div className="text-xs font-semibold text-teal-700">
                 Not sure which service fits?
               </div>
               <div className="mt-1 font-display text-xl sm:text-2xl text-ink-900">

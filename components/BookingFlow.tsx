@@ -1,17 +1,27 @@
 "use client";
 
-import { useMemo, useState } from "react";
 import Link from "next/link";
-import { ArrowRightIcon, CheckIcon, ShieldCheckIcon, WhatsAppIcon } from "@/components/icons";
-import { services } from "@/lib/services";
+import { useId, useRef, useState } from "react";
+import { CheckIcon, PhoneIcon, ShieldCheckIcon, WhatsAppIcon } from "@/components/icons";
+import { services, type Service } from "@/lib/services";
 import { localities } from "@/lib/locations";
 import { site } from "@/lib/site";
+import { careOptions } from "@/components/home/careOptions";
+
+/* ─────────────────────────────────────────────────────────────────────────
+ * Booking flow — 4 short steps, then the request is actually delivered:
+ *   1. POST /api/booking (forwards to BOOKING_WEBHOOK_URL when configured)
+ *   2. A pre-filled WhatsApp message to the care team, so a request is never
+ *      lost even if no webhook is set up yet.
+ * ───────────────────────────────────────────────────────────────────────── */
+
+export type BookingPrefill = { serviceSlug?: string; plan?: "hourly" | "12h" | "live-in" };
 
 type Form = {
   serviceSlug: string;
-  duration: "hourly" | "12h-day" | "12h-night" | "live-in" | "";
-  startWhen: "today" | "tomorrow" | "this-week" | "";
-  gender: "any" | "female" | "male" | "";
+  option: string; // a pricing label of the chosen service, e.g. "12-hour day shift"
+  startWhen: "" | "today" | "tomorrow" | "this-week" | "not-sure";
+  gender: "" | "any" | "female" | "male";
   languages: string[];
   patientName: string;
   patientAge: string;
@@ -20,605 +30,779 @@ type Form = {
   address: string;
   contactName: string;
   contactPhone: string;
+  website: string; // honeypot — real people leave this empty
 };
 
-const empty: Form = {
-  serviceSlug: "",
-  duration: "",
-  startWhen: "",
-  gender: "",
-  languages: [],
-  patientName: "",
-  patientAge: "",
-  notes: "",
-  locality: "",
-  address: "",
-  contactName: "",
-  contactPhone: "",
+const STEPS = ["Care", "Schedule", "Patient", "Contact"] as const;
+const LANGUAGES = ["Kannada", "English", "Hindi", "Tamil", "Telugu", "Malayalam", "Bengali"];
+
+const planPatterns: Record<NonNullable<BookingPrefill["plan"]>, RegExp> = {
+  hourly: /hour(ly)? visit|hourly/i,
+  "12h": /12-hour day|12-hour/i,
+  "live-in": /live-in|24/i,
 };
 
-const STEPS = [
-  "Care type",
-  "Schedule",
-  "Preferences",
-  "Patient",
-  "Address",
-  "You",
-] as const;
+function initialForm(prefill?: BookingPrefill): Form {
+  const service = services.find((s) => s.slug === prefill?.serviceSlug);
+  const option =
+    service && prefill?.plan
+      ? service.pricing.find((p) => planPatterns[prefill.plan!].test(p.label))?.label ?? ""
+      : "";
+  return {
+    serviceSlug: service?.slug ?? "",
+    option,
+    startWhen: "",
+    gender: "",
+    languages: [],
+    patientName: "",
+    patientAge: "",
+    notes: "",
+    locality: "",
+    address: "",
+    contactName: "",
+    contactPhone: "",
+    website: "",
+  };
+}
 
-export function BookingFlow() {
-  const [step, setStep] = useState(0);
-  const [form, setForm] = useState<Form>(empty);
-  const [submitted, setSubmitted] = useState(false);
+const isAssessment = (price?: string) => !!price && /assessment/i.test(price);
+const digits = (s: string) => s.replace(/\D/g, "");
 
-  const update = <K extends keyof Form>(k: K, v: Form[K]) => setForm((f) => ({ ...f, [k]: v }));
-  const canNext = useMemo(() => stepValid(step, form), [step, form]);
+function errorsFor(step: number, f: Form): Record<string, string> {
+  const e: Record<string, string> = {};
+  if (step === 0 && !f.serviceSlug) e.serviceSlug = "Choose the kind of care you need.";
+  if (step === 1) {
+    if (!f.option) e.option = "Choose how often you need care.";
+    if (!f.startWhen) e.startWhen = "Tell us when care should start.";
+  }
+  if (step === 2) {
+    if (!f.locality) e.locality = "Choose the area closest to the patient’s home.";
+  }
+  if (step === 3) {
+    if (f.contactName.trim().length < 2) e.contactName = "Enter your name.";
+    const d = digits(f.contactPhone);
+    if (!(d.length === 10 || (d.length === 12 && d.startsWith("91"))))
+      e.contactPhone = "Enter a 10-digit mobile number.";
+  }
+  return e;
+}
 
-  const next = () => {
-    if (!canNext) return;
-    if (step === STEPS.length - 1) {
-      setSubmitted(true);
+export function BookingFlow({ prefill }: { prefill?: BookingPrefill } = {}) {
+  const [step, setStep] = useState(prefill?.serviceSlug ? 1 : 0);
+  const [form, setForm] = useState<Form>(() => initialForm(prefill));
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [status, setStatus] = useState<"idle" | "sending" | "done">("idle");
+  const [delivered, setDelivered] = useState(false);
+  const headingRef = useRef<HTMLHeadingElement>(null);
+
+  const service = services.find((s) => s.slug === form.serviceSlug);
+  const chosenPrice = service?.pricing.find((p) => p.label === form.option);
+
+  const update = <K extends keyof Form>(k: K, v: Form[K]) => {
+    setForm((f) => ({ ...f, [k]: v }));
+    setErrors((e) => {
+      if (!e[k as string]) return e;
+      const next = { ...e };
+      delete next[k as string];
+      return next;
+    });
+  };
+
+  const goTo = (n: number) => {
+    setStep(n);
+    setErrors({});
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    requestAnimationFrame(() => headingRef.current?.focus());
+  };
+
+  const next = async () => {
+    const e = errorsFor(step, form);
+    if (Object.keys(e).length) {
+      setErrors(e);
       return;
     }
-    setStep((s) => Math.min(s + 1, STEPS.length - 1));
-    if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
+    if (step < STEPS.length - 1) return goTo(step + 1);
+
+    setStatus("sending");
+    let ok = false;
+    try {
+      const res = await fetch("/api/booking", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...form, serviceName: service?.name }),
+      });
+      ok = res.ok && (await res.json()).delivered === true;
+    } catch {
+      ok = false;
+    }
+    setDelivered(ok);
+    setStatus("done");
+    window.scrollTo({ top: 0 });
   };
-  const back = () => setStep((s) => Math.max(s - 1, 0));
 
-  const selectedService = services.find((s) => s.slug === form.serviceSlug);
-  const progress = ((step + (submitted ? 1 : 0)) / STEPS.length) * 100;
-
-  if (submitted) {
-    return <Confirmation form={form} serviceName={selectedService?.name || "Caregiver"} />;
+  if (status === "done") {
+    return <Confirmation form={form} service={service} delivered={delivered} />;
   }
 
   return (
-    <div className="min-h-[100svh] bg-cream-50">
-      {/* Top bar with progress */}
-      <div className="sticky top-0 z-20 bg-cream-50/85 backdrop-blur border-b border-ink-100/70">
-        <div className="container py-4 flex items-center gap-4">
-          <Link href="/" className="text-sm text-ink-600 hover:text-ink-900 link-quiet">
-            ← Home
-          </Link>
-          <div className="flex-1 h-1.5 rounded-full bg-ink-100 overflow-hidden">
-            <div
-              className="h-full bg-teal-600 transition-[width] duration-500 ease-out"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
-          <span className="text-xs text-ink-500 hidden sm:block tabular-nums">
-            Step {step + 1} of {STEPS.length}
-          </span>
-        </div>
+    <div className="pb-28 lg:pb-16">
+      <div className="container pt-6 sm:pt-10">
+        <Progress step={step} onJump={(n) => n < step && goTo(n)} />
       </div>
 
-      <div className="container py-10 lg:py-16 grid lg:grid-cols-[1.4fr_1fr] gap-10 lg:gap-16">
-        {/* LEFT: step */}
-        <div>
-          <div className="mb-6 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-teal-700">
-            {STEPS[step]}
+      <div className="container mt-8 grid gap-10 lg:grid-cols-[1.5fr_1fr] lg:gap-14">
+        <form
+          noValidate
+          onSubmit={(e) => {
+            e.preventDefault();
+            next();
+          }}
+        >
+          {/* honeypot */}
+          <div aria-hidden className="absolute -left-[9999px] h-px w-px overflow-hidden">
+            <label>
+              Website
+              <input
+                tabIndex={-1}
+                autoComplete="off"
+                value={form.website}
+                onChange={(e) => update("website", e.target.value)}
+              />
+            </label>
           </div>
 
           {step === 0 && (
-            <Step
+            <StepShell
+              headingRef={headingRef}
               title="What kind of care do you need?"
-              subtitle="Pick the closest match — we’ll fine-tune in the next step."
+              subtitle="Choose the closest match. You can explain the details later."
             >
-              <div className="grid gap-3 sm:grid-cols-2">
-                {services.map((s) => {
-                  const selected = form.serviceSlug === s.slug;
-                  return (
-                    <button
-                      key={s.slug}
-                      type="button"
-                      onClick={() => update("serviceSlug", s.slug)}
-                      className={[
-                        "text-left rounded-2xl ring-1 p-5 transition",
-                        selected
-                          ? "bg-teal-700 text-white ring-teal-700 shadow-glow"
-                          : "bg-white ring-ink-100 hover:ring-teal-300",
-                      ].join(" ")}
-                    >
-                      <div className={selected ? "text-sage-200" : "text-teal-700"}>
-                        <span className="text-[11px] font-semibold uppercase tracking-[0.16em]">
-                          {s.duration}
-                        </span>
-                      </div>
-                      <div className="mt-1.5 font-display text-[18px] leading-tight">{s.name}</div>
-                      <p
-                        className={[
-                          "mt-1.5 text-[13.5px] leading-relaxed",
-                          selected ? "text-cream-100/85" : "text-ink-600",
-                        ].join(" ")}
-                      >
-                        {s.short}
-                      </p>
-                    </button>
-                  );
-                })}
-              </div>
-            </Step>
+              {(["daily", "medical"] as const).map((group) => (
+                <fieldset key={group} className="mb-8 last:mb-0">
+                  <legend className="mb-3 text-[15px] font-semibold text-teal-700">
+                    {group === "daily" ? "Daily care and support" : "Medical care at home"}
+                  </legend>
+                  <div className="grid gap-2.5 sm:grid-cols-2">
+                    {careOptions
+                      .filter((o) => o.group === group)
+                      .map((o) => {
+                        const s = services.find((x) => x.slug === o.slug);
+                        if (!s) return null;
+                        return (
+                          <OptionCard
+                            key={s.slug}
+                            name="service"
+                            checked={form.serviceSlug === s.slug}
+                            onChange={() => {
+                              update("serviceSlug", s.slug);
+                              update("option", "");
+                            }}
+                            title={s.name}
+                            detail={o.summary}
+                          />
+                        );
+                      })}
+                  </div>
+                </fieldset>
+              ))}
+              <FieldError id="serviceSlug" msg={errors.serviceSlug} />
+              <p className="mt-6 rounded-2xl bg-stone-100 p-4 text-[16px] text-ink-700">
+                Not sure which one fits?{" "}
+                <a href={site.phoneHref} className="font-semibold text-teal-700 underline underline-offset-4">
+                  Call {site.phone}
+                </a>{" "}
+                and a coordinator will help you decide.
+              </p>
+            </StepShell>
           )}
 
-          {step === 1 && (
-            <Step
-              title="When and how often?"
-              subtitle="Most families start with a 12-hour shift while they decide on long-term care."
+          {step === 1 && service && (
+            <StepShell
+              headingRef={headingRef}
+              title="How often, and from when?"
+              subtitle={
+                isAssessment(service.pricing[0]?.price)
+                  ? "Prices for this service depend on the care involved. We’ll call you with a written quote before anything is booked."
+                  : "Prices are starting rates. We confirm the final price with you before care begins."
+              }
             >
-              <Grid>
-                {[
-                  { v: "hourly", label: "Hourly visit", note: "Min 4 hours · ₹220/hr" },
-                  { v: "12h-day", label: "12-hour day shift", note: "8 am – 8 pm · ₹950/day" },
-                  { v: "12h-night", label: "12-hour night shift", note: "8 pm – 8 am · ₹950/night" },
-                  { v: "live-in", label: "24×7 live-in", note: "From ₹28,000/month" },
-                ].map((opt) => (
-                  <Choice
-                    key={opt.v}
-                    selected={form.duration === opt.v}
-                    onClick={() => update("duration", opt.v as Form["duration"])}
-                    label={opt.label}
-                    note={opt.note}
-                  />
-                ))}
-              </Grid>
-
-              <div className="mt-8">
-                <FieldLabel>When should care start?</FieldLabel>
-                <Grid cols={3}>
-                  {[
-                    { v: "today", label: "Today" },
-                    { v: "tomorrow", label: "Tomorrow" },
-                    { v: "this-week", label: "This week" },
-                  ].map((opt) => (
-                    <Choice
-                      key={opt.v}
-                      selected={form.startWhen === opt.v}
-                      onClick={() => update("startWhen", opt.v as Form["startWhen"])}
-                      label={opt.label}
+              <fieldset>
+                <legend className="mb-3 text-[16px] font-semibold text-ink-900">{service.name}</legend>
+                <div className="grid gap-2.5 sm:grid-cols-2">
+                  {service.pricing.map((p) => (
+                    <OptionCard
+                      key={p.label}
+                      name="option"
+                      checked={form.option === p.label}
+                      onChange={() => update("option", p.label)}
+                      title={p.label}
+                      detail={p.note}
+                      aside={isAssessment(p.price) ? undefined : p.price}
                     />
                   ))}
-                </Grid>
-              </div>
-            </Step>
+                </div>
+                <FieldError id="option" msg={errors.option} />
+              </fieldset>
+
+              <fieldset className="mt-9">
+                <legend className="mb-3 text-[16px] font-semibold text-ink-900">When should care start?</legend>
+                <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
+                  {(
+                    [
+                      ["today", "Today"],
+                      ["tomorrow", "Tomorrow"],
+                      ["this-week", "This week"],
+                      ["not-sure", "Not sure yet"],
+                    ] as const
+                  ).map(([v, label]) => (
+                    <OptionCard
+                      key={v}
+                      name="startWhen"
+                      checked={form.startWhen === v}
+                      onChange={() => update("startWhen", v)}
+                      title={label}
+                      compact
+                    />
+                  ))}
+                </div>
+                <FieldError id="startWhen" msg={errors.startWhen} />
+              </fieldset>
+
+              <fieldset className="mt-9">
+                <legend className="mb-3 text-[16px] font-semibold text-ink-900">
+                  Preferences <span className="font-normal text-ink-500">(optional)</span>
+                </legend>
+                <div className="grid grid-cols-3 gap-2.5">
+                  {(
+                    [
+                      ["any", "Either"],
+                      ["female", "Female"],
+                      ["male", "Male"],
+                    ] as const
+                  ).map(([v, label]) => (
+                    <OptionCard
+                      key={v}
+                      name="gender"
+                      checked={form.gender === v}
+                      onChange={() => update("gender", v)}
+                      title={label}
+                      compact
+                    />
+                  ))}
+                </div>
+                <p className="mb-3 mt-6 text-[15px] text-ink-700">Languages spoken at home</p>
+                <div className="flex flex-wrap gap-2">
+                  {LANGUAGES.map((lang) => {
+                    const on = form.languages.includes(lang);
+                    return (
+                      <label
+                        key={lang}
+                        className={[
+                          "cursor-pointer rounded-full px-4 py-2 text-[15px] transition-colors",
+                          "has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-marigold-500",
+                          on ? "bg-teal-700 font-semibold text-white" : "bg-white text-ink-800 ring-1 ring-inset ring-ink-200 hover:ring-ink-300",
+                        ].join(" ")}
+                      >
+                        <input
+                          type="checkbox"
+                          className="sr-only"
+                          checked={on}
+                          onChange={() =>
+                            update("languages", on ? form.languages.filter((l) => l !== lang) : [...form.languages, lang])
+                          }
+                        />
+                        {lang}
+                      </label>
+                    );
+                  })}
+                </div>
+              </fieldset>
+            </StepShell>
           )}
 
           {step === 2 && (
-            <Step
-              title="Any caregiver preferences?"
-              subtitle="We match by language and gender to make your loved one comfortable."
+            <StepShell
+              headingRef={headingRef}
+              title="About the patient"
+              subtitle="This helps us send the right person. Share as much or as little as you like."
             >
-              <FieldLabel>Caregiver gender</FieldLabel>
-              <Grid cols={3}>
-                {[
-                  { v: "any", label: "No preference" },
-                  { v: "female", label: "Female" },
-                  { v: "male", label: "Male" },
-                ].map((opt) => (
-                  <Choice
-                    key={opt.v}
-                    selected={form.gender === opt.v}
-                    onClick={() => update("gender", opt.v as Form["gender"])}
-                    label={opt.label}
-                  />
-                ))}
-              </Grid>
-
-              <div className="mt-8">
-                <FieldLabel>Languages spoken (select any that work)</FieldLabel>
-                <div className="flex flex-wrap gap-2">
-                  {["Kannada", "English", "Hindi", "Tamil", "Telugu", "Malayalam", "Bengali"].map(
-                    (lang) => {
-                      const on = form.languages.includes(lang);
-                      return (
-                        <button
-                          key={lang}
-                          type="button"
-                          onClick={() =>
-                            update(
-                              "languages",
-                              on
-                                ? form.languages.filter((l) => l !== lang)
-                                : [...form.languages, lang],
-                            )
-                          }
-                          className={[
-                            "rounded-full px-4 py-2 text-sm transition ring-1",
-                            on
-                              ? "bg-teal-700 text-white ring-teal-700"
-                              : "bg-white text-ink-700 ring-ink-100 hover:ring-teal-300",
-                          ].join(" ")}
-                        >
-                          {lang}
-                        </button>
-                      );
-                    },
-                  )}
-                </div>
+              <div className="grid gap-5 sm:grid-cols-[1fr_8rem]">
+                <TextField
+                  label="Patient’s name"
+                  optional
+                  value={form.patientName}
+                  onChange={(v) => update("patientName", v)}
+                  autoComplete="off"
+                />
+                <TextField
+                  label="Age"
+                  optional
+                  value={form.patientAge}
+                  onChange={(v) => update("patientAge", v.replace(/[^\d]/g, "").slice(0, 3))}
+                  inputMode="numeric"
+                />
               </div>
-            </Step>
+              <TextArea
+                className="mt-5"
+                label="Health condition and needs"
+                optional
+                hint="For example: recovering from hip surgery, uses a walker, needs insulin twice a day."
+                value={form.notes}
+                onChange={(v) => update("notes", v)}
+              />
+
+              <fieldset className="mt-9">
+                <legend className="mb-3 text-[16px] font-semibold text-ink-900">Area in Bangalore</legend>
+                <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
+                  {localities.map((l) => (
+                    <OptionCard
+                      key={l.slug}
+                      name="locality"
+                      checked={form.locality === l.slug}
+                      onChange={() => update("locality", l.slug)}
+                      title={l.name}
+                      compact
+                    />
+                  ))}
+                  <OptionCard
+                    name="locality"
+                    checked={form.locality === "other"}
+                    onChange={() => update("locality", "other")}
+                    title="Somewhere else"
+                    compact
+                  />
+                </div>
+                <FieldError id="locality" msg={errors.locality} />
+              </fieldset>
+              <TextArea
+                className="mt-5"
+                label="Address"
+                optional
+                hint="We’ll confirm it on the call. It’s only shared with the assigned caregiver."
+                value={form.address}
+                onChange={(v) => update("address", v)}
+                rows={2}
+                autoComplete="street-address"
+              />
+            </StepShell>
           )}
 
           {step === 3 && (
-            <Step
-              title="Tell us about the patient"
-              subtitle="Just the essentials — the rest, we’ll learn together."
+            <StepShell
+              headingRef={headingRef}
+              title="How should we reach you?"
+              subtitle="A care coordinator will call or WhatsApp you to confirm the details. Nothing is charged at this stage."
             >
-              <Field>
-                <FieldLabel>Patient’s name</FieldLabel>
-                <Input
-                  value={form.patientName}
-                  onChange={(v) => update("patientName", v)}
-                  placeholder="e.g., Mrs. Lakshmi Iyer"
-                />
-              </Field>
-              <Field>
-                <FieldLabel>Age</FieldLabel>
-                <Input
-                  value={form.patientAge}
-                  onChange={(v) => update("patientAge", v)}
-                  placeholder="e.g., 72"
-                  inputMode="numeric"
-                />
-              </Field>
-              <Field>
-                <FieldLabel>Anything our caregiver should know? (optional)</FieldLabel>
-                <Textarea
-                  value={form.notes}
-                  onChange={(v) => update("notes", v)}
-                  placeholder="e.g., recovering from hip surgery, uses a walker, gets anxious in the evenings"
-                />
-              </Field>
-            </Step>
-          )}
-
-          {step === 4 && (
-            <Step
-              title="Where should the caregiver come?"
-              subtitle="We cover most of Bangalore. Pick the closest area to your home."
-            >
-              <FieldLabel>Locality</FieldLabel>
-              <div className="grid sm:grid-cols-2 gap-2">
-                {localities.map((l) => (
-                  <Choice
-                    key={l.slug}
-                    selected={form.locality === l.slug}
-                    onClick={() => update("locality", l.slug)}
-                    label={l.name}
-                    note={`${l.zone} Bangalore`}
-                    compact
-                  />
-                ))}
-              </div>
-              <Field className="mt-6">
-                <FieldLabel>Full address (we keep this private)</FieldLabel>
-                <Textarea
-                  value={form.address}
-                  onChange={(v) => update("address", v)}
-                  placeholder="Apartment / house no., street, landmark, pincode"
-                />
-              </Field>
-            </Step>
-          )}
-
-          {step === 5 && (
-            <Step
-              title="How can we reach you?"
-              subtitle="We’ll WhatsApp the caregiver match within an hour."
-            >
-              <Field>
-                <FieldLabel>Your name</FieldLabel>
-                <Input
+              <div className="grid gap-5">
+                <TextField
+                  label="Your name"
                   value={form.contactName}
                   onChange={(v) => update("contactName", v)}
-                  placeholder="Your full name"
+                  autoComplete="name"
+                  error={errors.contactName}
                 />
-              </Field>
-              <Field>
-                <FieldLabel>Mobile / WhatsApp number</FieldLabel>
-                <Input
+                <TextField
+                  label="Mobile number (WhatsApp if possible)"
                   value={form.contactPhone}
                   onChange={(v) => update("contactPhone", v)}
-                  placeholder="10-digit Indian mobile number"
                   inputMode="tel"
+                  type="tel"
+                  autoComplete="tel"
+                  prefix="+91"
+                  error={errors.contactPhone}
                 />
-              </Field>
-              <p className="text-xs text-ink-500">
-                By continuing you agree to our care terms. We’ll never share your details.
+              </div>
+              <p className="mt-5 text-[14px] text-ink-500">
+                We use your details only to arrange care. We don’t share them or send marketing messages.
               </p>
-            </Step>
+            </StepShell>
           )}
 
-          {/* nav */}
-          <div className="mt-10 flex flex-wrap items-center gap-3">
-            {step > 0 && (
-              <button type="button" onClick={back} className="btn-md btn-ghost">
-                ← Back
+          {/* Navigation */}
+          <div className="fixed inset-x-0 bottom-0 z-30 border-t border-ink-100 bg-white/95 px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 backdrop-blur lg:static lg:mt-10 lg:border-0 lg:bg-transparent lg:p-0 lg:backdrop-blur-none">
+            <div className="mx-auto flex max-w-xl items-center gap-3 lg:mx-0 lg:max-w-none">
+              {step > 0 && (
+                <button type="button" onClick={() => goTo(step - 1)} className="btn-lg btn-secondary">
+                  Back
+                </button>
+              )}
+              <button
+                type="submit"
+                disabled={status === "sending"}
+                className="btn-lg btn-primary flex-1 lg:flex-none lg:min-w-[14rem]"
+              >
+                {step < STEPS.length - 1
+                  ? "Continue"
+                  : status === "sending"
+                    ? "Sending…"
+                    : "Send my request"}
               </button>
-            )}
-            <button
-              type="button"
-              onClick={next}
-              disabled={!canNext}
-              className="btn-lg btn-primary"
-            >
-              {step === STEPS.length - 1 ? "Confirm booking" : "Continue"}
-              <ArrowRightIcon size={16} />
-            </button>
-            <a href={site.whatsappHref} className="btn-md btn-ghost gap-1.5 ml-auto text-ink-500">
-              <WhatsAppIcon size={16} /> Stuck? WhatsApp us
-            </a>
-          </div>
-        </div>
-
-        {/* RIGHT: summary */}
-        <aside className="lg:sticky lg:top-24 self-start">
-          <div className="rounded-3xl bg-white ring-1 ring-ink-100 shadow-soft p-6">
-            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-teal-700">
-              <ShieldCheckIcon size={14} /> Your booking
-            </div>
-            <h3 className="mt-2 font-display text-2xl text-ink-900">
-              {selectedService ? selectedService.name : "Tell us what you need"}
-            </h3>
-            <p className="mt-2 text-sm text-ink-600">
-              {selectedService
-                ? selectedService.short
-                : "Pick a care type to see a tailored estimate appear here."}
-            </p>
-
-            <dl className="mt-6 divide-y divide-ink-100/80 text-sm">
-              <SummaryRow label="Duration" value={prettyDuration(form.duration)} />
-              <SummaryRow label="Start" value={prettyStart(form.startWhen)} />
-              <SummaryRow label="Gender" value={prettyGender(form.gender)} />
-              <SummaryRow
-                label="Languages"
-                value={form.languages.length ? form.languages.join(", ") : "—"}
-              />
-              <SummaryRow
-                label="Locality"
-                value={
-                  localities.find((l) => l.slug === form.locality)?.name || "—"
-                }
-              />
-            </dl>
-
-            <div className="mt-6 rounded-2xl bg-cream-50 p-4 text-sm text-ink-700">
-              <div className="flex items-center gap-2 text-teal-700 font-medium">
-                <CheckIcon size={14} /> Replacement guarantee
-              </div>
-              <p className="mt-1.5 text-ink-600 text-[13px] leading-relaxed">
-                Not the right fit? We replace within 24 hours, free.
-              </p>
             </div>
           </div>
+        </form>
 
-          <div className="mt-4 text-xs text-ink-500 text-center">
-            Booking takes &lt;3 minutes · No payment required to confirm match
-          </div>
-        </aside>
+        <Summary form={form} service={service} chosenPrice={chosenPrice?.price} />
       </div>
     </div>
   );
 }
 
-/* ─── Small UI primitives used inside the flow ─── */
+/* ─── Pieces ──────────────────────────────────────────────────────────── */
 
-function Step({
+function Progress({ step, onJump }: { step: number; onJump: (n: number) => void }) {
+  return (
+    <nav aria-label="Booking progress">
+      <p className="text-[15px] text-ink-600 sm:hidden">
+        Step {step + 1} of {STEPS.length}: <span className="font-semibold text-ink-900">{STEPS[step]}</span>
+      </p>
+      <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-stone-100 sm:hidden">
+        <div className="h-full bg-teal-700 transition-[width] duration-300" style={{ width: `${((step + 1) / STEPS.length) * 100}%` }} />
+      </div>
+      <ol className="hidden items-center gap-3 sm:flex">
+        {STEPS.map((label, i) => {
+          const done = i < step;
+          const current = i === step;
+          return (
+            <li key={label} className="flex flex-1 items-center gap-3 last:flex-none">
+              <button
+                type="button"
+                onClick={() => onJump(i)}
+                disabled={!done}
+                aria-current={current ? "step" : undefined}
+                className="flex items-center gap-2.5 disabled:cursor-default"
+              >
+                <span
+                  className={[
+                    "grid h-8 w-8 place-items-center rounded-full text-[14px] font-semibold",
+                    done ? "bg-teal-700 text-white" : current ? "bg-white text-teal-800 ring-2 ring-teal-700" : "bg-stone-100 text-ink-500",
+                  ].join(" ")}
+                >
+                  {done ? <CheckIcon size={16} strokeWidth={2.4} /> : i + 1}
+                </span>
+                <span className={["text-[15px]", current ? "font-semibold text-ink-900" : done ? "text-ink-700 underline-offset-4 hover:underline" : "text-ink-500"].join(" ")}>
+                  {label}
+                </span>
+              </button>
+              {i < STEPS.length - 1 && <span aria-hidden className={["h-px flex-1", done ? "bg-teal-700" : "bg-ink-200"].join(" ")} />}
+            </li>
+          );
+        })}
+      </ol>
+    </nav>
+  );
+}
+
+function StepShell({
   title,
   subtitle,
   children,
+  headingRef,
 }: {
   title: string;
   subtitle?: string;
   children: React.ReactNode;
+  headingRef: React.RefObject<HTMLHeadingElement | null>;
 }) {
   return (
-    <div className="animate-fade-up">
-      <h1 className="font-display text-3xl sm:text-4xl tracking-tight text-ink-900">{title}</h1>
-      {subtitle && <p className="mt-3 text-[15.5px] text-ink-600 max-w-xl">{subtitle}</p>}
+    <div>
+      <h1
+        ref={headingRef}
+        tabIndex={-1}
+        className="font-display text-[32px] font-semibold leading-[1.1] tracking-[-0.025em] text-ink-900 outline-none focus-visible:outline-none sm:text-[40px]"
+      >
+        {title}
+      </h1>
+      {subtitle && <p className="mt-3 max-w-xl text-[17px] text-ink-600">{subtitle}</p>}
       <div className="mt-8">{children}</div>
     </div>
   );
 }
 
-function Field({ children, className }: { children: React.ReactNode; className?: string }) {
-  return <div className={`mb-5 ${className ?? ""}`}>{children}</div>;
-}
-
-function FieldLabel({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="mb-2 text-[12.5px] font-semibold uppercase tracking-[0.14em] text-ink-500">
-      {children}
-    </div>
-  );
-}
-
-function Input({
-  value,
+function OptionCard({
+  name,
+  checked,
   onChange,
-  placeholder,
-  inputMode,
-}: {
-  value: string;
-  onChange: (v: string) => void;
-  placeholder?: string;
-  inputMode?: React.HTMLAttributes<HTMLInputElement>["inputMode"];
-}) {
-  return (
-    <input
-      type="text"
-      inputMode={inputMode}
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      placeholder={placeholder}
-      className="w-full rounded-2xl bg-white ring-1 ring-ink-100 px-4 py-3 text-[15px] outline-none transition focus:ring-2 focus:ring-teal-500/40 focus:border-teal-500"
-    />
-  );
-}
-
-function Textarea({
-  value,
-  onChange,
-  placeholder,
-}: {
-  value: string;
-  onChange: (v: string) => void;
-  placeholder?: string;
-}) {
-  return (
-    <textarea
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      placeholder={placeholder}
-      rows={4}
-      className="w-full rounded-2xl bg-white ring-1 ring-ink-100 px-4 py-3 text-[15px] outline-none transition focus:ring-2 focus:ring-teal-500/40 resize-none"
-    />
-  );
-}
-
-function Grid({
-  children,
-  cols = 2,
-}: {
-  children: React.ReactNode;
-  cols?: 2 | 3;
-}) {
-  return (
-    <div className={`grid gap-3 ${cols === 3 ? "sm:grid-cols-3" : "sm:grid-cols-2"}`}>
-      {children}
-    </div>
-  );
-}
-
-function Choice({
-  selected,
-  onClick,
-  label,
-  note,
+  title,
+  detail,
+  aside,
   compact,
 }: {
-  selected: boolean;
-  onClick: () => void;
-  label: string;
-  note?: string;
+  name: string;
+  checked: boolean;
+  onChange: () => void;
+  title: string;
+  detail?: string;
+  aside?: string;
   compact?: boolean;
 }) {
   return (
-    <button
-      type="button"
-      onClick={onClick}
+    <label
       className={[
-        "text-left rounded-2xl ring-1 transition w-full",
-        compact ? "p-3.5" : "p-4",
-        selected
-          ? "bg-teal-700 text-white ring-teal-700 shadow-glow"
-          : "bg-white ring-ink-100 hover:ring-teal-300",
+        "relative flex cursor-pointer items-start gap-3 rounded-2xl transition-colors",
+        compact ? "px-4 py-3" : "p-4",
+        "has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-marigold-500",
+        checked ? "bg-teal-50 ring-2 ring-inset ring-teal-700" : "bg-white ring-1 ring-inset ring-ink-200 hover:ring-ink-300",
       ].join(" ")}
     >
-      <div className="font-medium">{label}</div>
-      {note && (
-        <div
+      <input type="radio" name={name} checked={checked} onChange={onChange} className="sr-only" />
+      {!compact && (
+        <span
+          aria-hidden
           className={[
-            "mt-0.5 text-[12.5px]",
-            selected ? "text-cream-100/85" : "text-ink-500",
+            "mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full",
+            checked ? "bg-teal-700 text-white" : "ring-1 ring-inset ring-ink-300",
           ].join(" ")}
         >
-          {note}
-        </div>
+          {checked && <CheckIcon size={13} strokeWidth={3} />}
+        </span>
       )}
-    </button>
+      <span className="min-w-0 flex-1">
+        <span className={["block text-[16px] text-ink-900", checked ? "font-semibold" : "font-medium"].join(" ")}>{title}</span>
+        {detail && <span className="mt-0.5 block text-[14px] leading-snug text-ink-600">{detail}</span>}
+      </span>
+      {aside && <span className="shrink-0 text-[15px] font-semibold text-ink-900">{aside}</span>}
+    </label>
   );
 }
 
-function SummaryRow({ label, value }: { label: string; value?: string }) {
+function FieldError({ id, msg }: { id: string; msg?: string }) {
+  if (!msg) return null;
   return (
-    <div className="flex items-center justify-between py-2.5">
-      <dt className="text-ink-500">{label}</dt>
-      <dd className="font-medium text-ink-900 text-right">{value || "—"}</dd>
+    <p id={`${id}-error`} role="alert" className="mt-3 text-[15px] font-medium text-red-700">
+      {msg}
+    </p>
+  );
+}
+
+function TextField({
+  label,
+  value,
+  onChange,
+  optional,
+  error,
+  prefix,
+  type = "text",
+  inputMode,
+  autoComplete,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  optional?: boolean;
+  error?: string;
+  prefix?: string;
+  type?: string;
+  inputMode?: React.HTMLAttributes<HTMLInputElement>["inputMode"];
+  autoComplete?: string;
+}) {
+  const id = useId();
+  return (
+    <div>
+      <label htmlFor={id} className="mb-2 block text-[15px] font-semibold text-ink-900">
+        {label} {optional && <span className="font-normal text-ink-500">(optional)</span>}
+      </label>
+      <div
+        className={[
+          "flex items-center rounded-xl bg-white ring-1 ring-inset transition-shadow focus-within:ring-2",
+          error ? "ring-red-600 focus-within:ring-red-600" : "ring-ink-200 focus-within:ring-teal-700",
+        ].join(" ")}
+      >
+        {prefix && <span className="pl-4 text-[17px] text-ink-500">{prefix}</span>}
+        <input
+          id={id}
+          type={type}
+          inputMode={inputMode}
+          autoComplete={autoComplete}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          aria-invalid={!!error}
+          aria-describedby={error ? `${id}-error` : undefined}
+          className="h-[52px] w-full rounded-xl bg-transparent px-4 text-[17px] text-ink-900 outline-none focus-visible:outline-none"
+        />
+      </div>
+      {error && (
+        <p id={`${id}-error`} role="alert" className="mt-2 text-[15px] font-medium text-red-700">
+          {error}
+        </p>
+      )}
     </div>
   );
 }
 
-/* ─── Validation + display helpers ─── */
-
-function stepValid(step: number, f: Form) {
-  switch (step) {
-    case 0:
-      return !!f.serviceSlug;
-    case 1:
-      return !!f.duration && !!f.startWhen;
-    case 2:
-      return !!f.gender;
-    case 3:
-      return f.patientName.trim().length >= 2 && f.patientAge.trim().length >= 1;
-    case 4:
-      return !!f.locality && f.address.trim().length >= 6;
-    case 5:
-      return f.contactName.trim().length >= 2 && /\d{10}/.test(f.contactPhone.replace(/\D/g, ""));
-    default:
-      return true;
-  }
-}
-
-function prettyDuration(d: Form["duration"]) {
-  if (!d) return "—";
-  return {
-    hourly: "Hourly visit",
-    "12h-day": "12-hour day shift",
-    "12h-night": "12-hour night shift",
-    "live-in": "24×7 live-in",
-  }[d];
-}
-function prettyStart(s: Form["startWhen"]) {
-  if (!s) return "—";
-  return { today: "Today", tomorrow: "Tomorrow", "this-week": "This week" }[s];
-}
-function prettyGender(g: Form["gender"]) {
-  if (!g) return "—";
-  return { any: "No preference", female: "Female", male: "Male" }[g];
-}
-
-/* ─── Confirmation screen ─── */
-function Confirmation({ form, serviceName }: { form: Form; serviceName: string }) {
+function TextArea({
+  label,
+  value,
+  onChange,
+  optional,
+  hint,
+  rows = 3,
+  className,
+  autoComplete,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  optional?: boolean;
+  hint?: string;
+  rows?: number;
+  className?: string;
+  autoComplete?: string;
+}) {
+  const id = useId();
   return (
-    <div className="min-h-[100svh] bg-cream-50">
-      <div className="container max-w-3xl py-20 lg:py-28 text-center">
-        <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-sage-100 text-sage-700 shadow-soft">
-          <CheckIcon size={28} />
-        </div>
-        <h1 className="mt-6 font-display text-4xl sm:text-5xl tracking-tight text-ink-900">
-          You can exhale now.
-        </h1>
-        <p className="mt-4 lead">
-          We’ve received your request for <strong>{serviceName}</strong>. A care manager
-          will WhatsApp <strong>{form.contactName || "you"}</strong> at{" "}
-          <strong>{form.contactPhone || "your number"}</strong> within an hour with a
-          shortlisted caregiver.
+    <div className={className}>
+      <label htmlFor={id} className="block text-[15px] font-semibold text-ink-900">
+        {label} {optional && <span className="font-normal text-ink-500">(optional)</span>}
+      </label>
+      {hint && (
+        <p id={`${id}-hint`} className="mb-2 mt-1 text-[14px] text-ink-500">
+          {hint}
         </p>
+      )}
+      <textarea
+        id={id}
+        rows={rows}
+        value={value}
+        autoComplete={autoComplete}
+        onChange={(e) => onChange(e.target.value)}
+        aria-describedby={hint ? `${id}-hint` : undefined}
+        className={[
+          "w-full resize-y rounded-xl bg-white px-4 py-3 text-[17px] text-ink-900 outline-none ring-1 ring-inset ring-ink-200 transition-shadow focus:ring-2 focus:ring-teal-700 focus-visible:outline-none",
+          hint ? "" : "mt-2",
+        ].join(" ")}
+      />
+    </div>
+  );
+}
 
-        <div className="mt-10 grid sm:grid-cols-3 gap-4 text-left">
-          <Stat label="Caregiver match" value="Within 60 minutes" />
-          <Stat label="Caregiver placement" value="Within 6 hours typical" />
-          <Stat label="Replacement guarantee" value="24-hour, no questions" />
-        </div>
-
-        <div className="mt-10 flex flex-wrap justify-center gap-3">
-          <a href={site.whatsappHref} className="btn-lg btn-primary">
-            <WhatsAppIcon size={16} /> Continue on WhatsApp
-          </a>
-          <Link href="/" className="btn-lg btn-secondary">
-            Back to homepage
-          </Link>
+function Summary({ form, service, chosenPrice }: { form: Form; service?: Service; chosenPrice?: string }) {
+  const area = form.locality === "other" ? "Elsewhere in Bangalore" : localities.find((l) => l.slug === form.locality)?.name;
+  const start = { "": "", today: "Today", tomorrow: "Tomorrow", "this-week": "This week", "not-sure": "Not decided" }[form.startWhen];
+  const rows: [string, string | undefined][] = [
+    ["How often", form.option || undefined],
+    ["Starting", start || undefined],
+    ["Caregiver", form.gender ? { any: "Male or female", female: "Female", male: "Male" }[form.gender] : undefined],
+    ["Languages", form.languages.join(", ") || undefined],
+    ["Area", area],
+  ];
+  return (
+    <aside className="hidden lg:block lg:sticky lg:top-28 lg:self-start" aria-label="Your request">
+      <div className="rounded-3xl bg-white p-6 ring-1 ring-ink-100">
+        <p className="text-[15px] font-semibold text-teal-700">Your request</p>
+        <p className="mt-1 text-[22px] font-semibold leading-tight tracking-[-0.01em] text-ink-900">
+          {service?.name ?? "Choose a kind of care"}
+        </p>
+        <dl className="mt-5 divide-y divide-ink-100 border-y border-ink-100 text-[15px]">
+          {rows.map(([k, v]) => (
+            <div key={k} className="flex justify-between gap-4 py-2.5">
+              <dt className="text-ink-500">{k}</dt>
+              <dd className={v ? "text-right font-medium text-ink-900" : "text-ink-300"}>{v ?? "Not yet"}</dd>
+            </div>
+          ))}
+        </dl>
+        <div className="mt-5">
+          <p className="text-[14px] text-ink-500">Starting price</p>
+          <p className="mt-0.5 text-[20px] font-semibold text-ink-900">
+            {chosenPrice && !isAssessment(chosenPrice) ? chosenPrice : service ? "Quoted after a free call" : "Not yet"}
+          </p>
         </div>
       </div>
-    </div>
+      <ul className="mt-5 grid gap-2.5 px-1 text-[15px] text-ink-700">
+        {["Nothing is charged until you confirm", "Verified, trained staff only", "Replacement within 24 hours if needed"].map((t) => (
+          <li key={t} className="flex items-start gap-2.5">
+            <ShieldCheckIcon size={18} className="mt-0.5 shrink-0 text-teal-700" />
+            {t}
+          </li>
+        ))}
+      </ul>
+      <p className="mt-6 px-1 text-[15px] text-ink-600">
+        Prefer to talk?{" "}
+        <a href={site.phoneHref} className="font-semibold text-teal-700 underline underline-offset-4">
+          {site.phone}
+        </a>
+      </p>
+    </aside>
   );
 }
 
-function Stat({ label, value }: { label: string; value: string }) {
+/* ─── After sending ───────────────────────────────────────────────────── */
+
+function whatsappSummary(form: Form, service?: Service) {
+  const area = form.locality === "other" ? "Other area" : localities.find((l) => l.slug === form.locality)?.name;
+  const lines = [
+    "Hi, I’d like to arrange care through your website.",
+    `Care: ${service?.name ?? "-"}${form.option ? ` (${form.option})` : ""}`,
+    form.startWhen && `Start: ${form.startWhen.replace("-", " ")}`,
+    (form.patientName || form.patientAge) && `Patient: ${[form.patientName, form.patientAge && `${form.patientAge} yrs`].filter(Boolean).join(", ")}`,
+    form.notes && `Needs: ${form.notes}`,
+    area && `Area: ${area}`,
+    form.gender && form.gender !== "any" && `Caregiver: ${form.gender}`,
+    form.languages.length > 0 && `Languages: ${form.languages.join(", ")}`,
+    `Name: ${form.contactName}`,
+    `Phone: ${form.contactPhone}`,
+  ].filter(Boolean);
+  return `https://wa.me/${site.whatsappNumber}?text=${encodeURIComponent(lines.join("\n"))}`;
+}
+
+function Confirmation({ form, service, delivered }: { form: Form; service?: Service; delivered: boolean }) {
+  const wa = whatsappSummary(form, service);
   return (
-    <div className="rounded-2xl bg-white ring-1 ring-ink-100 p-5 shadow-soft">
-      <div className="text-xs font-semibold uppercase tracking-[0.16em] text-teal-700">{label}</div>
-      <div className="mt-1.5 font-display text-xl text-ink-900">{value}</div>
+    <div className="container max-w-2xl py-14 sm:py-20">
+      {delivered ? (
+        <>
+          <span className="grid h-14 w-14 place-items-center rounded-full bg-teal-700 text-white">
+            <CheckIcon size={28} strokeWidth={2.4} />
+          </span>
+          <h1 className="mt-6 font-display text-[36px] font-semibold leading-[1.1] tracking-[-0.025em] text-ink-900 sm:text-[44px]">
+            Request received
+          </h1>
+          <p className="mt-4 text-[18px] leading-relaxed text-ink-700">
+            Thank you, {form.contactName.split(" ")[0]}. A care coordinator will call or WhatsApp you on{" "}
+            <strong>{form.contactPhone}</strong> to talk through {service ? <strong>{service.name.toLowerCase()}</strong> : "your request"} and
+            confirm the details.
+          </p>
+        </>
+      ) : (
+        <>
+          <h1 className="font-display text-[36px] font-semibold leading-[1.1] tracking-[-0.025em] text-ink-900 sm:text-[44px]">
+            One last step: send it to our team
+          </h1>
+          <p className="mt-4 text-[18px] leading-relaxed text-ink-700">
+            Tap the button below to send your request to our care team on WhatsApp. Your details are already filled in.
+          </p>
+        </>
+      )}
+
+      <div className="mt-8 flex flex-wrap gap-3">
+        <a href={wa} target="_blank" rel="noopener noreferrer" className="btn-lg btn-primary">
+          <WhatsAppIcon size={18} /> {delivered ? "Also message us on WhatsApp" : "Send on WhatsApp"}
+        </a>
+        <a href={site.phoneHref} className="btn-lg btn-secondary">
+          <PhoneIcon size={18} /> Call {site.phone}
+        </a>
+      </div>
+
+      <div className="mt-12 rounded-3xl bg-stone-100 p-6 sm:p-8">
+        <h2 className="text-[19px] font-semibold text-ink-900">What happens next</h2>
+        <ol className="mt-4 grid gap-4 text-[16px] text-ink-700">
+          {[
+            "A coordinator calls you to understand the situation and confirm the price.",
+            "We match a caregiver, nurse or physiotherapist and share their profile with you.",
+            "Care starts at home. Nothing is charged until you’ve agreed the details.",
+          ].map((t, i) => (
+            <li key={t} className="flex gap-3">
+              <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-white text-[14px] font-semibold text-teal-800">{i + 1}</span>
+              {t}
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      <p className="mt-8 text-[16px]">
+        <Link href="/" className="link-quiet">
+          Back to the homepage
+        </Link>
+      </p>
     </div>
   );
 }

@@ -1,3 +1,5 @@
+import { clinicalServices } from "@/lib/services-clinical";
+
 export type CareTimelineItem = { time: string; label: string; detail?: string };
 
 export type Service = {
@@ -39,7 +41,7 @@ export type Service = {
   matchingNotes: string;
 
   /** A short family story specific to this service. */
-  familyStory: { quote: string; name: string; meta: string };
+  familyStory?: { quote: string; name: string; meta: string };
 
   pricing: { label: string; price: string; note?: string }[];
 
@@ -57,10 +59,16 @@ export type Service = {
     | "dementia"
     | "bedridden"
     | "night"
-    | "female";
+    | "female"
+    | "nursing"
+    | "physio"
+    | "palliative"
+    | "stroke"
+    | "parkinsons"
+    | "disability";
 };
 
-export const services: Service[] = [
+const coreServices: Service[] = [
   /* ───────────────────────────── Elder care ───────────────────────────── */
   {
     slug: "elder-care",
@@ -476,6 +484,10 @@ export const services: Service[] = [
       "Eye / cataract surgery in elderly patients",
     ],
     conditions: [
+      {
+        title: "Hospital-to-home transition",
+        detail: "The first days after discharge, when the care plan moves from the ward to your home.",
+      },
       { title: "Knee or hip replacement", detail: "Mobility, pain monitoring, walker training, physio coordination." },
       { title: "Spine surgery", detail: "Repositioning protocols, bracing, careful posture." },
       { title: "Cardiac bypass / stenting", detail: "Vitals, walking program, sternum precautions, family coaching." },
@@ -1027,6 +1039,8 @@ export const services: Service[] = [
     icon: "female",
   },
 ];
+
+export const services: Service[] = [...coreServices, ...clinicalServices];
 
 export function getServiceBySlug(slug: string) {
   return services.find((s) => s.slug === slug);

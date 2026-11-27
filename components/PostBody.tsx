@@ -34,7 +34,7 @@ export function PostBody({ sections }: { sections: Section[] }) {
               <h2
                 key={i}
                 id={s.id || slugify(s.text)}
-                className="font-display text-[26px] sm:text-[30px] tracking-tight text-ink-900 mt-10 mb-4 scroll-mt-24"
+                className="font-display text-[26px] sm:text-[30px] tracking-[-0.025em] text-ink-900 mt-10 mb-4 scroll-mt-24"
               >
                 {s.text}
               </h2>
@@ -43,7 +43,7 @@ export function PostBody({ sections }: { sections: Section[] }) {
             return (
               <h3
                 key={i}
-                className="font-display text-[20px] tracking-tight text-ink-900 mt-7 mb-3"
+                className="font-display text-[20px] tracking-[-0.025em] text-ink-900 mt-7 mb-3"
               >
                 {s.text}
               </h3>
@@ -97,7 +97,7 @@ export function PostBody({ sections }: { sections: Section[] }) {
                 key={i}
                 className="my-8 rounded-3xl bg-gradient-to-br from-sage-50 via-cream-50 to-teal-50 ring-1 ring-sage-200 p-6 sm:p-7"
               >
-                <div className="text-xs font-semibold uppercase tracking-[0.16em] text-teal-700">
+                <div className="text-xs font-semibold text-teal-700">
                   {s.title}
                 </div>
                 <p className="mt-2 text-[16.5px] leading-relaxed text-ink-800">
@@ -116,7 +116,7 @@ export function PostBody({ sections }: { sections: Section[] }) {
           case "faq":
             return (
               <div key={i} className="my-8 rounded-3xl bg-white ring-1 ring-ink-100 shadow-soft p-6 sm:p-8">
-                <div className="text-xs font-semibold uppercase tracking-[0.16em] text-teal-700">
+                <div className="text-xs font-semibold text-teal-700">
                   Quick answers
                 </div>
                 <dl className="mt-4 divide-y divide-ink-100">

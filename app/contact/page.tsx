@@ -25,7 +25,7 @@ export default function ContactPage() {
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
           <div>
             <span className="chip">We listen first</span>
-            <h1 className="mt-5 font-display text-4xl sm:text-5xl tracking-tight text-ink-900">
+            <h1 className="mt-5 font-display text-4xl sm:text-5xl tracking-[-0.025em] text-ink-900">
               Talk to a real human, today.
             </h1>
             <p className="mt-5 lead">
@@ -82,7 +82,7 @@ export default function ContactPage() {
           </div>
 
           <aside className="rounded-[28px] bg-gradient-to-br from-sage-100 via-cream-50 to-teal-50 p-8 sm:p-10 ring-1 ring-sage-200">
-            <div className="text-xs font-semibold uppercase tracking-[0.18em] text-teal-700">
+            <div className="text-xs font-semibold text-teal-700">
               Prefer to skip the chat?
             </div>
             <h2 className="mt-3 font-display text-3xl text-ink-900">

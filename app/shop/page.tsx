@@ -4,14 +4,12 @@ import {
   categories,
   getProductsByCategory,
   products,
-  type ProductCategory,
 } from "@/lib/shop";
 import { buildMetadata, site } from "@/lib/site";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { ProductCard } from "@/components/ProductCard";
 import { FinalCta } from "@/components/FinalCta";
 import {
-  ArrowRightIcon,
   CheckIcon,
   ClockIcon,
   ShieldCheckIcon,
@@ -94,7 +92,7 @@ export default function ShopIndex() {
                     href={`#${c.slug}`}
                     className="group block rounded-3xl bg-white ring-1 ring-ink-100 p-6 hover:shadow-soft transition"
                   >
-                    <div className="text-xs font-semibold uppercase tracking-[0.16em] text-teal-700">
+                    <div className="text-xs font-semibold text-teal-700">
                       {count} products
                     </div>
                     <div className="mt-2 font-display text-[18px] text-ink-900 group-hover:text-teal-800 transition">

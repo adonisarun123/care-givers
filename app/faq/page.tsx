@@ -102,7 +102,7 @@ export default function FaqPage() {
         <div className="container max-w-4xl">
           {groups.map((g) => (
             <div key={g.title} className="mb-14 last:mb-0">
-              <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-teal-700">
+              <h2 className="text-xs font-semibold text-teal-700">
                 {g.title}
               </h2>
               <div className="mt-5 divide-y divide-ink-100">

@@ -48,7 +48,7 @@ export function RelatedJournal({
                 href={`/journal/${p.slug}`}
                 className="group flex h-full flex-col rounded-3xl bg-cream-50 ring-1 ring-cream-200 p-6 hover:bg-white hover:shadow-soft transition"
               >
-                <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.14em] text-teal-700 font-semibold">
+                <div className="flex items-center gap-2 text-[13px] text-teal-700 font-semibold">
                   <span>{p.category}</span>
                   <span className="h-1 w-1 rounded-full bg-ink-300" />
                   <span className="inline-flex items-center gap-1">

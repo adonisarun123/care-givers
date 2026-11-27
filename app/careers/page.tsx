@@ -178,7 +178,7 @@ export default function CareersIndex() {
                         href={`/careers/${j.slug}`}
                         className="group flex h-full flex-col rounded-3xl bg-white ring-1 ring-ink-100 shadow-soft p-6 hover:-translate-y-0.5 hover:shadow-glow transition"
                       >
-                        <div className="flex items-center justify-between text-[11px] uppercase tracking-[0.14em] text-teal-700 font-semibold">
+                        <div className="flex items-center justify-between text-[13px] text-teal-700 font-semibold">
                           <span>{j.experienceLevel} · {j.employmentType}</span>
                           <span className="chip-cream">{j.openings} open</span>
                         </div>
@@ -252,7 +252,7 @@ export default function CareersIndex() {
       <section className="py-14">
         <div className="container max-w-4xl">
           <div className="rounded-[28px] bg-gradient-to-br from-sage-50 via-cream-50 to-teal-50 ring-1 ring-sage-200 p-7 sm:p-10">
-            <div className="text-xs font-semibold uppercase tracking-[0.18em] text-teal-700">
+            <div className="text-xs font-semibold text-teal-700">
               Who we hire
             </div>
             <h3 className="mt-3 font-display text-2xl sm:text-3xl text-ink-900">

@@ -46,7 +46,7 @@ export default function PricingPage() {
               >
                 <div className="grid gap-6 lg:grid-cols-[1fr_2fr_auto] items-start lg:items-center">
                   <div>
-                    <div className="text-xs font-semibold uppercase tracking-[0.16em] text-teal-700">
+                    <div className="text-xs font-semibold text-teal-700">
                       {s.duration}
                     </div>
                     <h2 className="mt-1.5 font-display text-2xl text-ink-900">{s.name}</h2>
@@ -59,11 +59,11 @@ export default function PricingPage() {
                         key={p.label}
                         className="rounded-2xl bg-cream-50 ring-1 ring-cream-200 p-4"
                       >
-                        <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-ink-500">
+                        <div className="text-[13px] font-semibold text-ink-500">
                           {p.label}
                         </div>
                         <div className="mt-1 font-display text-xl text-ink-900">{p.price}</div>
-                        {p.note && <div className="text-[11px] text-ink-500 mt-0.5">{p.note}</div>}
+                        {p.note && <div className="text-[13px] text-ink-500 mt-0.5">{p.note}</div>}
                       </li>
                     ))}
                   </ul>
@@ -122,7 +122,7 @@ export default function PricingPage() {
               href="/cost-calculator"
               className="group rounded-[28px] bg-gradient-to-br from-teal-50 via-cream-50 to-sage-50 ring-1 ring-teal-200 p-7 sm:p-9 hover:shadow-soft transition"
             >
-              <span className="text-xs font-semibold uppercase tracking-[0.18em] text-teal-700">
+              <span className="text-xs font-semibold text-teal-700">
                 Try the calculator
               </span>
               <h3 className="mt-3 font-display text-2xl sm:text-3xl text-ink-900">
@@ -141,7 +141,7 @@ export default function PricingPage() {
               href="/care-quiz"
               className="group rounded-[28px] bg-gradient-to-br from-sage-50 via-cream-50 to-peach-50 ring-1 ring-sage-200 p-7 sm:p-9 hover:shadow-soft transition"
             >
-              <span className="text-xs font-semibold uppercase tracking-[0.18em] text-teal-700">
+              <span className="text-xs font-semibold text-teal-700">
                 Not sure what to book?
               </span>
               <h3 className="mt-3 font-display text-2xl sm:text-3xl text-ink-900">

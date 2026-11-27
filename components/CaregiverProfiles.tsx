@@ -78,7 +78,7 @@ export function CaregiverProfiles() {
                 </div>
 
                 <div className="mt-4">
-                  <div className="text-[12px] uppercase tracking-[0.14em] text-ink-500">Languages</div>
+                  <div className="text-[12px] text-ink-500">Languages</div>
                   <div className="mt-1.5 flex flex-wrap gap-1.5">
                     {p.languages.map((l) => (
                       <span key={l} className="chip-cream">{l}</span>
@@ -87,7 +87,7 @@ export function CaregiverProfiles() {
                 </div>
 
                 <div className="mt-3">
-                  <div className="text-[12px] uppercase tracking-[0.14em] text-ink-500">Specialties</div>
+                  <div className="text-[12px] text-ink-500">Specialties</div>
                   <div className="mt-1.5 flex flex-wrap gap-1.5">
                     {p.specialties.map((s) => (
                       <span key={s} className="chip">{s}</span>

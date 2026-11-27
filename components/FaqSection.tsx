@@ -36,11 +36,8 @@ export function FaqSection() {
       <div className="container">
         <div className="grid lg:grid-cols-[1fr_1.4fr] gap-10 lg:gap-16">
           <div className="lg:sticky lg:top-28 self-start">
-            <span className="section-eyebrow">
-              <span className="h-px w-6 bg-teal-500" /> Common questions
-            </span>
-            <h2 className="mt-3 section-title">
-              The things families usually want to ask first.
+            <h2 className="section-title">
+              Questions families ask us first
             </h2>
             <p className="mt-4 lead">
               If you don’t see your question here, message us on WhatsApp — we usually
@@ -59,13 +56,13 @@ export function FaqSection() {
                     className="w-full flex items-start justify-between gap-6 py-5 text-left"
                     aria-expanded={isOpen}
                   >
-                    <span className="font-display text-[18px] sm:text-[20px] text-ink-900">
+                    <span className="font-display text-[18px] font-semibold sm:text-[20px] text-ink-900">
                       {f.q}
                     </span>
                     <span
                       className={[
                         "shrink-0 mt-1 grid h-7 w-7 place-items-center rounded-full transition",
-                        isOpen ? "bg-teal-700 text-white rotate-45" : "bg-ink-100 text-ink-700",
+                        isOpen ? "bg-teal-700 text-white rotate-45" : "bg-stone-100 text-ink-700",
                       ].join(" ")}
                       aria-hidden
                     >
@@ -80,7 +77,7 @@ export function FaqSection() {
                       isOpen ? "grid-rows-[1fr] pb-6" : "grid-rows-[0fr]",
                     ].join(" ")}
                   >
-                    <div className="overflow-hidden text-[15px] text-ink-600 leading-relaxed">
+                    <div className="overflow-hidden max-w-[62ch] text-[17px] text-ink-600 leading-relaxed">
                       {f.a}
                     </div>
                   </div>

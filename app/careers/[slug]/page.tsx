@@ -8,7 +8,6 @@ import {
   ArrowRightIcon,
   CheckIcon,
   ClockIcon,
-  CloseIcon,
   HeartHandIcon,
   PhoneIcon,
   PinIcon,
@@ -152,7 +151,7 @@ export default async function JobPage({ params }: { params: Promise<{ slug: stri
               <Fact icon={HeartHandIcon} label="Team" value={j.team} />
 
               <div className="mt-5 pt-5 border-t border-ink-100">
-                <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-ink-500">
+                <div className="text-[13px] font-semibold text-ink-500">
                   Posted
                 </div>
                 <div className="mt-1 text-[14px] text-ink-800">
@@ -236,7 +235,7 @@ export default async function JobPage({ params }: { params: Promise<{ slug: stri
                   <span className="block h-1.5 w-1.5 rounded-full bg-white" />
                 </span>
                 <div className="grid sm:grid-cols-[140px_1fr] gap-2 sm:gap-6 items-baseline">
-                  <div className="text-sm font-semibold uppercase tracking-[0.12em] text-teal-700">
+                  <div className="text-sm font-semibold text-teal-700">
                     {it.time}
                   </div>
                   <div className="text-[15.5px] text-ink-800 leading-relaxed">
@@ -270,7 +269,7 @@ export default async function JobPage({ params }: { params: Promise<{ slug: stri
               </ul>
             </div>
             <div>
-              <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-sage-700">
+              <span className="inline-flex items-center gap-2 text-xs font-semibold text-sage-700">
                 <span className="h-px w-6 bg-sage-500" /> Nice to have
               </span>
               <h2 className="mt-3 section-title">Bonus skills.</h2>
@@ -321,11 +320,11 @@ export default async function JobPage({ params }: { params: Promise<{ slug: stri
       <section className="py-14 sm:py-20">
         <div className="container max-w-4xl">
           <div className="rounded-[28px] bg-ink-900 text-cream-50 p-7 sm:p-10 shadow-soft">
-            <div className="text-xs font-semibold uppercase tracking-[0.18em] text-sage-300">
+            <div className="text-xs font-semibold text-sage-300">
               Compensation & benefits
             </div>
             <div className="mt-3 flex items-baseline gap-2">
-              <span className="font-display text-4xl sm:text-5xl tracking-tight">
+              <span className="font-display text-4xl sm:text-5xl tracking-[-0.025em]">
                 ₹{j.compensation.base}
               </span>
               <span className="text-cream-100/70">/ {j.compensation.period}</span>
@@ -346,7 +345,7 @@ export default async function JobPage({ params }: { params: Promise<{ slug: stri
             </ul>
 
             <div className="mt-8 pt-7 border-t border-white/10">
-              <div className="text-xs font-semibold uppercase tracking-[0.16em] text-sage-300">
+              <div className="text-xs font-semibold text-sage-300">
                 Pay growth
               </div>
               <p className="mt-2 text-[15.5px] text-cream-100/90 leading-relaxed">
@@ -377,7 +376,7 @@ export default async function JobPage({ params }: { params: Promise<{ slug: stri
                 key={s.step}
                 className="rounded-3xl bg-cream-50 ring-1 ring-cream-200 p-6 relative"
               >
-                <div className="text-xs font-semibold uppercase tracking-[0.16em] text-teal-700">
+                <div className="text-xs font-semibold text-teal-700">
                   {s.timeline}
                 </div>
                 <div className="mt-2 font-display text-2xl text-ink-900">
@@ -433,7 +432,7 @@ export default async function JobPage({ params }: { params: Promise<{ slug: stri
         <div className="container max-w-3xl">
           <div className="rounded-[28px] bg-gradient-to-br from-sage-100 via-cream-50 to-teal-50 ring-1 ring-sage-200 p-8 sm:p-12 text-center">
             <span className="chip">Ready when you are</span>
-            <h2 className="mt-4 font-display text-3xl sm:text-4xl tracking-tight text-ink-900">
+            <h2 className="mt-4 font-display text-3xl sm:text-4xl tracking-[-0.025em] text-ink-900">
               Apply for {j.shortTitle}.
             </h2>
             <p className="mt-3 text-[15.5px] text-ink-700 max-w-xl mx-auto">
@@ -467,7 +466,7 @@ export default async function JobPage({ params }: { params: Promise<{ slug: stri
                   href={`/careers/${o.slug}`}
                   className="group block rounded-2xl bg-white ring-1 ring-ink-100 p-5 hover:shadow-soft transition"
                 >
-                  <div className="text-[11px] uppercase tracking-[0.14em] text-teal-700 font-semibold">
+                  <div className="text-[13px] text-teal-700 font-semibold">
                     {o.category}
                   </div>
                   <div className="mt-1.5 font-display text-lg text-ink-900">{o.title}</div>
@@ -505,7 +504,7 @@ function ApplyButton({
     );
     return (
       <a
-        href={`https://wa.me/919845612345?text=${text}`}
+        href={`https://wa.me/${site.whatsappNumber}?text=${text}`}
         className={cls}
         rel="noopener noreferrer"
         target="_blank"
@@ -539,7 +538,7 @@ function Fact({
         <Icon size={14} />
       </span>
       <div className="min-w-0">
-        <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-ink-500">
+        <div className="text-[13px] font-semibold text-ink-500">
           {label}
         </div>
         <div className="mt-0.5 text-[14px] text-ink-800 leading-relaxed">{value}</div>

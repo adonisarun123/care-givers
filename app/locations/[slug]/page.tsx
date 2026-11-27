@@ -74,7 +74,7 @@ export default async function LocalityPage({ params }: { params: Promise<{ slug:
             </div>
 
             <aside className="rounded-3xl bg-white ring-1 ring-ink-100 shadow-soft p-6">
-              <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-teal-700">
+              <div className="flex items-center gap-2 text-xs font-semibold text-teal-700">
                 <ShieldCheckIcon size={14} /> Local coverage
               </div>
               <dl className="mt-4 divide-y divide-ink-100 text-sm">
@@ -84,7 +84,7 @@ export default async function LocalityPage({ params }: { params: Promise<{ slug:
               </dl>
 
               <div className="mt-5 pt-5 border-t border-ink-100">
-                <div className="text-xs font-semibold uppercase tracking-[0.16em] text-ink-500">
+                <div className="text-xs font-semibold text-ink-500">
                   Nearby hospitals we work with
                 </div>
                 <ul className="mt-3 space-y-2">

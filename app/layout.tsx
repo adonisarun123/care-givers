@@ -1,22 +1,19 @@
 import type { Metadata, Viewport } from "next";
-import { Manrope, Fraunces } from "next/font/google";
+import { Atkinson_Hyperlegible_Next } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { StickyMobileCta } from "@/components/StickyMobileCta";
 import { site } from "@/lib/site";
 
-const manrope = Manrope({
+// Atkinson Hyperlegible was designed by the Braille Institute for low-vision
+// readers — chosen because many of our readers are reading for older parents.
+const atkinson = Atkinson_Hyperlegible_Next({
   subsets: ["latin"],
-  variable: "--font-manrope",
+  variable: "--font-atkinson",
   display: "swap",
-});
-
-const fraunces = Fraunces({
-  subsets: ["latin"],
-  variable: "--font-fraunces",
-  display: "swap",
-  axes: ["SOFT", "opsz"],
+  weight: ["400", "500", "600", "700"],
+  adjustFontFallback: false,
 });
 
 export const metadata: Metadata = {
@@ -52,9 +49,7 @@ export const metadata: Metadata = {
     icon: [
       { url: "/icon.svg", type: "image/svg+xml" },
     ],
-    apple: [
-      { url: "/apple-icon.svg", type: "image/svg+xml", sizes: "180x180" },
-    ],
+    apple: [{ url: "/apple-icon.png", type: "image/png", sizes: "180x180" }],
   },
   appleWebApp: {
     capable: true,
@@ -66,8 +61,8 @@ export const metadata: Metadata = {
 // Browser chrome + iOS status bar tinting to match the brand teal
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#2F6E78" },
-    { media: "(prefers-color-scheme: dark)", color: "#234951" },
+    { media: "(prefers-color-scheme: light)", color: "#F6F7F4" },
+    { media: "(prefers-color-scheme: dark)", color: "#1D4C54" },
   ],
   colorScheme: "light",
   width: "device-width",
@@ -78,7 +73,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${manrope.variable} ${fraunces.variable}`}>
+    <html lang="en" className={atkinson.variable}>
       <body className="min-h-screen bg-cream-50 text-ink-900 font-sans antialiased">
         <Navbar />
         <main>{children}</main>
