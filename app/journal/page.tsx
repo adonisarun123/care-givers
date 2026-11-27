@@ -6,7 +6,6 @@ import {
   getPostsByCategory,
   getRecentPosts,
   journal,
-  posts,
 } from "@/lib/posts";
 import { JournalCard } from "@/components/JournalCard";
 import { FinalCta } from "@/components/FinalCta";

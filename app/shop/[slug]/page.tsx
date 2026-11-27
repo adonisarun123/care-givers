@@ -16,12 +16,8 @@ import { FinalCta } from "@/components/FinalCta";
 import { absoluteUrl, buildMetadata, site } from "@/lib/site";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import {
-  ArrowRightIcon,
   CheckIcon,
-  ClockIcon,
   PhoneIcon,
-  ShieldCheckIcon,
-  SparklesIcon,
   WhatsAppIcon,
 } from "@/components/icons";
 
@@ -101,19 +97,13 @@ export default async function ProductPage({
           ]
         : []),
     ],
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: site.rating.value,
-      reviewCount: 50,
-      bestRating: 5,
-    },
   };
 
   // WhatsApp pre-filled message
   const waText = encodeURIComponent(
     `Hi, I'm interested in the ${product.name} (₹${formatINR(product.pricing.buy)}${hasRental ? ` / ₹${formatINR(product.pricing.rentPerMonth!)}/month rental` : ""}). Could you help me with details?`,
   );
-  const waHref = `https://wa.me/919845612345?text=${waText}`;
+  const waHref = `https://wa.me/${site.whatsappNumber}?text=${waText}`;
 
   return (
     <>

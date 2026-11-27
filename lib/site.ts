@@ -3,13 +3,16 @@ export const site = {
   tagline: "Trusted home caregivers for Bangalore families",
   description:
     "Verified, trained caregivers and patient attendants for elder care, post-surgery, dementia, bedridden and live-in support across Bangalore. Book in 60 seconds.",
-  url: "https://caregivers.example",
+  // Set NEXT_PUBLIC_SITE_URL to the live domain (e.g. in Vercel env vars).
+  // Canonicals, sitemap, robots, OG and JSON-LD all derive from this.
+  url: process.env.NEXT_PUBLIC_SITE_URL || "https://caregivers.example",
   city: "Bangalore",
   // Contact details — sourced from ezyhelpers.com per request.
   // VERIFY OWNERSHIP / AUTHORISATION before publishing these on a live site.
   phone: "+91 80 3141 1776",
   phoneHref: "tel:+918031411776",
   whatsapp: "+91 99725 71005",
+  whatsappNumber: "919972571005", // digits only, for wa.me links
   whatsappHref:
     "https://wa.me/919972571005?text=Hi%2C%20I%27d%20like%20to%20book%20a%20caregiver%20in%20Bangalore.",
   email: "contact@ezyhelpers.com",

@@ -1,4 +1,3 @@
-import { CheckIcon } from "@/components/icons";
 
 const points = [
   {

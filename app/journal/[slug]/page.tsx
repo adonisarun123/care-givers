@@ -7,7 +7,7 @@ import { PostBody } from "@/components/PostBody";
 import { TableOfContents } from "@/components/TableOfContents";
 import { FinalCta } from "@/components/FinalCta";
 import { ArrowRightIcon, ClockIcon, SparklesIcon, WhatsAppIcon } from "@/components/icons";
-import { absoluteUrl, buildMetadata, site } from "@/lib/site";
+import { buildMetadata, site } from "@/lib/site";
 import {
   ArticleJsonLd,
   BreadcrumbJsonLd,

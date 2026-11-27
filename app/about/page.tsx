@@ -12,7 +12,6 @@ import { FinalCta } from "@/components/FinalCta";
 import { Stats } from "@/components/Stats";
 import {
   ArrowRightIcon,
-  CheckIcon,
   CloseIcon,
   HeartHandIcon,
   PhoneIcon,

@@ -52,9 +52,7 @@ export const metadata: Metadata = {
     icon: [
       { url: "/icon.svg", type: "image/svg+xml" },
     ],
-    apple: [
-      { url: "/apple-icon.svg", type: "image/svg+xml", sizes: "180x180" },
-    ],
+    apple: [{ url: "/apple-icon.png", type: "image/png", sizes: "180x180" }],
   },
   appleWebApp: {
     capable: true,

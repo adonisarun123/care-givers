@@ -8,7 +8,6 @@ import {
   ArrowRightIcon,
   CheckIcon,
   ClockIcon,
-  CloseIcon,
   HeartHandIcon,
   PhoneIcon,
   PinIcon,
@@ -505,7 +504,7 @@ function ApplyButton({
     );
     return (
       <a
-        href={`https://wa.me/919845612345?text=${text}`}
+        href={`https://wa.me/${site.whatsappNumber}?text=${text}`}
         className={cls}
         rel="noopener noreferrer"
         target="_blank"

@@ -4,14 +4,12 @@ import {
   categories,
   getProductsByCategory,
   products,
-  type ProductCategory,
 } from "@/lib/shop";
 import { buildMetadata, site } from "@/lib/site";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { ProductCard } from "@/components/ProductCard";
 import { FinalCta } from "@/components/FinalCta";
 import {
-  ArrowRightIcon,
   CheckIcon,
   ClockIcon,
   ShieldCheckIcon,
