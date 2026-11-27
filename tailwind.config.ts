@@ -26,6 +26,15 @@ const config: Config = {
           200: "#D9DED6",
           300: "#C3CAC0",
         },
+        // "clinic" — a cool slate blue that marks medical care (nurses, physios)
+        clinic: {
+          50: "#EEF2F8",
+          100: "#DCE4F1",
+          200: "#B9C8E2",
+          500: "#4A6595",
+          700: "#2E4772",
+          800: "#24385B",
+        },
         marigold: {
           100: "#FBEFD9",
           300: "#F0C277",

@@ -4,6 +4,7 @@ import { services } from "@/lib/services";
 import { ArrowRightIcon, CheckIcon } from "@/components/icons";
 import { FinalCta } from "@/components/FinalCta";
 import { FaqSection } from "@/components/FaqSection";
+import { PromiseStrip } from "@/components/CarePromise";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { buildMetadata } from "@/lib/site";
 
@@ -159,6 +160,7 @@ export default function PricingPage() {
         </div>
       </section>
 
+      <PromiseStrip />
       <FaqSection />
       <FinalCta />
     </>

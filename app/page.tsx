@@ -10,6 +10,7 @@ import {
 } from "@/components/home/HomeSections";
 import { FaqSection } from "@/components/FaqSection";
 import { FinalCta } from "@/components/FinalCta";
+import { PromiseSection, WhatIfSection } from "@/components/CarePromise";
 
 export default function HomePage() {
   return (
@@ -20,6 +21,8 @@ export default function HomePage() {
       <ServicesIndex />
       <HowBookingWorks />
       <CaregiverProfileSection />
+      <PromiseSection />
+      <WhatIfSection />
       <Plans />
       <NotReadyYet />
       <FaqSection />

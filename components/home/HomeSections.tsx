@@ -93,7 +93,18 @@ export function ServicesIndex() {
             ] as const
           ).map(([group, title]) => (
             <div key={group}>
-              <h3 className="text-[15px] font-semibold text-teal-700">{title}</h3>
+              <h3
+                className={[
+                  "flex items-center gap-2 text-[15px] font-semibold",
+                  group === "medical" ? "text-clinic-700" : "text-teal-700",
+                ].join(" ")}
+              >
+                <span aria-hidden className={["h-2.5 w-2.5 rounded-full", group === "medical" ? "bg-clinic-500" : "bg-teal-500"].join(" ")} />
+                {title}
+                {group === "medical" && (
+                  <span className="font-normal text-ink-500">by registered nurses and physiotherapists</span>
+                )}
+              </h3>
               <ul className="mt-3 border-t border-ink-200">
                 {careOptions
                   .filter((o) => o.group === group)
@@ -107,7 +118,12 @@ export function ServicesIndex() {
                           className="group grid gap-1 py-5 sm:grid-cols-[1fr_auto] sm:items-center sm:gap-8"
                         >
                           <span>
-                            <span className="block text-[20px] font-semibold tracking-[-0.01em] text-ink-900 group-hover:text-teal-700">
+                            <span
+                              className={[
+                                "block text-[20px] font-semibold tracking-[-0.01em] text-ink-900",
+                                group === "medical" ? "group-hover:text-clinic-700" : "group-hover:text-teal-700",
+                              ].join(" ")}
+                            >
                               {s.name}
                             </span>
                             <span className="mt-1 block text-[16px] text-ink-600">{o.summary}</span>

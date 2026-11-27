@@ -30,8 +30,12 @@ export function CareFinder() {
                   "cursor-pointer select-none rounded-xl px-3 py-2.5 text-center text-[14px] leading-snug transition-colors sm:rounded-full sm:px-3.5 sm:py-2 sm:text-left sm:text-[15px]",
                   "has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-marigold-500",
                   selected
-                    ? "bg-teal-700 font-semibold text-white"
-                    : "bg-stone-100 text-ink-800 hover:bg-stone-200",
+                    ? o.group === "medical"
+                      ? "bg-clinic-700 font-semibold text-white"
+                      : "bg-teal-700 font-semibold text-white"
+                    : o.group === "medical"
+                      ? "bg-clinic-50 text-clinic-800 hover:bg-clinic-100"
+                      : "bg-stone-100 text-ink-800 hover:bg-stone-200",
                 ].join(" ")}
               >
                 <input
