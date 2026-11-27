@@ -266,7 +266,7 @@ export function CostCalculator() {
               <Link href="/book" className="btn-md btn-primary">
                 Book this exact plan <ArrowRightIcon size={14} />
               </Link>
-              <a href={site.whatsappHref} className="btn-md btn-secondary gap-1.5">
+              <a href={site.whatsappHref} className="btn-md btn-whatsapp">
                 <WhatsAppIcon size={14} /> Discuss with care manager
               </a>
             </div>

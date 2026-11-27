@@ -264,7 +264,7 @@ export function CareQuiz() {
             )}
             <a
               href={site.whatsappHref}
-              className="btn-md btn-ghost gap-1.5 ml-auto text-ink-500"
+              className="btn-md btn-whatsapp"
             >
               <WhatsAppIcon size={16} /> Talk to a human
             </a>
@@ -476,7 +476,7 @@ function Result({
             <Link href="/book" className="btn-lg btn-primary">
               Book this care now <ArrowRightIcon size={16} />
             </Link>
-            <a href={site.whatsappHref} className="btn-lg btn-secondary">
+            <a href={site.whatsappHref} className="btn-lg btn-whatsapp">
               <WhatsAppIcon size={16} /> Discuss with a care manager
             </a>
             <button onClick={restart} className="btn-md btn-ghost ml-auto">

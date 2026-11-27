@@ -147,7 +147,7 @@ export function Navbar() {
               <a href={site.phoneHref} className="btn-lg btn-secondary">
                 <PhoneIcon size={18} /> Call
               </a>
-              <a href={site.whatsappHref} className="btn-lg btn-secondary">
+              <a href={site.whatsappHref} className="btn-lg btn-whatsapp">
                 <WhatsAppIcon size={18} /> WhatsApp
               </a>
             </div>

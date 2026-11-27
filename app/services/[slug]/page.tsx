@@ -103,7 +103,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
                 <Link href={`/book?service=${s.slug}`} className="btn-lg btn-primary">
                   Book this care <ArrowRightIcon size={16} />
                 </Link>
-                <a href={site.whatsappHref} className="btn-lg btn-secondary">
+                <a href={site.whatsappHref} className="btn-lg btn-whatsapp">
                   <WhatsAppIcon size={16} /> Talk to a care manager
                 </a>
               </div>

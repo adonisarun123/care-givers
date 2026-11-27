@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { services } from "@/lib/services";
 import { careOptions } from "@/components/home/careOptions";
-import { CheckIcon } from "@/components/icons";
+import { CheckIcon, PhoneIcon, WhatsAppIcon } from "@/components/icons";
+import { site } from "@/lib/site";
+import { CallbackForm } from "@/components/CallbackForm";
 
 /* ── Commitments ─────────────────────────────────────────────────────── */
 
@@ -427,6 +429,137 @@ export function NotReadyYet() {
             </li>
           ))}
         </ul>
+      </div>
+    </section>
+  );
+}
+
+/* ── Conditions we care for (plain language → the right service) ─────── */
+
+const conditionGroups: { title: string; items: [string, string][] }[] = [
+  {
+    title: "Ageing and everyday life",
+    items: [
+      ["Weakness and frailty", "elder-care"],
+      ["Parents living alone", "elder-care"],
+      ["Loneliness after losing a spouse", "elder-care"],
+      ["Help through the night", "night-caregiver"],
+    ],
+  },
+  {
+    title: "Memory and the brain",
+    items: [
+      ["Dementia and Alzheimer’s", "dementia-care"],
+      ["Parkinson’s disease", "parkinsons-care"],
+      ["Recovery after a stroke", "stroke-care"],
+      ["Confusion and wandering", "dementia-care"],
+    ],
+  },
+  {
+    title: "After a hospital stay",
+    items: [
+      ["Knee or hip replacement", "post-surgery-care"],
+      ["Fractures and falls", "post-surgery-care"],
+      ["First weeks after discharge", "post-surgery-care"],
+      ["Rehabilitation exercises", "physiotherapy-at-home"],
+    ],
+  },
+  {
+    title: "Nursing needs at home",
+    items: [
+      ["Injections and IV fluids", "home-nursing"],
+      ["Wound and bedsore dressing", "home-nursing"],
+      ["Catheter care", "home-nursing"],
+      ["Feeding tube (Ryle’s / PEG)", "home-nursing"],
+    ],
+  },
+  {
+    title: "Long-term and serious illness",
+    items: [
+      ["Bedridden patients", "bedridden-care"],
+      ["Diabetes and blood pressure", "elder-care"],
+      ["Advanced cancer and comfort care", "palliative-care"],
+      ["Heart, lung or kidney disease", "home-nursing"],
+    ],
+  },
+  {
+    title: "Mobility and independence",
+    items: [
+      ["Balance problems and fear of falling", "physiotherapy-at-home"],
+      ["Wheelchair users", "disability-care"],
+      ["Spinal cord injury", "disability-care"],
+      ["Back, neck and joint pain", "physiotherapy-at-home"],
+    ],
+  },
+];
+
+export function ConditionsWeCareFor() {
+  return (
+    <section aria-labelledby="conditions-title" className="bg-white py-20 sm:py-28">
+      <div className="container">
+        <div className="grid gap-6 lg:grid-cols-2 lg:items-end">
+          <h2 id="conditions-title" className="section-title max-w-xl">
+            Conditions we care for at home
+          </h2>
+          <p className="lead max-w-lg lg:justify-self-end">
+            Not sure what kind of care to ask for? Start with what your parent is going through.
+            Each one takes you to the right service.
+          </p>
+        </div>
+        <div className="mt-12 grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+          {conditionGroups.map((g) => (
+            <div key={g.title}>
+              <h3 className="border-b border-ink-100 pb-3 text-[17px] font-semibold text-ink-900">{g.title}</h3>
+              <ul className="mt-3 grid gap-1">
+                {g.items.map(([label, slug]) => (
+                  <li key={label}>
+                    <Link
+                      href={`/services/${slug}`}
+                      className="group -mx-2 flex items-center justify-between gap-3 rounded-lg px-2 py-2 text-[16px] text-ink-700 transition-colors hover:bg-stone-100 hover:text-ink-900"
+                    >
+                      {label}
+                      <span aria-hidden className="text-ink-300 transition-colors group-hover:text-teal-700">›</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── Mid-page urgent band ────────────────────────────────────────────── */
+
+export function NeedCareToday() {
+  return (
+    <section aria-labelledby="today-title" className="py-6 sm:py-10">
+      <div className="container">
+        <div className="grid gap-8 rounded-3xl bg-teal-800 px-6 py-10 text-white sm:px-10 lg:grid-cols-[1fr_1.2fr] lg:items-center lg:gap-14">
+          <div>
+            <h2 id="today-title" className="font-display text-[30px] font-semibold leading-[1.1] tracking-[-0.025em] sm:text-[38px]">
+              Need someone today?
+            </h2>
+            <p className="mt-3 max-w-md text-[17px] leading-relaxed text-teal-100">
+              Our care team picks up 24 hours a day. For urgent cases, a caregiver can often be with
+              you within 6 hours.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <a href={site.phoneHref} className="btn-lg bg-white text-teal-800 hover:bg-teal-50">
+                <PhoneIcon size={18} /> Call {site.phone}
+              </a>
+              <a href={site.whatsappHref} className="btn-lg btn-whatsapp">
+                <WhatsAppIcon size={18} /> WhatsApp
+              </a>
+            </div>
+          </div>
+          <div className="rounded-2xl bg-white/5 p-5 ring-1 ring-white/15 sm:p-6">
+            <p className="mb-4 text-[17px] font-semibold">Or leave your number and we’ll call you</p>
+            <CallbackForm tone="dark" source="callback-urgent-band" />
+          </div>
+        </div>
       </div>
     </section>
   );

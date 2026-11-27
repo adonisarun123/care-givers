@@ -32,7 +32,7 @@ export async function POST(req: Request) {
 
   const lead = {
     receivedAt: new Date().toISOString(),
-    source: "website/book",
+    source: str(body.serviceSlug, 60).startsWith("callback") ? "website/callback" : "website/book",
     service: str(body.serviceName, 120) || str(body.serviceSlug, 60),
     serviceSlug: str(body.serviceSlug, 60),
     option: str(body.option, 120),

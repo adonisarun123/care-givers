@@ -28,7 +28,7 @@ export function FinalCta() {
             <div className="mt-6 flex flex-wrap gap-3 lg:justify-end">
               <a
                 href={site.whatsappHref}
-                className="btn-lg bg-white text-teal-800 hover:bg-teal-50"
+                className="btn-lg btn-whatsapp"
               >
                 <WhatsAppIcon size={18} /> Message on WhatsApp
               </a>
